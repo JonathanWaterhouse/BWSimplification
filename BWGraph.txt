@@ -1,0 +1,2203 @@
+digraph {ranksep=2
+"ZCRM_FI_INTERNAL_ORDER" -> "ZO00188"[style=bold,color=green]
+"P2WCLNT023" -> "0TCT_DS22"
+"/xfer/P20/P2W/IW01004MTLMSTRFIN.20100707113411" -> "ZMATFIN"
+"0SD_C04" -> "0SD_C04_Q0004"
+"KS00162" -> "ZO00063"[color=red]
+"ZC00165" -> "ZM00065"
+"ZO00147" -> "ZOHCRM016"[style=bold,color=green]
+"ZO00170" -> "ZO00169"[color=red]
+"KS00211" -> "ZO00140"[style=bold,color=green]
+"KS00039" -> "ZC00043"[color=red]
+"ZC00016" -> "ZC00194"[color=red]
+"ZO00143" -> "ZCRM_SONR"[style=bold,color=green]
+"/xfer/P20/P2W/IW1272T.FIL" -> "ZCOAACCT"
+"ZX_ZGEOCNTRY_ATTR" -> "ZGEOCNTRY"[color=red]
+"/xfer/D10/D1W/planttestattr.csv" -> "0PLANT"
+"ZC00037" -> "Z_ZC00037_Q001_LOCAL"
+"ZX_ZDPCLSTR_TEXT" -> "ZDPCLSTR$T"[color=red]
+"ZC00081" -> "ZM00091"
+"ZO00129" -> "ZC00077"[color=red]
+"0ORGUNIT" -> "ZOHCRM023"[style=bold,color=green]
+"ZC00121" -> "ZM00040"
+"ZO00125" -> "ZM00091"
+"ZX_ZDPSRGN_TEXT" -> "ZDPGEOLVL$T"[color=red]
+"/xfer/P20/P2W/IW01036_0PRGRPTXT.FIL" -> "ZBU"
+"ZC00108" -> "ZM00046"
+"ZC00165" -> "ZM00072"
+"ZM00061" -> "Z_ZM00061_Q001"
+"ZSCPAY" -> "ZSCPAY"[style=bold,color=green]
+"0CRM_ORGUNIT_SALES_ATTR" -> "0SALESORG"[style=bold,color=green]
+"ZXZVCAWNT" -> "ZNBREXPR$T"[color=red]
+"ZO00147" -> "ZO00155"[style=bold,color=green]
+"ZM00023" -> "Z_ZM00023_Q002"
+"/xfer/P20/P2W/IW01066BUSGRP.FIL" -> "ZCUST_BGP"
+"ZO00203" -> "ZO00129"[color=red]
+"ZM00060" -> "Z_ZM00060_Q007"
+"ZM00020" -> "Z_ZM00020_Q007"
+"0CO_OM_NWA_2" -> "0PS_C04"[color=red]
+"ZMATERIAL" -> "Z_ZMATERIAL_K002"[color=red]
+"0PS_DS06" -> "0PS_C04"[color=red]
+"ZM00079" -> "Z_ZM00079_Q009"
+"ZO00078" -> "ZC00152"[color=red]
+"ZC00130" -> "ZM00060"
+"ZM00025" -> "Z_ZM00025_Q021"
+"0FIAR_O10" -> "ZO00121"[color=red]
+"KS00090" -> "ZC00018"[color=red]
+"/xfer/P20/P2W/IW01020KPA.FIL" -> "ZKPA"
+"KS00081" -> "ZC00150"[color=red]
+"ZADRNUMBR" -> "Z_ZADRNUMBR_K001"[color=red]
+"/xfer/P20/P2W/ribson/IW01035_0PRSPGTXT.FIL" -> "ZSPG"
+"2LIS_03_S540" -> "ZO00011"[color=red]
+"ZM00016" -> "Z_ZM00016_Q019"
+"ZC00081" -> "ZO00078"[color=red]
+"0FIAP_C03" -> "Z_0FIAP_C03_Q007"
+"ZM00078" -> "Z_ZM00078_Q003"
+"ZC00152" -> "ZM00061"
+"ZO00003" -> "Z_ZO00003_K001F"[color=red]
+"/xfer/P20/P2W/IW01065BUUSFRBENELUX.FIL" -> "ZRGTER_BU"
+"ZC00037" -> "Z_ZC00037_K001F"[color=red]
+"0FI_AR_9" -> "0FIAR_O09"[color=red]
+"KPGOSDTD" -> "ZKPGOSTD"
+"ZM00025" -> "Z_ZM00025_Q004"
+"ZO00097" -> "ZO00115"[color=red]
+"/xfer/P20/P2W/SeqGDWMfgProcText" -> "ZMPROCESS"
+"0RTYPE" -> "ZM00025"
+"ZC00016" -> "Z_ZC00016_K002"[color=red]
+"2LIS_11_V_ITM" -> "0SD_C03"[color=red]
+"0FIAP_O03" -> "0FIAP_C03"[color=red]
+"Z0419" -> "ZO00199"[color=red]
+"ZO00163" -> "ZOHCRM018"[style=bold,color=green]
+"0CUST_COMPC_ATTR" -> "ZX_0CUST_COMPC_ATTR"
+"0FI_AR_10" -> "0FIAR_O10"[color=red]
+"/xfer/SYNCRA/D1W/BW20/EW01068RUA.FIL" -> "ZREP_UNIT"
+"ZC00081" -> "ZM00060"
+"ZV_A715_KONP" -> "ZSC_FLPRC"[style=bold,color=green]
+"ZO00218" -> "ZC00211"[style=bold,color=green]
+"ZX_0COUNTRY_TEXT" -> "ZDPGEOLVL$T"[color=red]
+"/xfer/P20/P2W/SeqGDWMfgProcText" -> "ZMPROCL2"
+"ZXZVCAWNT" -> "ZCIMKT$T"[color=red]
+"ZM00025" -> "Z_ZM00025_Q002A"
+"KS00016" -> "ZO00132"[color=red]
+"ZO00084" -> "ZO00169"[color=red]
+"KS00221" -> "ZO00178"[style=bold,color=green]
+"0CO_OM_OPA_7" -> "0OPA_O07"[color=red]
+"ZCRM_PROD" -> "ZOHCRM021"[style=bold,color=green]
+"ZCRM_ZADDADDRINFO_ATTR" -> "ZCRM_PROD"[style=bold,color=green]
+"ZM00081" -> "Z_ZM00081_Q001"
+"/xfer/D11/D1W/IW01035_0PROFITCTRTXT.20080902203854" -> "ZPRFT_CTR"
+"/xfer/P20/P2W/SeqGDWFlatMaterialPlant3.csv" -> "ZMATPLANT"
+"ZXZVCAWNT" -> "ZPAPSURF$T"[color=red]
+"P2SCLNT023" -> "ZAPO_TSP_ATTR"
+"ZM00061" -> "Z_ZM00061_Q007"
+"ZM00009" -> "Z_ZM00009_Q001_USD"
+"ZC00191" -> "ZM00025"
+"ZO00013" -> "Z_ZO00013_K001D"[color=red]
+"ZM00025" -> "Z_ZM00025_Q023"
+"0RTYPE" -> "ZM00051"
+"ZO00190" -> "ZO00154"[style=bold,color=green]
+"ZO00014" -> "Z_ZO00014_K001F"[color=red]
+"0PS_DAT_WBS" -> "0PS_C02"[color=red]
+"ZC00038" -> "Z_ZC00038_K007D"[color=red]
+"KS00010" -> "ZC00010"[color=red]
+"ZSCSUBJCT" -> "ZSCSUBJCT"[style=bold,color=green]
+"ZC00016" -> "ZM00073"
+"P2SCLNT023" -> "ZC00088"
+"ZM00008" -> "Z_ZM00008_Q010"
+"ZO00156" -> "ZO00190"[style=bold,color=green]
+"ZID_BR_NF_2" -> "0ID_BR_NF_2"
+"ZREPVERSN" -> "ZM00025"
+"ZC00095" -> "ZC00127"[color=red]
+"ZO00182" -> "ZM00087"
+"/xfer/D10/D1W/ZEND_IPG.FIL" -> "ZEND_IPG"
+"0SD_C03" -> "0SD_C03_Q009"
+"ZO00077" -> "ZC00197"[color=red]
+"K:\\Phase3A\\Master Data Tables\\Record Type_0VTYPE.prn" -> "0VTYPE"
+"ZBW_Z0495" -> "ZDESTCNTY"[style=bold,color=green]
+"ZO00198" -> "ZC00200"[color=red]
+"ZX_0CUSTOMER_ATTR" -> "ZCUSTOMER"[color=red]
+"/xfer/P2W/import/DW03960GROUP.csv" -> "0PROD_OBJFA"
+"ZM00026" -> "Z_ZM00026_Q002"
+"ZM00020" -> "Z_ZM00020_Q003"
+"ZIS00008" -> "ZM00053"
+"C:\\Documents and Settings\\l327882\\Desktop\\Cash Reporting Hierarchy v1 08.14.12.csv" -> "ZMAINACCT"
+"ZO00050" -> "0PS_C04"[color=red]
+"ZX_ZDPREGN_TEXT" -> "ZGEOREGN$T"[color=red]
+"0NF_DS03" -> "Z_0NF_DS03_K002F"[color=red]
+"KS00038" -> "ZC00042"[color=red]
+"P20CLNT023" -> "Z0851_TEXT"
+"KS00215" -> "KS00215"[style=bold,color=green]
+"/xfer/P20/P2W/0MAT_STGRP.FIL" -> "0MAT_STGRP"
+"ZC00066" -> "ZM00020"
+"ZM00025" -> "Z_ZM00025_Q018_11"
+"ZO00059" -> "ZC00085"[color=red]
+"\\\\ekc1\\fs1\\ERP-Delivery\\0000-Active-Projects\\0BWSIRs\\BI_p2125\\P2125_P20_SVC_CODE_MAR_2014.csv" -> "0MATERIAL"
+"ZO00219" -> "ZC00212"[style=bold,color=green]
+"2LIS_11_VASTI" -> "ZO00086"[color=red]
+"ZO00078" -> "ZC00154"[color=red]
+"\\\\kmfs002\\ERP-Delivery\\0000 Active Projects\\1428 Financial Planning and Reporting Phase 2\\Design Relevant\\Hyperion\\HypAcct.csv" -> "ZHYPACCNT"
+"/xfer/P20/P2W/ZSALESTYPE.FIL" -> "ZSALETYPE"
+"ZO00046" -> "0PS_C04"[color=red]
+"ZCRM_ERP_IDENTFICATION" -> "ZCRM_PROD"[style=bold,color=green]
+"ZC00018" -> "ZM00096"
+"ZAPO_TSP_ATTR" -> "ZX_ZAPO_TSP_ATTR"
+"ZC00026" -> "ZM00028"
+"ZO00077" -> "ZC00204"[color=red]
+"ZC00194" -> "Z_ZC00194_K001D"[color=red]
+"ZC00129" -> "ZM000010"
+"/xfer/P20/P2W/IB013NYMTLHIER.20091005121131" -> "ZPPL"
+"ZO00119" -> "0FIAR_C03"[color=red]
+"KS00147" -> "ZO00057"[color=red]
+"0COOM_C02" -> "Z_0COOM_C02_K001"[color=red]
+"KS00028" -> "ZC00146"[color=red]
+"ZM00079" -> "Z_ZM00079_Q004"
+"/xfer/P20/P2W/IW01067COHIER.FIL" -> "ZCUSTSLS"
+"ZO00060" -> "Z_ZO00060_K001F"[color=red]
+"ZBW_DEFERRED_COGS_INVENTORY" -> "KS00222"
+"ZC00178" -> "ZM00078"
+"P20CLNT023" -> "ZVEKPVEPO"
+"KS00030" -> "ZC00032"[color=red]
+"0EC_PCA_4" -> "ZO00122"[color=red]
+"ZM00076" -> "Z_ZM00076_Q076"
+"ZC00014" -> "ZM00010"
+"ZREPVERSN" -> "ZM00022"
+"P20CLNT023" -> "0CUST_SALES_ATTR"
+"0PS_DAT_WBS" -> "ZO00042"[color=red]
+"P20CLNT023" -> "ZBW_DEFERRED_COGS_INVENTORY"
+"ZO00118" -> "ZM00051"
+"ZC00038" -> "Z_ZC00038_K001D"[color=red]
+"C:\\Documents and Settings\\venkakk\\Desktop\\Masterdata\\ZACTMODE.csv" -> "ZACTMODE"
+"ZC00027" -> "Z_ZC00027_Q009"
+"ZO00178" -> "ZC00183"[style=bold,color=green]
+"/xfer/P20/P2W/IW01065REGTER.FIL" -> "ZCUSTTER"
+"0CO_OM_OPA_1" -> "ZO00051"[color=red]
+"ZC00182" -> "ZM00076"
+"ZC00018" -> "Z_ZC00018_K008D"[color=red]
+"ZO00100" -> "ZO00129"[color=red]
+"ZO00125" -> "ZO00129"[color=red]
+"ZM00093" -> "Z_ZM00093_Q001"
+"0CRM_SRV_IBASE_ATTR" -> "ZO00147"[style=bold,color=green]
+"/xfer/D10/D1W/IW01173Z0494.19991123130913" -> "ZSUBREG"
+"KS00015" -> "ZO00002"[color=red]
+"ZREPVERSN" -> "ZM00060"
+"KS00112" -> "0SD_C03"[color=red]
+"ZFLAT2_SAP" -> "ZPROFCTR_ATTR"
+"0NF_DS01" -> "Z_0NF_DS01_K001D"[color=red]
+"ZO00103" -> "ZO00172"[color=red]
+"ZX_0CUST_SALES_ATTR" -> "0CUST_SALES"[color=red]
+"ZC00211" -> "ZM00098"
+"ZO00192" -> "ZOHSRVHI"[style=bold,color=green]
+"/xfer/P20/P2W/SeqGDWFlatMaterialPlant.ac" -> "ZMATPLANT"
+"ZC00202" -> "ZM00025"
+"ZO00088" -> "ZO00097"[color=red]
+"ZC00067" -> "ZC00076"[color=red]
+"ZC00038" -> "ZM00070"
+"0CRM_SRV_PROCESS_I" -> "ZO00144"[style=bold,color=green]
+"ZC00179" -> "ZC00156"[color=red]
+"ZCOMPONEN_TEXT" -> "ZCOMPONEN$T"[color=red]
+"ZM00076" -> "Z_ZM00076_Q061"
+"ZC00161" -> "ZM00016"
+"ZC00034" -> "Z_ZC00034_Q002"
+"ZM00025" -> "Z_ZM00025_Q003"
+"/xfer/P20/P2W/ZVT001K_BW.FIL" -> "0PLANT"
+"0CO_OM_NWA_2" -> "0PS_DS05"[color=red]
+"0BBP_DS1" -> "Z_0BBP_DS1_Q004"
+"0TCT_C21" -> "0TCT_MC21"
+"ZC00130" -> "ZM00033"
+"ZC00179" -> "ZM00072"
+"C:\\Documents and Settings\\10130903\\Desktop\\SEM-121190\\naveen\\IB013NYMTLHIER.20090921142917" -> "ZPPL"
+"ZM00025" -> "Z_ZM00025_Q014"
+"0BWTC_C11" -> "0BWTC_C10"
+"ZO00199" -> "ZC00201"[color=red]
+"ZC00173" -> "ZM00067"
+"P20CLNT023" -> "Z0853_TEXT"
+"ZO00060" -> "ZC00022"[color=red]
+"KS00080" -> "ZC00146"[color=red]
+"2LIS_13_VDITM" -> "ZO00001"[color=red]
+"ZO00129" -> "ZM00091"
+"KS00028" -> "ZC00150"[color=red]
+"/xfer/P20/P2W/EW01068RUA9902.FIL" -> "ZREP_UNIT"
+"0PS_DAT_NTW" -> "0PS_C02"[color=red]
+"KS00070" -> "ZO00006"[color=red]
+"KS00155" -> "0SD_O02"[color=red]
+"0EC_PCA_3" -> "ZO00205"[color=red]
+"2LIS_02_ITM" -> "0BBP_CON"[color=red]
+"ZM00020" -> "Z_ZM00020_Q008"
+"0MATERIAL_ATTR" -> "ZMATERIAL"[style=bold,color=green]
+"ZO00210" -> "ZM00094"
+"0MATERIAL" -> "Z_0MATERIAL_K002"[color=red]
+"ZC00129" -> "ZM00060"
+"ZC00170" -> "ZM00053"
+"ZC00191" -> "ZM00088"
+"0CO_OM_NWA_1" -> "ZO00044"[color=red]
+"ZC00130" -> "ZM00025"
+"ZM00016" -> "Z_ZM00016_Q021"
+"ZXZVCAWNT" -> "Z_LENGTH0$T"[color=red]
+"C:\\Documents and Settings\\venkrams\\Desktop\\ZDESTCNTY_ATTRIB.csv" -> "ZDESTCNTY"
+"KS00081" -> "ZC00147"[color=red]
+"ZC00053" -> "ZM00051"
+"ZX_ZDPSRGN_TEXT" -> "ZDPSRGN$T"[color=red]
+"/xfer/P20/P2W/EW01068RUT9902.FIL" -> "ZREP_UNIT"
+"/xfer/P20/P2W/SeqGDWFlatMatlMstrText2.txt" -> "ZMATFIN"
+"ZC00036" -> "Z_ZC00036_Q002_PROCESS_USD"
+"ZC00031" -> "Z_ZC00031_ZQ008"
+"ZC00066" -> "ZM000010"
+"ZC00108" -> "ZM00091"
+"0CUSTOMER" -> "Z_0CUSTOMER_K001"[color=red]
+"/xfer/P20/P2W/IW01035_0PRSPGTXT.FIL" -> "ZSPG"
+"ZREPVERSN" -> "ZM00016"
+"ZM000010" -> "Z_ZM000010_Q006"
+"ZM00025" -> "Z_ZM00025_Q007"
+"2LIS_11_VAITM" -> "0SD_O01"[color=red]
+"/xfer/D11/D1W/IW01067CUSTHIERA.FIL" -> "ZCUSTSLS"
+"ZBW_Z1282" -> "ZFICLUST"[style=bold,color=green]
+"ZM00063" -> "ZM00063_Q001_MEDIA"
+"ZX_0COUNTRY_TEXT" -> "0COUNTRY$T"[color=red]
+"ZX_ZDPREGN_TEXT" -> "ZDPREGN$T"[color=red]
+"ZM00080" -> "Z_ZM00080_Q004"
+"KS00157" -> "ZO00060"[color=red]
+"ZM00016" -> "Z_ZM00016_Q007_CR"
+"KS00191" -> "ZO00109"[color=red]
+"ZM00076" -> "Z_ZM00076_Q055"
+"ZC00156" -> "ZM00072"
+"ZC00204" -> "ZM00063"
+"2LIS_11_VAITM" -> "ZO00126"[color=red]
+"ZM00025" -> "Z_ZM00025_Q027"
+"0PS_C04" -> "Z_0PS_C04_Q0005"
+"ZXPCAHIER" -> "ZSTPG$T"[color=red]
+"0FI_AR_8" -> "0FIAR_O08"[color=red]
+"C:\\data\\gdw\\S25\\OROS_Data\\ZDATASTOR_attr.txt" -> "ZDATASTOR"
+"ZM00098" -> "Z_ZM00098_Q001"
+"/xfer/P20/P2W/EW01068SLSORG.FIL" -> "ZSALESORG"
+"0FIAP_C03" -> "ZC00031"
+"/xfer/P20/P2W/IW01020NYKPA.20091005121821" -> "ZKPA"
+"ZM00025" -> "Z_ZM00025_Q014A"
+"ZX_ZKPA" -> "ZMATPLANT"[color=red]
+"/CPMB/SKIU7AZ" -> "/CPMB/SKMU7AZ"
+"ZM00025" -> "Z_ZM00025_Q019_11"
+"0BBP_CON" -> "Z_0BBP_CON_K001D"[color=red]
+"ZC00132" -> "ZM00060"
+"ZC00193" -> "ZM00063"
+"0CO_OM_CCA_1" -> "0COOM_C02"[color=red]
+"/CPMB/SKIMTTN" -> "/CPMB/SKMMTTL"
+"2LIS_11_V_SSL" -> "0SD_O01"[color=red]
+"ZBW_APO_9AITRAN_INTRANSIT" -> "KS00210"
+"ZM00061" -> "Z_ZM00061_Q002"
+"ZC00143" -> "ZM00040"
+"0TCT_C22" -> "0TCT_MC22"
+"ZM00021" -> "Z_ZM00021_Q015"
+"P2WCLNT023" -> "0TCT_DS03"
+"0FIAP_C03" -> "Z_0FIAP_C03_Q003"
+"ZC00108" -> "ZM00033"
+"ZC00056" -> "Z_ZC00056_K001"[color=red]
+"/xfer/P20/P2W/IB013MTLHIER.FIL" -> "ZPPL"
+"/xfer/P20/P2W/yrend/IW01065REGTER.YE" -> "ZCUSTTER"
+"/xfer/P20/P2W/Profit/IW01035_0PROFITCTR.20091006165133" -> "ZPRFT_CTR"
+"ZXZVCAWNT" -> "ZFMPRSIZE$T"[color=red]
+"/xfer/P2W/import/IW02810_TOP_N_ACCOUNTS.FIL" -> "ZGLOBACNT"
+"ZM00045" -> "Z_ZM00045_Q002"
+"ZX_0USAGE_IND_TEXT" -> "0USAGE_IND$T"[color=red]
+"KS00037" -> "ZC00042"[color=red]
+"0BBP_INV" -> "Z_0BBP_INV_K001D"[color=red]
+"ZC00038" -> "Z_ZC00038_K008D"[color=red]
+"ZC00022" -> "Z_ZC00022_K001"[color=red]
+"0BWTC_C09" -> "0BWTC_C10"
+"ZC00127" -> "ZM00033"
+"KS00143" -> "0NF_DS01"[color=red]
+"ZM00066" -> "Z_ZM00066_Q003"
+"ZBW_Z0647" -> "ZO00202"[style=bold,color=green]
+"E:\\Sales Analysis\\Master Data\\Data\\ACCNTASGNDUMMY.csv" -> "0ACCNT_ASGN"
+"ZC00129" -> "ZM00033"
+"ZM00045" -> "Z_ZM00045_Q004"
+"/xfer/P20/P2W/IW01004MTLMSTR.FIL" -> "ZMATERIAL"
+"ZGPE_LANDCST" -> "ZO00209"[color=red]
+"KPGOSDBL" -> "ZKPGOSDBL"
+"ZM00020" -> "Z_ZM00020_Q009"
+"/xfer/P20/P2W/yrend/IW01066BUSGRP.YE" -> "ZCUST_BGP"
+"KS00067" -> "ZO00002"[color=red]
+"KS00154" -> "0SD_O01"[color=red]
+"ZC00031" -> "Z_ZC00031_ZQ002"
+"ZSCMEADEF" -> "ZSCMEADEF"[style=bold,color=green]
+"/CPMB/SKIV1IB" -> "/CPMB/SKMV1IB"
+"ZC00095" -> "ZM00022"
+"ZO00131" -> "ZC00157"[color=red]
+"ZC00036" -> "Z_ZC00036_Q001_SUMMARY_LOCAL"
+"0PROFIT_CTR_TEXT" -> "ZPRFT_CTR"[style=bold,color=green]
+"KS00079" -> "ZC00145"[color=red]
+"/xfer/P20/P2W/SeqGDWFlatPlantMaster" -> "0PLANT"
+"C:\\DATA\\data\\Downloads\\planttestdesc.csv" -> "0PLANT"
+"ZO00146" -> "ZOHCRM002"[style=bold,color=green]
+"P20CLNT023" -> "ZVEKKNPO"
+"ZMATPLANT" -> "Z_ZMATPLANT_K001F"[color=red]
+"ZREPVERSN" -> "ZM000010"
+"C:\\Data\\Users\\l507105\\LVE SC\\MMC\\historymaterialload\\MMC_mat.txt" -> "0MATERIAL"
+"ZM00079" -> "Z_ZM00079_Q013"
+"P20CLNT023" -> "0CUST_COMPC_ATTR"
+"ZC00018" -> "Z_ZC00018_K002"[color=red]
+"/CPMB/SZIBVQE" -> "/CPMB/SZMBVQE"
+"ZA00002" -> "Z_ZA00002_Q001"
+"KS00035" -> "ZO00018"[color=red]
+"ZC00193" -> "ZO00187"[style=bold,color=green]
+"ZC00130" -> "ZM00020"
+"ZO00146" -> "ZO00191"[style=bold,color=green]
+"0FI_AP_3" -> "0FIAP_O03"[color=red]
+"ZM00020" -> "Z_ZM00020_Q004"
+"0CRM_ORGUNIT_TEXT" -> "ZSRV_AREA"[style=bold,color=green]
+"ZC00016" -> "ZM00096"
+"ZO00086" -> "ZO00095"[color=red]
+"2LIS_12_VCITM" -> "0SD_C03"[color=red]
+"ZC00151" -> "ZM00016"
+"ZC00128" -> "ZM00025"
+"2LIS_02_SCL" -> "0BBP_PO"[color=red]
+"0CRM_SRV_CONTRACT_H" -> "ZO00141"[style=bold,color=green]
+"ZXZVCAWNT" -> "ZWHSLLVL3$T"[color=red]
+"ZM00007" -> "Z_ZM00007_Q016"
+"0BBP_INV" -> "ZC00025"[color=red]
+"ZO00121" -> "0FIAR_C05"[color=red]
+"0CRM_MPK_MD_ATTR" -> "ZO00162"[style=bold,color=green]
+"ZM00025" -> "Z_ZM00025_Q010"
+"ZXZVCAWNT" -> "ZNBRFILM$T"[color=red]
+"C:\\Documents and Settings\\venkrams\\Desktop\\ZDESTCNTY.csv" -> "ZDESTCNTY"
+"ZO00191" -> "ZO00154"[style=bold,color=green]
+"ZC00095" -> "ZC00128"[color=red]
+"ZO00084" -> "ZC00156"[color=red]
+"ZC00162" -> "ZM00069"
+"ZPRODLANE" -> "ZM00040"
+"KS00195" -> "ZO00117"[color=red]
+"ZO00154" -> "ZCRM_SONR"[style=bold,color=green]
+"ZM00021" -> "Z_ZM00021_Q002"
+"ZXPCAHIER" -> "0PROFIT_CTR"[color=red]
+"0CRM_SALES_CONTR_I" -> "ZO00142"[style=bold,color=green]
+"ZC00073" -> "ZC00074"[color=red]
+"ZO00138" -> "ZC00209"[color=red]
+"/xfer/P20/P2W/IW01035PROFITCTRTXT.20010404143605" -> "ZPRFT_CTR"
+"/xfer/P20/P2W/IW01028MTLTXTKPA.FIL" -> "ZKPA"
+"ZM00043" -> "Z_ZM00043_Q006"
+"ZC00142" -> "ZM00040"
+"KS00174" -> "ZC00120"[color=red]
+"/xfer/P20/P2W/IW01068CBU.FIL" -> "ZMARK_BU"
+"C:\\DATA\\USERS\\L507105\\LVE SC\\MMC\\historymaterialload\\XMMC-012_ Plant_Export.txt" -> ""
+"ZO00179" -> "ZO00136"[color=red]
+"ZM00023" -> "Z_ZM00023_Q004"
+"ZCUSTCLAS" -> "Z_ZCUSTCLAS_K001"[color=red]
+"ZO00002" -> "Z_ZO00002_K002"[color=red]
+"ZBW_GPE_LANDCST" -> "ZGPE_LANDCST"
+"ZC00069" -> "ZM00060"
+"M:\\LPrichard\\2014\\Payroll\\P2W ZSCREPPAY May pay.csv" -> ""
+"P2WCLNT023" -> "0TCT_DSA1"
+"ZC00108" -> "ZM00069"
+"ZO00078" -> "ZM00046"
+"0CO_OM_WBS_2" -> "0PS_C04"[color=red]
+"KS00038" -> "ZO00036"[color=red]
+"0TCT_MC11" -> "0TCT_MC11_Q0141"
+"ZBW_Z0466" -> "ZO00202"[style=bold,color=green]
+"KS00209" -> "ZO00006"[color=red]
+"ZM00079" -> "Z_ZM00079_Q001"
+"ZC00035" -> "Z_ZC00035_K001"[color=red]
+"0FIAP_C03" -> "Z_0FIAP_C03_Q009"
+"0CUST_SALES_ATTR" -> "ZX_0CUST_SALES_ATTR"
+"ZM00067" -> "Z_ZM00067_Q001"
+"ZO00169" -> "ZC00181"[color=red]
+"ZM00007" -> "Z_ZM00007_Q012"
+"ZC00187" -> "ZM00085"
+"ZO00005" -> "ZO00006"[color=red]
+"ZIS00009" -> "ZM00053"
+"0TCT_C03" -> "0TCT_MC03"
+"/xfer/P20/P2W/SeqGDWFlatMatlMstrAttribute" -> "ZMATFIN"
+"ZC00077" -> "ZM00057"
+"ZO00162" -> "ZOHCRM019"[style=bold,color=green]
+"ZC00036" -> "Z_ZC00036_Q001_SUMMARY_AOP_RAT"
+"ZC00057" -> "Z_ZC00057_K001"[color=red]
+"ZO00013" -> "Z_ZO00013_K001F"[color=red]
+"KS00188" -> "ZO00106"[color=red]
+"Z0852_TEXT" -> "ZX_ZDPSRGN_TEXT"
+"ZVCAWNT_ATTR" -> "ZXZVCAWNT"
+"ZC00052" -> "ZM00016"
+"KS00094" -> "ZO00019"[color=red]
+"C:\\Corporate Geography Hierarchy.csv" -> "ZDESTCNTY"
+"0ID_BR_NF_3" -> "0NF_DS03"[color=red]
+"KS00014" -> "ZC00010"[color=red]
+"ZC00036" -> "Z_ZC00036_Q001_SUMMARY_USD"
+"/xfer/P20/P2W/IW01004_0MTLMSTR.FIL" -> "0MATERIAL"
+"KS00012" -> "ZC00004"[color=red]
+"ZO00005" -> "Z_ZO00005_K001F"[color=red]
+"ZREPVERSN" -> "ZM00069"
+"ZO00161" -> "ZOHCRM020"[style=bold,color=green]
+"0FIAP_C03" -> "Z_0FIAP_C03_Q001"
+"ZM00025" -> "Z_ZM00025_Q002"
+"ZO00117" -> "ZM00051"
+"ZO00078" -> "ZC00191"[color=red]
+"ZO00161" -> "ZOHCRM007"[style=bold,color=green]
+"ZSCRATE" -> "ZSCRATE"[style=bold,color=green]
+"0BBP_CON" -> "0BBP_DS1"[color=red]
+"ZFLAT6_LEG" -> "KS00188"
+"ZC00202" -> "ZM00088"
+"Z0915" -> "ZTIER"[style=bold,color=green]
+"ZM00016" -> "Z_ZM00016_Q006_CR"
+"ZM00025" -> "Z_ZM00025_Q024"
+"KS00222" -> "ZO00137"[color=red]
+"P2WCLNT023" -> "0MAT_UNITM"
+"/xfer/SYNCRA/D1W/BW20/EW01068SLSORG.FIL" -> "ZSALESORG"
+"/xfer/P20/P2W/IW01067CUSTHIERA.FIL" -> "ZCUSTHIEA"
+"C:\\Documents and Settings\\10062964\\Desktop\\PCA Hier\\ACPEKTOTAL01.txt" -> "0PROFIT_CTR"
+"ZCRM_ZINSTALLDATA_ATTR" -> "ZCRM_PROD"[style=bold,color=green]
+"0TCT_IS22" -> "0TCT_C22"[color=red]
+"P20CLNT023" -> "ZID_BR_NF_2"
+"ZSCLEASE" -> "ZSCLEASE"[style=bold,color=green]
+"ZO00059" -> "ZC00123"[color=red]
+"/xfer/D10/D1W/S25/SeqGDWFlatTransType" -> "ZTRANSCD"
+"ZM00051" -> "Z_ZM00051_Q004"
+"0TCT_MC11" -> "0TCT_MC11_Q0142"
+"0TCT_DSA1" -> "0TCT_ISA1"
+"0TCT_MC11" -> "0TCT_MC11_Q0130"
+"C:\\Users\\u104675\\OneDrive - Eastman Kodak Company\\Sales Analysis Design Steward\\Reorganisation\\HCOUNTRY.csv" -> "0COUNTRY"
+"ZC00077" -> "ZM00060"
+"ZC00052" -> "ZM00017"
+"ZC00119" -> "ZM00039"
+"ZBW_Z1283" -> "ZFISCLUST"[style=bold,color=green]
+"/xfer/P20/P2W/IW01036_0PRGRPTXT.FIL" -> "ZBUSUNIT"
+"KS00144" -> "0NF_DS02"[color=red]
+"0RTYPE" -> "ZM00060"
+"YUSC_W01" -> "YUSC_C01"[style=bold,color=green]
+"C:\\data\\GDW\\Master Data\\PAC hierarchy (from CPP).csv" -> "ZCPP_PRH"
+"2LIS_11_V_SSL" -> "ZO00099"[color=red]
+"KS00069" -> "ZO00005"[color=red]
+"2LIS_13_VDITM" -> "ZO00005"[color=red]
+"ZC00018" -> "ZM00070"
+"ZO00011" -> "ZC00145"[color=red]
+"ZO00142" -> "ZOHCRM010"[style=bold,color=green]
+"0COOM_C02" -> "Z_0COOM_C02_Q003"
+"ZC00207" -> "ZM00092"
+"ZM00040" -> "Z_ZM00040_Q003"
+"ZO00066" -> "ZC00155"[color=red]
+"ZO00100" -> "ZO00125"[color=red]
+"/xfer/P20/P2W/SAP_0VTYPE.FIL" -> "0VTYPE"
+"ZO00060" -> "ZO00077"[color=red]
+"ZMAT_UNIT" -> "0MATERIAL"[color=red]
+"ZBW_TVAK" -> "ZBW_TVAK"[style=bold,color=green]
+"KS00086" -> "ZO00014"[color=red]
+"ZM00069" -> "Z_ZM00069_Q003"
+"0MATERIAL" -> "Z_0MATERIAL_K001"[color=red]
+"ZO00136" -> "ZC00167"[style=bold,color=green]
+"C:\\Data\\Users\\l507105\\LVE SC\\MMC\\historymaterialload\\MMC_mat_plant.csv" -> "0MAT_PLANT"
+"ZXZVCAWNT" -> "ZCISLAB$T"[color=red]
+"0EMPLOYEE_ATTR" -> "0BPARTNER"[style=bold,color=green]
+"ZM00025" -> "Z_ZM00025_Q022"
+"ZBILLTYPE" -> "ZBILLTYPE"[style=bold,color=green]
+"/xfer/P20/P2W/SeqGDWResourceElementText" -> "ZRESCELMT"
+"ZO00003" -> "ZO00004"[color=red]
+"ZMATFIN" -> "Z_ZMATFIN_K001"[color=red]
+"0CRM_SRV_SERWI_TEXT" -> "0CRM_SRVSWI"[style=bold,color=green]
+"ZM00083" -> "Z_ZM00083_Q004"
+"ZC00036" -> "Z_ZC00036_Q001_DETAIL_AOP_RATE"
+"ZC00083" -> "Z_ZC00083_Q001"
+"ZO00077" -> "ZC00129"[color=red]
+"ZM00008" -> "Z_ZM00008_Q005"
+"ZO00012" -> "Z_ZO00012_K001F"[color=red]
+"ZIS00010" -> "ZM00053"
+"ZC00108" -> "ZM000010"
+"2LIS_13_VDITM" -> "ZC00022"[color=red]
+"ZO00077" -> "ZM00062"
+"/xfer/P20/P2W/IW01028MTLTXTPPL.FIL" -> "ZPPL"
+"/xfer/P20/P2W/EW01068RUA.FIL" -> "ZREP_UNIT"
+"0TCT_DS03" -> "0TCT_IS03"
+"2LIS_03_BX" -> "ZC00149"[style=bold,color=green]
+"0CUST_SALES" -> "0CUST_SALES"[style=bold,color=green]
+"/xfer/P20/P2W/SeqGDWMfgProcText" -> "ZMPROCL1"
+"ZC00025" -> "Z_ZC00025_Q003"
+"ZO00063" -> "ZC00101"[color=red]
+"ZM00092" -> "Z_ZM00092_Q001"
+"ZSCGOAL" -> "ZSCGOAL"[style=bold,color=green]
+"ZC00033" -> "Z_ZC00033_Q002_LOCAL"
+"KS00080" -> "ZC00149"[color=red]
+"ZM00076" -> "Z_ZM00076_Q059"
+"ZO00076" -> "ZO00210"[color=red]
+"ZO00137" -> "ZC00173"[color=red]
+"ZM00016" -> "Z_ZM00016_Q005_CR"
+"0CRM_ORGUNIT_SALES_ATTR" -> "0ORGUNIT"[style=bold,color=green]
+"0NF_DS01" -> "Z_0NF_DS01_K002D"[color=red]
+"KS00146" -> "ZC00082"[color=red]
+"ZM000010" -> "Z_ZM000010_Q001"
+"ZSMICAT" -> "Z_ZM00090_Q002"
+"/xfer/P20/P2W/IW01065REGION.FIL" -> "ZSALEREG"
+"ZC00128" -> "ZM00051"
+"ZC00196" -> "ZM00083"
+"ZC00018" -> "ZC00018"[style=bold,color=green]
+"ZC00016" -> "Z_ZC00016_K001D"[color=red]
+"ZO00106" -> "ZO00171"[color=red]
+"ZC00016" -> "ZM00010"
+"ZM00020" -> "Z_ZM00020_Q006"
+"0TCT_DS21" -> "0TCT_IS21"
+"ZM00076" -> "Z_ZM00076_Q056"
+"0SD_O02" -> "Z_0SD_O02_K001D"[color=red]
+"ZM00063" -> "ZM00063_Q015"
+"ZXZVCAWNT" -> "ZWHSLLVL2$T"[color=red]
+"0BPARTNER" -> "ZOHCRM022"[style=bold,color=green]
+"ZC00018" -> "ZM00007"
+"ZM00023" -> "Z_ZM00023_Q001"
+"ZO00051" -> "0PS_C04"[color=red]
+"0SD_C03" -> "Z_0SD_C03_K001"[color=red]
+"ZO00012" -> "Z_ZO00012_K001D"[color=red]
+"File for loading Floor Price" -> "ZSCFLPRC"
+"ZC00097" -> "ZM00088"
+"0MAT_UNITM" -> "ZMAT_UNIT"
+"0TCT_MC01" -> "0TCT_MC01_Q0122"
+"0TCT_CA1" -> "0TCT_MCA1"
+"ZC00027" -> "Z_ZC00027_Q010"
+"KS00205" -> "ZO00088"[style=bold,color=green]
+"KS00033" -> "ZC00042"[color=red]
+"ZC00038" -> "ZM00096"
+"ZREPGOAL" -> "ZREPGOAL"[style=bold,color=green]
+"ZM00069" -> "Z_ZM00069_Q004"
+"0BBP_PO" -> "Z_0BBP_PO_K001D"[color=red]
+"ZC00081" -> "ZM00033"
+"ZC00016" -> "ZM00070"
+"ZO00206" -> "ZO00194"[color=red]
+"ZC00033" -> "Z_ZC00033_Q002_AOP_RATE"
+"0CO_OM_NWA_1" -> "0PS_C04"[color=red]
+"ZM00007" -> "Z_ZM00007_Q007"
+"0BWTC_C05" -> "0BWTC_C10"
+"0TCT_C23" -> "0TCT_MC23"
+"/xfer/SYNCRA/D1W/BW20/IW01036PRGRPTXT.FIL" -> "ZBU"
+"/xfer/P20/P2W/IW01020NYKPA.FIL" -> "ZKPA"
+"ZO00160" -> "ZOHCRM006"[style=bold,color=green]
+"ZC00108" -> "ZM00060"
+"KS00163" -> "0BPARTNER"[color=red]
+"Z0853_TEXT" -> "ZX_ZDPCLSTR_TEXT"
+"ZM00091" -> "Z_ZM00091_K001"[color=red]
+"ZO00001" -> "Z_ZO00001_K001D"[color=red]
+"/xfer/SYNCRA/D1W/BW20/EW01068CCT.FIL" -> "ZCOMPCODE"
+"ZO00077" -> "Z_ZO00077_K002"[color=red]
+"/xfer/P20/P2W/IW01068SMTL.FIL" -> "ZSMTL"
+"ZC00156" -> "ZC00169"[style=bold,color=green]
+"ZO00057" -> "Z_ZO00057_K001F"[color=red]
+"2LIS_03_S540" -> "ZO00014"[color=red]
+"0TCT_ISA1" -> "0TCT_CA1"[color=red]
+"ZC00132" -> "ZM00025"
+"ZM00042" -> "Z_ZM00042_Q001"
+"ZC00032" -> "Z_ZC00032_Q001_AOP_RATE"
+"0TCT_DS22" -> "0TCT_IS22"
+"ZCRM_ZMEDIACONSUMAB_ATTR" -> "ZCRM_PROD"[style=bold,color=green]
+"ZM00016" -> "Z_ZM00016_Q011"
+"ZC00054" -> "ZM00016"
+"C:\\Data\\Users\\l507105\\LVE SC\\MMC\\historymaterialload\\MMC_mat_txt.txt" -> "0MATERIAL"
+"X:\\DOverlan\\2015\\Payroll\\P2W ZSCREPPAY Jan pay.csv" -> ""
+"/xfer/P2W/export/CUST_ZM_TEAM.CSV" -> "0CUST_SALES"
+"ZO00078" -> "ZC00153"[color=red]
+"ZO00077" -> "ZC00130"[color=red]
+"ZC00202" -> "ZM00033"
+"ZID_BR_NF_1" -> "0ID_BR_NF_1"
+"KS00014" -> "ZC00020"[color=red]
+"ZC00097" -> "ZM00051"
+"ZO00078" -> "ZC00204"[color=red]
+"0TCT_MC01" -> "0TCT_MC01_Q0111"
+"ZC00172" -> "ZC00027"
+"ZO00058" -> "ZC00086"[color=red]
+"0MAT_SALES" -> "Z_0MAT_SALES_K001"[color=red]
+"C:\\Documents and Settings\\10067429\\Desktop\\FP\\1-22 Compare PPLs 2008.csv" -> "ZPPL"
+"0BWTC_C03" -> "0BWTC_C10"
+"ZC00162" -> "ZM00016"
+"ZO00134" -> "ZO00077"[color=red]
+"ZM00066" -> "Z_ZM00066_Q004"
+"ZM00078" -> "Z_ZM00078_Q001"
+"ZC00140" -> "ZO00129"[color=red]
+"ZC00191" -> "ZM00060"
+"0CRM_SRV_CONFIRM_I" -> "ZO00146"[style=bold,color=green]
+"ZC00018" -> "ZM00078"
+"ZO00047" -> "0PS_C04"[color=red]
+"ZC00161" -> "ZM00061"
+"P2WCLNT023" -> "0TCT_DS02"
+"ZM00045" -> "Z_ZM00045_Q012"
+"ZM00020" -> "Z_ZM00020_Q019"
+"ZC00042" -> "ZM00009"
+"ZC00070" -> "ZM00060"
+"KS00209" -> "ZC00016"[color=red]
+"ZC00022" -> "ZC00020"[color=red]
+"ZM00060" -> "Z_ZM00060_Q012"
+"0OPA_O07" -> "0PS_C04"[color=red]
+"ZX_0CUSTOMER_ATTR" -> "0CUSTOMER$T"[color=red]
+"ZC00148" -> "ZM00067"
+"ZC00160" -> "ZM00058"
+"ZC00145" -> "ZC00027"
+"C:\\Documents and Settings\\10130903\\Desktop\\SEM-121190\\ZKPA-file.csv" -> "ZKPA"
+"ZC00032" -> "Z_ZC00032_Q002_AOP_RATE"
+"ZC00204" -> "ZO00217"[style=bold,color=green]
+"ZO00011" -> "ZC00148"[color=red]
+"ZSCITMCAT" -> "ZSCITMCAT"[style=bold,color=green]
+"0CO_OM_OPA_6" -> "0PS_C04"[color=red]
+"ZIS00003" -> "Z_ZIS00003_Q001"
+"KS00014" -> "ZC00013"[color=red]
+"ZO00100" -> "ZC00162"[color=red]
+"ZO00078" -> "ZC00128"[color=red]
+"ZO00077" -> "ZC00178"[color=red]
+"0CO_OM_WBS_6" -> "0PS_C04"[color=red]
+"ZO00092" -> "ZC00139"[color=red]
+"ZC00038" -> "ZM00010"
+"ZM00007" -> "Z_ZM00007_Q007_JMP"
+"ZM00065" -> "ZM00065_Q001"
+"D:\\My Documents\\Desktop\\after1 with cabn 2.txt" -> "ZMATCLASS"
+"/xfer/P20/P2W/SeqGDWFlatMatlMstrAttribute.aj" -> "ZMATFIN"
+"ZC00194" -> "ZM00078"
+"ZM00060" -> "Z_ZM00060_Q008"
+"ZXZVCAWNT" -> "ZSTDNONST$T"[color=red]
+"ZC00053" -> "ZM00016"
+"ZM00097" -> "Z_ZM00097_Q003"
+"ZM00066" -> "Z_ZM00066_Q002"
+"ZC00131" -> "ZM00065"
+"2LIS_11_VAITM" -> "ZO00084"[color=red]
+"ZO00006" -> "Z_ZO00006_K001D"[color=red]
+"KS00118" -> "0BBP_CON"[color=red]
+"C:\\DATA\\USERS\\l327882\\Project\\ACP_YE\\2013 Geog Hier\\CorpGeogHierNew.csv" -> "ZDESTCNTY"
+"ZO00078" -> "ZC00130"[color=red]
+"0FIAR_C03" -> "ZM00054"
+"ZC00082" -> "ZM00019"
+"ZID_BR_NF_3" -> "0ID_BR_NF_3"
+"ZM00016" -> "Z_ZM00016_Q006_CR_PADMAJA1"
+"KS00064" -> "ZO00069"[color=red]
+"/xfer/P20/P2W/SeqGDWFlatMaterialPlant.ad" -> "ZMATPLANT"
+"ZC00201" -> "ZM00089"
+"/xfer/P20/P2W/IW01035_0PROFITCTR.FIL" -> "ZSTPG"
+"ZM00076" -> "Z_ZM00076_Q078"
+"ZO00209" -> "ZO00210"[color=red]
+"P2WCLNT023" -> "0TCT_DS21"
+"ZO00053" -> "Z_ZO00053_K001D"[color=red]
+"0PS_DAT_NTW" -> "ZO00038"[color=red]
+"ZO00142" -> "ZO00153"[style=bold,color=green]
+"BWPCLNT300" -> "KPGOSDTD"
+"KS00015" -> "ZC00038"[color=red]
+"ZSCHURDLE" -> "ZSCHURDLE"[style=bold,color=green]
+"ZC00016" -> "ZM00065"
+"ZC00054" -> "ZM00061"
+"ZC00124" -> "ZM00040"
+"0PS_DAT_NAE" -> "ZO00041"[color=red]
+"ZIS00005" -> "Z_ZIS00005_Q001"
+"ZC00176" -> "ZM00069"
+"ZC00169" -> "ZM00053"
+"ZM00026" -> "Z_ZM00026_Q001"
+"/xfer/P20/P2W/IW01004MTLDESC.FIL" -> "ZMATERIAL"
+"/xfer/P20/P2W/SeqGDWMfgProcHier" -> "ZMPROCESS"
+"2LIS_13_VDITM" -> "ZO00003"[color=red]
+"ZC00190" -> "ZC00159"[color=red]
+"ZM00076" -> "Z_ZM00076_Q084"
+"ZM00076" -> "Z_ZM00076_Q083"
+"ZM00082" -> "Z_ZM00082_Q001"
+"ZO00001" -> "Z_ZO00001_K001F"[color=red]
+"ZCRM_PROD" -> "ZOHIBSTYP"[style=bold,color=green]
+"ZCRM_ZAPPLITEGSWNAM_ATTR" -> "ZCRM_PROD"[style=bold,color=green]
+"0CUST_SALES" -> "Z_0CUST_SALES_K001"[color=red]
+"ZC00031" -> "Z_ZC00031_ZQ001"
+"ZC00143" -> "ZM00021"
+"ZO00069" -> "ZC00142"[color=red]
+"/xfer/P20/P2W/IW01035PROFITCTR.FIL" -> "ZPRFT_CTR"
+"/xfer/SYNCRA/P2W/kramer/IW01231KPRO_DISCONTINUED.FIL" -> "ZMATERIAL"
+"ZO00085" -> "ZO00095"[color=red]
+"0TCT_DS12" -> "0TCT_IS12"
+"0BBP_DS1" -> "0BBP_C01"[color=red]
+"0PS_DAT_NAE" -> "0PS_C02"[color=red]
+"ZO00194" -> "ZC00038"[color=red]
+"C:\\Corporate Geography Hierarchy for 0COUNTRY.csv" -> "0COUNTRY"
+"/xfer/P20/P2W/IW01035PRSPGTXT.FIL" -> "ZSPG"
+"0CO_OM_WBS_1" -> "0PS_C04"[color=red]
+"P20CLNT023" -> "ZVCAWNT_ATTR"
+"/xfer/D11/D1W/IW01020KPA.FIL" -> "ZKPA"
+"ZC00154" -> "ZM00061"
+"ZC00197" -> "ZM00061"
+"/CPMB/SZIRXDS" -> "/CPMB/SZMRXDS"
+"ZO00078" -> "ZC00178"[color=red]
+"0PS_DAT_NWA" -> "0PS_C02"[color=red]
+"/xfer/P20/P2W/IW01067_0COHIER.FIL" -> "0CUST_SALES"
+"ZX_0CUSTOMER_ATTR" -> "ZSALE_TER"[color=red]
+"ZO00002" -> "Z_ZO00002_K001D"[color=red]
+"/xfer/P20/P2W/ranieri/newSeqGDWFlatMaterialPlant" -> "ZMATPLANT"
+"ZO00077" -> "ZC00132"[color=red]
+"ZO00044" -> "0PS_C04"[color=red]
+"ZM00076" -> "Z_ZM00076_Q074"
+"/xfer/SYNCRA/D1W/BW20/IW01069MTLSLSPLNT.FIL" -> "ZMAT_SALE"
+"ZC00120" -> "ZM00033"
+"KS00087" -> "ZO00013"[color=red]
+"ZC00038" -> "Z_ZC00038_K002"[color=red]
+"Y:\\Commissions\\2015 Requirements\\P2W Data Files\\P2W ZSCPLNDET.csv" -> ""
+"ZC00175" -> "ZM00070"
+"ZC00191" -> "ZM00033"
+"ZM00038" -> "ZM00038_Q001"
+"ZO00066" -> "ZC00107"[color=red]
+"0PS_C02" -> "Z_0PS_C02_Q0002"
+"ZM00040" -> "Z_ZM00040_Q005"
+"KS00035" -> "ZC00035"[color=red]
+"ZO00077" -> "ZC00176"[color=red]
+"File for ZGCG Hierarchy" -> "0CUST_SALES"
+"/CPMB/ATIKOOK" -> "/CPMB/ATMKOOE"
+"ZC00200" -> "ZM00057"
+"ZX_0CUST_COMPC_ATTR" -> "ZCUSTSLS"[color=red]
+"/xfer/P20/P2W/ZVT179T_BW.FIL" -> "ZLOB"
+"ZM00043" -> "Z_ZM00043_Q002"
+"ZO00193" -> "ZM00086"
+"2LIS_11_VAITM" -> "0SD_C03"[color=red]
+"ZC00079" -> "ZC00080"[color=red]
+"KS00141" -> "ZO00055"[color=red]
+"ZC00156" -> "ZC00156"[style=bold,color=green]
+"ZC00081" -> "ZM000010"
+"KS00218" -> "ZO00140"[style=bold,color=green]
+"ZC00139" -> "ZM00045"
+"ZM00076" -> "Z_ZM00076_Q079"
+"0PS_DAT_NWA" -> "ZO00039"[color=red]
+"ZC00183" -> "ZM00081"
+"ZM00094" -> "Z_ZM00094_Q001"
+"G:\\Data Warehouse\\2006 Projects\\P1393 -Shareholder and Open Hub\\Unit Test Data\\MD\\DW03562SPECIAL.CSV" -> "0MAT_SALES"
+"2LIS_13_VDITM" -> "ZC00206"[color=red]
+"G:\\2014 Requirements\\P2W data laod\\P2W 2014 ZSCMEADET.csv" -> ""
+"ZM000010" -> "Z_ZM000010_Q007"
+"0BWTC_C04" -> "0BWTC_C10"
+"ZO00137" -> "ZC00172"[color=red]
+"ZO00116" -> "ZO00118"[color=red]
+"ZM00061" -> "Z_ZM00061_Q003"
+"ZX_CRM_PROD_TEXT" -> "0CRM_PROD$T"[color=red]
+"ZO00087" -> "ZO00096"[color=red]
+"ZO00146" -> "ZOHCRM015"[style=bold,color=green]
+"C:\\Documents and Settings\\venkakk\\Desktop\\Masterdata\\0BBP_STATUS_TEXT.csv" -> "0BBP_STATUS"
+"2LIS_03_BX" -> "ZC00146"[style=bold,color=green]
+"/CPMB/ATIRCJO" -> "/CPMB/ATMRCJO"
+"ZC00038" -> "Z_ZC00038_K004F"[color=red]
+"0PS_C04" -> "Z_0PS_C04_Q0006"
+"ZC00123" -> "ZM00040"
+"/xfer/P20/P2W/ribson/IW010350PRBUTXT.FIL" -> "ZBU"
+"C:\\Documents and Settings\\10130903\\Desktop\\ZTERM_Text_Field.csv" -> ""
+"ZC00066" -> "ZM00025"
+"/xfer/P20/P2W/SeqGDWFlatSystemID" -> "ZSYSTEMID"
+"ZO00035" -> "ZC00052"[color=red]
+"0CO_OM_WBS_3" -> "ZO00048"[color=red]
+"ZO00172" -> "ZO00172"[color=red]
+"ZO00178" -> "ZDOC_NUM"[style=bold,color=green]
+"ZC00022" -> "ZO00077"[color=red]
+"0COUNTRY_TEXT" -> "ZX_0COUNTRY_TEXT"
+"ZO00209" -> "ZOHSEMPR2"[style=bold,color=green]
+"ZMAT_SALE" -> "ZMAT_SALE"[style=bold,color=green]
+"KS00068" -> "ZC00016"[color=red]
+"KS00180" -> "ZO00092"[color=red]
+"ZM00029" -> "Z_ZM00029_Q001"
+"0CRM_MPK_IL_ATTR" -> "ZO00163"[style=bold,color=green]
+"KS00178" -> "ZO00072"[color=red]
+"/xfer/P20/P2W/IW01035_0PRRPTGRPTXT.FIL" -> "ZRPTGRP"
+"ZM00076" -> "Z_ZM00076_Q082"
+"ZC00178" -> "ZM00069"
+"ZC00077" -> "ZC00078"[color=red]
+"0PS_C02" -> "0PS_C05"
+"ZO00005" -> "ZC00016"[color=red]
+"c:\\data\\users\\l435686\\zcustter_russia_poland.txt" -> "ZCUSTTER"
+"C:\\Data\\SEM_HIERCLUSTER_14_12_2010_2011.csv" -> "ZDESTCNTY"
+"ZC00162" -> "ZM00061"
+"ZC00212" -> "ZM00099"
+"/xfer/P20/P2W/SeqGDWResourceGrpText" -> "ZRESCGRP"
+"ZC00129" -> "ZM00020"
+"ZC00159" -> "ZM000010"
+"ZM00026" -> "Z_ZM00026_Q003"
+"KS00029" -> "ZO00015"[color=red]
+"ZM000010" -> "Z_ZM000010_Q008"
+"ZC00069" -> "ZM00025"
+"KS00016" -> "ZC00010"[color=red]
+"ZIS00012" -> "ZM00086"
+"KS00015" -> "ZC00016"[color=red]
+"C:\\Data\\DW02378_VENDOR_ACCOUNT_GROUP_TEXT.CSV" -> "ZVEACGR"
+"ZM000010" -> "Z_ZM000010_Q011"
+"/xfer/P20/P2W/ACP_EKTOTAL01.txt" -> "0PROFIT_CTR"
+"ZA00001" -> "Z_ZA00001_Q001"
+"P2WCLNT023" -> "0TCT_DS11"
+"ZM00007" -> "Z_ZM00007_K001D"[color=red]
+"ZO00042" -> "0PS_C02"[color=red]
+"/xfer/P20/P2W/IB013NYMTLHIER.FIL" -> "ZPPL"
+"/xfer/P20/P2W/IW01068SBU.FIL" -> "ZSBU"
+"ZO00014" -> "ZC00149"[color=red]
+"ZC00014" -> "Z_ZC00014_K0001D"[color=red]
+"ZC00179" -> "ZM00073"
+"2LIS_02_ACC" -> "2LIS_02_ACC"[style=bold,color=green]
+"ZO00013" -> "ZC00147"[color=red]
+"ZM00028" -> "Z_ZM00028_Q021"
+"0VEN_PURORG" -> "Z_0VEN_PURORG_K001"[color=red]
+"/xfer/P20/P2W/IW01068BU.FIL" -> "ZMATBU"
+"0NF_DS03" -> "Z_0NF_DS03_K001D"[color=red]
+"ZC00191" -> "ZM000010"
+"0COOM_C02" -> "Z_0COOM_C02_Q005"
+"C:\\Documents and Settings\\venkakk\\Desktop\\Masterdata\\0ACTTYPE_ATTR.csv" -> "0ACTTYPE"
+"ZC00190" -> "ZM000010"
+"ZMATERIAL" -> "Z_ZMATERIAL_K001"[color=red]
+"KS00187" -> "ZO00103"[color=red]
+"ZM00017" -> "Z_ZM00017_Q001"
+"ZC00052" -> "ZM00061"
+"ZO00077" -> "ZC00153"[color=red]
+"P2WCLNT023" -> "0TCT_DS12"
+"0FIAP_O03" -> "Z_0FIAP_O03_K001D"[color=red]
+"0VEN_COMPC" -> "Z_0VEN_COMPC_K001"[color=red]
+"/xfer/P20/P2W/SeqGDWFlatMaterialPlant.ab" -> "ZMATPLANT"
+"ZM00025" -> "Z_ZM00025_Q018_10"
+"0TCT_IS02" -> "0TCT_C02"[color=red]
+"0COOM_C02" -> "Z_0COOM_C02_Q006"
+"KS00174" -> "ZO00067"[color=red]
+"ZM00051" -> "Z_ZM00051_Q001"
+"ZXZVCAWNT" -> "ZCISPEFLM$T"[color=red]
+"ZC00025" -> "Z_ZC00025_Q001"
+"ZC00186" -> "ZM00080"
+"0CO_OM_WBS_2" -> "ZO00047"[color=red]
+"ZO00006" -> "ZO00006_USC_L2_HISTORY2"[color=red]
+"ZBW_SALES_ORDER_I_BP" -> "ZVBPA"
+"KS00224" -> "ZO00207"[style=bold,color=green]
+"2LIS_12_VCITM" -> "0SD_O01"[color=red]
+"C:\\Documents and Settings\\ps.sujai\\Desktop\\ZSCPLNDET-P2W H2.csv" -> ""
+"ZO00036" -> "ZC00042"[color=red]
+"ZM00099" -> "Z_ZM00099_Q001"
+"ZCRMPRDID" -> "ZOHCRM005"[style=bold,color=green]
+"ZC00016" -> "Z_ZC00016_K008D"[color=red]
+"ZC00077" -> "ZM00033"
+"ZC00204" -> "ZO00187"[style=bold,color=green]
+"ZM00025" -> "Z_ZM00025_Q001"
+"2LIS_08TRTLP" -> "ZO00091"[color=red]
+"0SD_O01" -> "Z_0SD_O01_K001F"[color=red]
+"ZO00016" -> "ZC00032"[color=red]
+"ZO00060" -> "Z_ZO00060_K001D"[color=red]
+"0BWTC_C02" -> "0BWTC_C10"
+"0PS_C05" -> "Z_0PS_C05_Q0003"
+"ZO00198" -> "ZC00199"[color=red]
+"ZM00085" -> "Z_ZM00085_Q004"
+"ZM00076" -> "Z_ZM00076_Q072"
+"2LIS_11_VAITM" -> "0SD_O02"[color=red]
+"ZCUST_BGP" -> "Z_ZCUST_BGP_K001"[color=red]
+"ZO00011" -> "Z_ZO00011_K001D"[color=red]
+"ZO00020" -> "Z_ZO00020_K001F"[color=red]
+"/xfer/D1W/import/SeqFlatZ_0MAT_SALES_K001.20061106211525" -> "0MAT_SALES"
+"ZC00129" -> "ZM00051"
+"ZXZVCAWNT" -> "ZPRODDESC$T"[color=red]
+"ZM00076" -> "Z_ZM00076_Q071"
+"ZO00155" -> "ZCRMPRDID"[style=bold,color=green]
+"ZO00048" -> "0PS_C04"[color=red]
+"0TCT_MC11" -> "0TCT_MC11_Q0132"
+"/xfer/P20/P2W/IW01028NYMTLTXTPPL.FIL" -> "ZPPL"
+"ZO00077" -> "ZC00152"[color=red]
+"0NF_DS02" -> "Z_0NF_DS02_K002F"[color=red]
+"P20CLNT023" -> "ZBW_Z0419"
+"ZO00104" -> "ZC00165"[color=red]
+"/xfer/P20/P2W/IW01035_0PRSPGTXT.FIL" -> "ZSTPG"
+"/xfer/SYNCRA/D1W/BW20/PFRT_CTR_DUMMY.FIL" -> "ZPRFT_CTR"
+"0MATERIAL" -> "ZOHMD001"[style=bold,color=green]
+"ZO00001" -> "ZC00014"[color=red]
+"ZIS00006" -> "ZM00053"
+"/xfer/P20/P2W/IW01035_0PROFITCTR.FIL" -> "0PROFIT_CTR"
+"0TCT_MC11" -> "0TCT_MC11_Q0140"
+"0SD_C04" -> "Z_0SD_C04_K002"[color=red]
+"ZM00060" -> "Z_ZM00060_Q001"
+"P20CLNT023" -> "ZID_BR_NF_1"
+"P20CLNT023" -> "ZBW_GPE_LANDCST"
+"0TCT_C01" -> "0TCT_MC01"
+"ZPRODLANE_ATTR" -> "ZX_ZPRODLANE_ATTR"
+"ZO00041" -> "0PS_C02"[color=red]
+"ZC00140" -> "ZO00078"[color=red]
+"ZM00020" -> "Z_ZM00020_Q012"
+"ZO00194" -> "ZC00016"[color=red]
+"ZC00210" -> "ZM00097"
+"ZC00128" -> "ZM00020"
+"ZO00019" -> "ZO00020"[color=red]
+"ZC00153" -> "ZM00016"
+"ZM00057" -> "Z_ZM00057_Q006"
+"/xfer/P2W/import/IW02810_SILVER_ACCOUNTS.FIL" -> "ZGLOBACNT"
+"KS00113" -> "0SD_C04"[color=red]
+"0ID_BR_NF_2" -> "0NF_DS02"[color=red]
+"ZC00008" -> "Z_ZC00008_K001"[color=red]
+"0FIAP_C03" -> "Z_0FIAP_C03_Q011"
+"ZM00016" -> "Z_ZM00016_Q010"
+"0BBP_DS1" -> "ZC00025"[color=red]
+"KS00077" -> "ZC00021"[color=red]
+"ZO00131" -> "ZO00131"[style=bold,color=green]
+"ZC00088" -> "KS00153"
+"ZO00110" -> "ZO00011"[color=red]
+"ZXPCAHIER" -> "ZSEGMENT$T"[color=red]
+"ZXZVCAWNT" -> "ZHITOPH$T"[color=red]
+"KS00163_TEXT" -> "0BPARTNER$T"[color=red]
+"ZC00202" -> "ZM00060"
+"ZM00016" -> "Z_ZM00016_Q013"
+"/xfer/P20/P2W/EW01068CRT.FIL" -> "ZREGION"
+"C:\\DATA\\USERS\\L507105\\LVE SC\\MMC\\historymaterialload\\XMMC-022_ Sales_Export.txt" -> ""
+"KS00078" -> "ZC00022"[color=red]
+"0ID_BR_NF_1" -> "0NF_DS01"[color=red]
+"ZO00202" -> "ZC00203"[style=bold,color=green]
+"ZO00128" -> "ZC00160"[color=red]
+"ZO00004" -> "Z_ZO00004_K002"[color=red]
+"\\\\Ekc-erp-score01\\RPM-GDW-S9\\Phase3A\\Master Data Tables\\zrepunit.prn" -> "ZREP_UNIT"
+"ZO00109" -> "ZO00011"[color=red]
+"2LIS_02_SCL" -> "0BBP_INV"[color=red]
+"KS00206" -> "ZO00139"[color=red]
+"ZC00130" -> "ZM000010"
+"ZM00061" -> "Z_ZM00061_Q008"
+"ZM00076" -> "Z_ZM00076_Q075"
+"ZO00077" -> "ZC00191"[color=red]
+"ZO00091" -> "ZO00098"[color=red]
+"ZM00097" -> "Z_ZM00097_Q002"
+"2LIS_02_S101" -> "0BBP_PO"[color=red]
+"0MAT_SALES" -> "ZMAT_SALE"[style=bold,color=green]
+"0SD_C04" -> "Z_0SD_C04_K001"[color=red]
+"ZO00060" -> "ZM00023"
+"ZM00060" -> "Z_ZM00060_Q010"
+"ZC00108" -> "ZM00020"
+"ZC00190" -> "ZM00091"
+"0VENDOR" -> "Z_0VENDOR_K002"[color=red]
+"ZO00077" -> "ZO00182"[color=red]
+"/xfer/P2W/import/IW02810_CUST_ACCT_MBR_REL.FIL" -> "ZCUSTOMER"
+"ZO00080" -> "Z_ZO00080_K001F"[color=red]
+"ZO00144" -> "ZO00190"[style=bold,color=green]
+"ZO00155" -> "ZO00156"[style=bold,color=green]
+"/xfer/P20/P2W/EW01068DCA.FIL" -> "ZDESTCNTY"
+"/xfer/P20/P2W/sudhakar/ZMATSALE.240904" -> "ZMAT_SALE"
+"ZM00020" -> "Z_ZM00020_Q017"
+"ZREPVERSN" -> "ZM00020"
+"D:\\ZSCORDEX 12-17.csv" -> ""
+"ZC00066" -> "ZM00069"
+"ZX_ZDPSRGN_TEXT" -> "ZGEOSREGN$T"[color=red]
+"ZO00187" -> "ZOHD_0001"[style=bold,color=green]
+"ZO00038" -> "0PS_C02"[color=red]
+"ZC00018" -> "Z_ZC00018_K007D"[color=red]
+"ZM00026" -> "Z_ZM00026_Q004"
+"C:\\DATA\\USERS\\50318309\\GCG Misc Documents\\GCG inactive Materials Load.csv" -> "0MATERIAL"
+"ZO00115" -> "ZC00131"[color=red]
+"ZC00022" -> "ZC00010"[color=red]
+"ZO00077" -> "ZO00077"[color=red]
+"0CO_OM_OPA_1" -> "0PS_C04"[color=red]
+"P20CLNT023" -> "Z0854_ATTR"
+"ZC00016" -> "ZM00068"
+"ZM00045" -> "Z_ZM00045_Q003"
+"ZC00209" -> "ZM00096"
+"ZO00115" -> "ZC00158"[color=red]
+"ZC00037" -> "Z_ZC00037_Q001_USD"
+"ZC00053" -> "Z_ZC00053_Q001"
+"KS00215" -> "ZO00183"[style=bold,color=green]
+"ZCRMPRDID" -> "ZCRMPRDID"[style=bold,color=green]
+"0NF_DS01" -> "Z_0NF_DS01_K002F"[color=red]
+"ZM00022" -> "Z_ZM00022_Q002"
+"0SD_O02" -> "Z_0SD_O02_K001F"[color=red]
+"ZO00040" -> "0PS_C02"[color=red]
+"ZXZVCAWNT" -> "Z_ALLOY$T"[color=red]
+"KS00015" -> "ZO00020"[color=red]
+"0EC_PCA_3" -> "ZO00060"[color=red]
+"/CPMB/K1ICT1B" -> "/CPMB/K1MCT1B"
+"/xfer/P20/P2W/SeqGDWFlatMatlMstrText" -> "ZMATFIN"
+"/xfer/P20/P2W/IW01075FRCUSTCLASS.FIL" -> "ZCUSTCLAS"
+"KS00017" -> "ZC00021"[color=red]
+"G:\\Phase3A\\Master Data Tables\\Record Type_0VTYPE.prn" -> "0VTYPE"
+"ZO00182" -> "ZO00197"[style=bold,color=green]
+"ZO00055" -> "ZC00159"[color=red]
+"ZO00125" -> "ZM00062"
+"C:\\Documents and Settings\\ps.sujai\\Desktop\\P2W Iobj load\\ZSCMEADEF-P2W.csv" -> ""
+"0CO_OM_NAE_1" -> "ZO00050"[color=red]
+"ZC00031" -> "Z_ZC00031_ZQ006"
+"C:\\Documents and Settings\\10130903\\Desktop\\S&OP Category Upload 120610.csv" -> "ZSOP"
+"ZREPVERSN" -> "ZM00026"
+"ZO00132" -> "ZM00062"
+"ZM00020" -> "Z_ZM00020_Q022"
+"ZX_0CUST_SALES_ATTR" -> "ZCUSTSLS"[color=red]
+"ZO00139" -> "ZC00171"[color=red]
+"0APO_PROD_TEXT" -> "0APO_PROD$T"[color=red]
+"0TCT_VC01" -> "0TCT_MC01"
+"ZO00143" -> "ZOHCRM001"[style=bold,color=green]
+"ZM00082" -> "Z_ZM00082_Q002"
+"KS00197" -> "ZO00128"[color=red]
+"ZSCPLNDET" -> "ZSCPLNDET"[style=bold,color=green]
+"0PS_DS05" -> "0PS_C04"[color=red]
+"ZM00076" -> "Z_ZM00076_Q026_DR_Q12012"
+"ZO00006" -> "ZO00170"[color=red]
+"ZXZVCAWNT" -> "ZPRODCODE$T"[color=red]
+"/xfer/D11/D1W/IW01035_0PROFITCTR.20080902203854" -> "ZPRFT_CTR"
+"ZC00025" -> "Z_ZC00025_Q007"
+"ZM00061" -> "Z_ZM00061_Q005"
+"ZM00069" -> "Z_ZM00069_Q005"
+"0FIAP_O03" -> "Z_0FIAP_O03_K001F"[color=red]
+"KS00089" -> "0FIAP_O03"[color=red]
+"ZC00066" -> "ZM00048"
+"ZC00192" -> "ZM00082"
+"0PS_DAT_MLS" -> "0PS_C02"[color=red]
+"0APO_LOCNO_TEXT" -> "0APO_LOCNO$T"[color=red]
+"ZX_0CUSTOMER_ATTR" -> "ZCUSTOMER$T"[color=red]
+"ZC00096" -> "ZM00026"
+"ZM00022" -> "Z_ZM00022_Q001"
+"/xfer/P20/P2W/IW01069MTLSLSPLNT.FIL" -> "ZMAT_SALE"
+"/xfer/P20/P2W/ZVT179T_BW.FIL" -> "ZPACBG"
+"ZC00086" -> "ZM00021"
+"ZC00118" -> "ZM00038"
+"2LIS_02_ITM" -> "0BBP_INV"[color=red]
+"ZX_0EMPLOYEE" -> "0EMPLOYEE"[color=red]
+"ZM00007" -> "Z_ZM00007_Q011"
+"Z0916" -> "ZSCTIER"[style=bold,color=green]
+"ZC00069" -> "ZM00046"
+"ZC00037" -> "Z_ZC00037_K002F"[color=red]
+"ZC00014" -> "Z_ZC00014_K008D"[color=red]
+"ZC00013" -> "ZO00036"[color=red]
+"/xfer/SYNCRA/P2W/ZSALESTYPE.FIL" -> "ZSALETYPE"
+"2LIS_03_S541" -> "ZO00012"[color=red]
+"ZC00057" -> "ZC00054"[color=red]
+"C:\\data\\gdw\\S25\\OROS_Data\\ZDATASTOR_txt.csv" -> "ZDATASTOR"
+"ZBW_Z0467" -> "ZO00202"[style=bold,color=green]
+"ZC00081" -> "ZO00129"[color=red]
+"KS00119" -> "0BBP_INV"[color=red]
+"ZO00140" -> "ZC00175"[style=bold,color=green]
+"0ORGUNIT" -> "ZOHCRM024"[style=bold,color=green]
+"ZO00006" -> "ZO00006_USC_L2_HISTORY4"[color=red]
+"ZC00101" -> "ZM00031"
+"0TCT_VC03" -> "0TCT_MC03"
+"KS00010" -> "ZC00008"[color=red]
+"ZO00077" -> "ZC00202"[color=red]
+"C:\\Documents and Settings\\ps.sujai\\Desktop\\ZSCRATE-P2W H2 10-1.csv" -> ""
+"ZO00156" -> "ZOHCRM025"[style=bold,color=green]
+"KS00117" -> "0BBP_PO"[color=red]
+"ZM00088" -> "Z_ZM00088_Q002"
+"ZO00011" -> "Z_ZO00011_K001F"[color=red]
+"ZM00066" -> "Z_ZM00066_Q010"
+"0FIAP_C03" -> "Z_0FIAP_C03_Q006"
+"2LIS_02_S101" -> "0BBP_CON"[color=red]
+"ZC00191" -> "ZM00020"
+"ZO00137" -> "ZO00137"[style=bold,color=green]
+"C:\\2011 Commissions MD Input Files for Testing\\ZSCBWIND.csv" -> ""
+"ZM000010" -> "Z_ZM000010_Q009"
+"ZC00018" -> "Z_ZC00018_K004F"[color=red]
+"ZCRM_ZNETWORKCONFIG_ATTR" -> "ZCRM_PROD"[style=bold,color=green]
+"ZO00077" -> "ZO00204"[color=red]
+"PC_FILE" -> "ZFLAT6_LEG"
+"ZC00132" -> "ZM000010"
+"ZC00158" -> "ZM00042"
+"KS00033" -> "ZC00037"[color=red]
+"ZC00037" -> "Z_ZC00037_Q001_MONTH_END"
+"ZO00095" -> "ZO00115"[color=red]
+"ZM00020" -> "Z_ZM00020_Q016"
+"/xfer/P20/P2W/IW01069MTLSLSPLNTDMY.FIL" -> "ZMAT_SALE"
+"ZO00135" -> "ZO00136"[color=red]
+"/xfer/P20/P2W/IW01036PRGRPTXT.FIL" -> "ZBU"
+"ZC00021" -> "Z_ZC00021_K001"[color=red]
+"ZC00081" -> "ZM00088"
+"/xfer//P20/P2W/YEND14/IW01004_0MTLMSTR.FIL" -> "ZMATERIAL"
+"ZM00007" -> "Z_ZM00007_Q010"
+"/xfer/P20/P2W/EKTOTAL01.txt" -> "0PROFIT_CTR"
+"ZO00205" -> "ZO00206"[color=red]
+"0BBP_INV" -> "Z_0BBP_INV_K001F"[color=red]
+"ZM00085" -> "Z_ZM00085_Q003"
+"ZC00167" -> "ZC00210"[style=bold,color=green]
+"ZC00081" -> "ZM00029"
+"ZBW_Z0464" -> "ZO00202"[style=bold,color=green]
+"ZC00081" -> "ZM00025"
+"ZXZVCAWNT" -> "Z_GAUGE$T"[color=red]
+"H:\\0BWSIRs\\Commissions\\Master data load\\Q2W Loads\\Q2W Rate data\\Q2W ZSCHURDLE.csv" -> ""
+"/xfer/P20/P2W/yrend/IW01067COHIER.YE" -> "ZCUSTSLS"
+"ZC00132" -> "ZM00033"
+"ZXZVCAWNT" -> "ZPMIFILM$T"[color=red]
+"C:\\Documents and Settings\\10093724\\Desktop\\P20 Extract Of Service Code Info.csv" -> "0MATERIAL"
+"ZC00168" -> "ZM00061"
+"ZO00194" -> "ZC00018"[color=red]
+"/xfer/P20/P2W/0CUSTOMER_SEPT_FF.csv" -> "0CUSTOMER"
+"0RTYPE" -> "ZM00061"
+"ZM00016" -> "Z_ZM00016_Q023"
+"/xfer/P20/P2W/IW01065SFMGR.FIL" -> "ZBU_MGR"
+"ZREPVERSN" -> "ZM00051"
+"ZX_CRM_PROD_ATTR" -> "0CRM_PROD"[color=red]
+"ZO00078" -> "ZC00176"[color=red]
+"P2SCLNT023" -> "ZPRODLANE_ATTR"
+"0COOM_C02" -> "Z_0COOM_C02_Q004"
+"ZM00070" -> "Z_ZM00070_Q001"
+"ZCRM_SONR" -> "ZCRM_SONR"[style=bold,color=green]
+"0TCT_MC01" -> "0TCT_MC01_Q0121"
+"KS00031" -> "ZC00034"[color=red]
+"ZC00018" -> "ZM00010"
+"ZO00103" -> "ZC00165"[color=red]
+"ZC00154" -> "ZM00016"
+"ZCRM_ZPROD_CONTRACT_ATTR" -> "0MATERIAL"[style=bold,color=green]
+"ZC00130" -> "ZM00051"
+"ZO00210" -> "ZOHSEMPR1"[style=bold,color=green]
+"ZO00001" -> "ZO00002"[color=red]
+"C:\\Documents and Settings\\10130903\\Desktop\\SEM-121190\\naveen\\IW01028NYMTLTXTPPL.20090921142917" -> "ZPPL"
+"ZM00088" -> "Z_ZM00088_Q001"
+"Z:\\Phase3A\\Master Data Tables\\zreptext.prn" -> "ZREP_UNIT"
+"/xfer/P20/P2W/IW01065TSR.FIL" -> "ZACCTEXCT"
+"ZC00177" -> "ZM00063"
+"ZM00007" -> "Z_ZM00007_Q004"
+"0PS_C05" -> "Z_0PS_C05_Q0002"
+"ZX_0CUSTOMER_ATTR" -> "0CUSTOMER"[color=red]
+"ZC00173" -> "ZM00008"
+"ZC00097" -> "ZM00026"
+"KS00152" -> "ZO00059"[color=red]
+"ZC00193" -> "ZM00078"
+"ZC00177" -> "ZM00069"
+"C:\\Documents and Settings\\10130903\\Desktop\\SEM-121190\\naveen\\IW01020NYKPA.20090922180834" -> "ZKPA"
+"ZXZVCAWNT" -> "ZCOILWID$T"[color=red]
+"ZREPVERSN" -> "ZM00023"
+"KS00161" -> "ZO00062"[color=red]
+"Z0916" -> "ZO00195"[style=bold,color=green]
+"ZO00089" -> "ZO00178"[style=bold,color=green]
+"P20CLNT023" -> "ZBW_SALES_ORDER_I_BP"
+"/xfer/P2W/import/IW02810_GLOBAL_ACCT.FIL" -> "ZGLOBACNT"
+"ZO00078" -> "Z_ZO00078_K001F"[color=red]
+"0MAT_UNIT" -> "Z_0MAT_UNIT_K001"[color=red]
+"0FIAR_C05" -> "ZM00056"
+"0RTYPE" -> "ZM000010"
+"ZCUSTSLS" -> "Z_ZCUSTSLS_K001"[color=red]
+"ZC00147" -> "ZC00027"
+"ZO00160" -> "ZOHCRM017"[style=bold,color=green]
+"KS00193" -> "ZO00112"[color=red]
+"ZM00023" -> "Z_ZM00023_Q003"
+"ZMATCLASS" -> "0MATERIAL"[style=bold,color=green]
+"ZO00058" -> "ZC00124"[color=red]
+"0NF_DS02" -> "Z_0NF_DS02_K002D"[color=red]
+"ZC00033" -> "Z_ZC00033_Q002_USD"
+"ZM00043" -> "Z_ZM00043_Q004"
+"2LIS_03_S540" -> "ZO00013"[color=red]
+"ZXZVCAWNT" -> "ZPKTYPE$T"[color=red]
+"2LIS_13_VDITM" -> "0SD_C03"[color=red]
+"ZO00145" -> "ZO00191"[style=bold,color=green]
+"/xfer/P20/P2W/YEND14/IW01004MTLDESC.FIL" -> "ZMATERIAL"
+"ZM00020" -> "Z_ZM00020_Q090"
+"ZMAT_SALE" -> "Z_ZMAT_SALE_K001"[color=red]
+"\\\\kmfs002\\ERP-Delivery\\0000 Active Projects\\1428 Financial Planning and Reporting Phase 2\\Design Relevant\\Hyperion\\HypAcct4.csv" -> "ZHYPACCNT"
+"0PS_C04" -> "0PS_C05"
+"KS00018" -> "ZC00021"[color=red]
+"ZM00079" -> "Z_ZM00079_Q002"
+"KS00199" -> "ZCG5_TER"[color=red]
+"/xfer/P20/P2W/IW01035PROFITCTR.20010125201039" -> "ZPRFT_CTR"
+"ZC00149" -> "ZM00067"
+"ZM00033" -> "Z_ZM00033_Q001"
+"ZC00025" -> "Z_ZC00025_Q005"
+"ZC00025" -> "ZC00031"
+"ZC00181" -> "ZM00076"
+"KS00028" -> "ZC00147"[color=red]
+"ZO00077" -> "ZC00154"[color=red]
+"/xfer/P20/P2W/PFRT_CTR_DUMMY.FIL" -> "ZPRFT_CTR"
+"ZM000010" -> "Z_ZM000010_Q002"
+"ZC00066" -> "ZM00029"
+"KS00095" -> "ZO00020"[color=red]
+"ZC00204" -> "ZM00069"
+"ZC00016" -> "Z_ZC00016_K007D"[color=red]
+"KS00185" -> "ZO00093"[color=red]
+"/xfer/SYNCRA/D1W/COGM/ICPinCOGM-test.csv" -> "ZPRFT_CTR"
+"ZC00206" -> "ZO00206"[color=red]
+"ZX_0USAGE_IND_TEXT" -> "ZBUS_IND$T"[color=red]
+"ZC00161" -> "ZM00069"
+"KS00092" -> "ZO00004"[color=red]
+"ZXPCAHIER" -> "ZBUSUNIT$T"[color=red]
+"ZM00096" -> "Z_ZM00096_Q001"
+"ZC00176" -> "ZM00078"
+"ZO00006" -> "Z_ZO00006_K002"[color=red]
+"0CO_OM_OPA_6" -> "0OPA_O06"[color=red]
+"KS00016" -> "ZC00020"[color=red]
+"ZO00003" -> "ZC00018"[color=red]
+"ZO00077" -> "ZC00193"[color=red]
+"ZM00025" -> "Z_ZM00025_Q005"
+"/xfer/P20/P2W/IW1272A.FIL" -> "ZCOAACCT"
+"ZC00186" -> "ZM00085"
+"ZX_ZAPO_TSP_ATTR" -> "ZAPO_TSP"[color=red]
+"KS00010" -> "ZC00020"[color=red]
+"0TCT_MC01" -> "0TCT_MC01_Q0132"
+"C:\\Documents and Settings\\l327882\\Desktop\\Treas Cash Rptg Comp Code Hierarchy_v4_08.27.12.csv" -> "0COMP_CODE"
+"/xfer/P20/P2W/EW01068DRT.FIL" -> "ZDESTREG"
+"C:\\Documents and Settings\\ps.sujai\\Desktop\\ZSCPLNDEF-P2W H2.csv" -> ""
+"KS00173" -> "ZMATCNTRY"[color=red]
+"ZO00060" -> "ZC00068"[color=red]
+"ZO00154" -> "ZC00187"[style=bold,color=green]
+"ZM00090" -> "Z_ZM00090_Q001"
+"ZXZVCAWNT" -> "ZCILOCN$T"[color=red]
+"ZC00165" -> "ZM00063"
+"0BBP_INV" -> "0BBP_DS1"[color=red]
+"ZM00040" -> "Z_ZM00040_Q006"
+"KS00028" -> "ZC00145"[color=red]
+"ZC00074" -> "ZC00075"[color=red]
+"ZO00077" -> "ZO00194"[color=red]
+"ZO00163" -> "ZOHCRM009"[style=bold,color=green]
+"ZC00176" -> "ZM00063"
+"ZSCBWIND" -> "ZSCBWIND"[style=bold,color=green]
+"KS00091" -> "ZO00003"[color=red]
+"ZC00070" -> "ZO00078"[color=red]
+"ZM00040" -> "Z_ZM00040_Q004"
+"/xfer/P20/P2W/SeqGDWMfgProcAttributes" -> "ZMPROCESS"
+"0TCT_VC02" -> "0TCT_MC02"
+"KS00085" -> "ZO00011"[color=red]
+"KS00214" -> "ZC00120"[style=bold,color=green]
+"0TCT_IS23" -> "0TCT_C23"[color=red]
+"ZO00072" -> "ZC00119"[color=red]
+"ZX_0APO_LPROD_ATTR" -> "0APO_LPROD"[color=red]
+"ZO00084" -> "ZO00095"[color=red]
+"ZC00108" -> "ZM00025"
+"ZC00084" -> "KS00152"
+"X:\\IW01065REGTERDUMMY.FIL" -> "ZCUSTTER"
+"KS00120" -> "ZC00056"[color=red]
+"KS00179" -> "ZO00076"[color=red]
+"ZMATCLASS" -> "Z_ZMATCLASS_K001"[color=red]
+"ZM00060" -> "Z_ZM00060_Q002"
+"ZC00140" -> "ZO00125"[color=red]
+"ZM00099" -> "Z_ZM00099_Q002"
+"0TCT_IS21" -> "0TCT_C21"[color=red]
+"0CO_OM_NAE_1" -> "0PS_C04"[color=red]
+"ZSRV_AREA_HIER1" -> "ZO00192"[style=bold,color=green]
+"C:\\Documents and Settings\\10130903\\Desktop\\SEM-121190\\naveen\\IW01028NYMTLTXTKPA.20090922180834" -> "ZKPA"
+"ZC00097" -> "ZM00060"
+"P20CLNT023" -> "Z0852_TEXT"
+"ZO00060" -> "ZO00198"[color=red]
+"ZO00062" -> "ZC00100"[color=red]
+"ZXZVCAWNT" -> "ZSELLPNT$T"[color=red]
+"ZC00014" -> "Z_ZC00014_K004F"[color=red]
+"KS00097" -> "ZO00012"[color=red]
+"ZO00206" -> "ZO00206"[color=red]
+"ZO00185" -> "ZO00193"[style=bold,color=green]
+"ZO00097" -> "ZO00138"[color=red]
+"ZM00063" -> "ZM00063_Q016"
+"2LIS_13_VDITM" -> "ZO00218"[style=bold,color=green]
+"ZO00003" -> "ZO00218"[style=bold,color=green]
+"0CRM_MPK_R_TRANS" -> "ZO00161"[style=bold,color=green]
+"0CRM_SRV_ESCAL_TEXT" -> "0CRM_SRVESC"[style=bold,color=green]
+"ZC00022" -> "ZC00013"[color=red]
+"ZIS00001" -> "ZM00010"
+"ZC00036" -> "Z_ZC00036_Q001_DETAIL_USD"
+"/xfer/P2W/import/IW02810_CUST_ACCT_MBR_REL.FIL" -> "0CUSTOMER"
+"0TCT_VC21" -> "0TCT_MC21"
+"ZC00171" -> "ZM00067"
+"ZM00068" -> "Z_ZM00068_Q001"
+"ZO00153" -> "ZO00156"[style=bold,color=green]
+"ZM00058" -> "ZM00058_Q001"
+"ZM00061" -> "Z_ZM00061_Q010"
+"ZXZVCAWNT" -> "ZCIDISCN$T"[color=red]
+"ZC00078" -> "ZC00079"[color=red]
+"ZM00040" -> "Z_ZM00040_Q001"
+"ZM00069" -> "Z_ZM00069_Q001"
+"ZO00078" -> "ZC00129"[color=red]
+"H:\\0BWSIRs\\Commissions\\Master data load\\Q2W Loads\\Q2W ZREPGOAL v2.csv" -> ""
+"ZO00104" -> "ZO00172"[color=red]
+"D:\\ZSCPAY Data File\\PZSCPAY-P2W Dec v2.csv" -> ""
+"ZBW_INTRANSIT_INVENTORY" -> "KS00208"
+"0TCT_VC22" -> "0TCT_MC22"
+"ZC00066" -> "ZM00060"
+"ZC00199" -> "ZM00057"
+"ZC00063" -> "KS00064"
+"ZM000010" -> "Z_ZM000010_Q003"
+"/xfer/P20/P2W/SeqGDWFlatMaterialPlant.aa" -> "ZMATPLANT"
+"ZM00021" -> "Z_ZM00021_Q016"
+"0PS_C04" -> "Z_0PS_C04_Q0004"
+"C:\\Documents and Settings\\l327882\\Desktop\\MainAcct_Balance Sheet Hier.csv" -> "ZMAINACCT"
+"ZC00025" -> "Z_ZC00025_Q008"
+"ZO00174" -> "ZC00182"[color=red]
+"ZC00157" -> "ZM00037"
+"ZKPGOSDBL" -> "ZO00005"[color=red]
+"0TCT_IS01" -> "0TCT_C01"[color=red]
+"ZCUSTTER" -> "Z_ZCUSTTER_K002"[color=red]
+"ZC00178" -> "ZO00187"[style=bold,color=green]
+"/xfer/P20/P2W/ZEND_IPG.FIL" -> "ZEND_IPG"
+"ZO00004" -> "Z_ZO00004_K001F"[color=red]
+"KS00225" -> "ZO00208"[style=bold,color=green]
+"ZO00177" -> "ZO00169"[color=red]
+"/xfer/P20/P2W/SeqGDWResourceElementAttributes" -> "ZRESCELMT"
+"ZO00154" -> "ZOHCRM003"[style=bold,color=green]
+"0TCT_DS23" -> "0TCT_IS23"
+"ZO00055" -> "ZC00081"[color=red]
+"ZM00066" -> "Z_ZM00066_Q001"
+"BWPCLNT300" -> "KPGOSDBL"
+"C:\\DATA\\USERS\\l327882\\Project\\ACP_YE\\2013 Geog Hier\\EAMERGeogHierNew.csv" -> "ZDESTCNTY"
+"ZXZVCAWNT" -> "ZPROMTYP$T"[color=red]
+"P2WCLNT023" -> "0TCT_DS01"
+"KS00010" -> "ZC00021"[color=red]
+"ZC00128" -> "ZM00033"
+"/xfer/P20/P2W/SeqGDWResourceCenterText" -> "ZRESOURCE"
+"ZC00070" -> "ZM00020"
+"ZM00048" -> "Z_ZM00048_K001"[color=red]
+"ZSCREPPAY" -> "ZSCREPPAY"[style=bold,color=green]
+"ZREPVERSN" -> "ZM00057"
+"ZVEKKNPO" -> "KS00147"
+"0EMPLOYEE" -> "ZM00019"
+"ZM00070" -> "Z_ZM00070_K001"[color=red]
+"ZC00148" -> "ZM00008"
+"ZC00014" -> "ZC00194"[color=red]
+"ZCRM_ZCOMMUNICATION_ATTR" -> "ZCRM_PROD"[style=bold,color=green]
+"C:\\UDrive\\BW\\BOLTII\\SOPReloadMarch2011\\SOPCategoryMarch152011v2.txt" -> "ZSOP"
+"/CPMB/K1IQMHG" -> "/CPMB/K1MQMHG"
+"2LIS_03_BF" -> "ZO00014"[style=bold,color=green]
+"ZO00006" -> "Z_ZO00006_K001F"[color=red]
+"ZM00046" -> "Z_ZM00046_K001"[color=red]
+"ZC00066" -> "ZM00046"
+"ZO00194" -> "ZO00020"[color=red]
+"ZM00016" -> "Z_ZM00016_Q024_WEBI"
+"/xfer/P2W/export/LOAD_H2_HIER.CSV" -> "0CUST_SALES"
+"0MATERIAL_TEXT" -> "ZMATERIAL"[style=bold,color=green]
+"ZO00156" -> "ZC00186"[style=bold,color=green]
+"ZC00038" -> "ZM00078"
+"/xfer/P20/P2W/SeqGDWResourceGrpAttributes" -> "ZRESCGRP"
+"ZO00068" -> "ZC00108"[color=red]
+"/xfer/P2W/import/DW03962CLASS.csv" -> "0CAT_GROUP"
+"KS00190" -> "ZO00114"[color=red]
+"ZC00016" -> "ZM00063"
+"KS00223" -> "ZO00202"[style=bold,color=green]
+"ZC00160" -> "ZM00070"
+"/xfer/D10/D1W/S25/TransactionType_txt.csv" -> "ZTRANSCD"
+"ZC00152" -> "ZM00016"
+"ZXZVCAWNT" -> "ZCUSUPER$T"[color=red]
+"ZCRM_SRV_POST_CODE" -> "ZO00159"[style=bold,color=green]
+"0CO_OM_NAE_2" -> "0PS_DS06"[color=red]
+"ZM00008" -> "Z_ZM00008_Q007"
+"ZO00078" -> "ZC00177"[color=red]
+"0BP_DEF_ADDRESS_ATTR" -> "0BPARTNER"[style=bold,color=green]
+"ZO00124" -> "ZO00125"[color=red]
+"ZO00126" -> "ZO00178"[style=bold,color=green]
+"ZM00085" -> "Z_ZM00085_Q002"
+"C:\\Documents and Settings\\10061131\\Desktop\\Z_MD_GLOBAL_ACCOUNNT.csv" -> "0CUSTOMER"
+"ZO00208" -> "ZC00208"[style=bold,color=green]
+"ZIS00002" -> "Z_ZIS00002_Q001"
+"ZC00022" -> "ZC00008"[color=red]
+"0RTYPE" -> "ZM00069"
+"ZX_0CUSTOMER_ATTR" -> "ZSALEREG"[color=red]
+"0APO_PROD_ATTR" -> "0APO_PROD"[color=red]
+"0COOM_C02" -> "Z_0COOM_C02_Q002"
+"/xfer/SYNCRA/D1W/BW20/IW01173Z0494.FIL" -> "ZDESTSREG"
+"/xfer/P20/P2W/ACPEKTOTAL01.txt" -> "0PROFIT_CTR"
+"/xfer/P20/P2W/DW01260DCT.FIL" -> "ZDESTCNTY"
+"0OPA_O06" -> "0PS_C04"[color=red]
+"ZC00096" -> "ZO00076"[style=bold,color=green]
+"ZC00165" -> "Z_ZC00165_K001"[color=red]
+"F:\\GDW-ps\\Data Warehouse\\Sales Analysis\\Default Table Values\\IW01069MTLSLSPLNTDMY.FIL" -> "ZMAT_SALE"
+"ZM00043" -> "Z_ZM00043_Q008"
+"P20CLNT023" -> "ZBW_INTRANSIT_INVENTORY"
+"P20CLNT023" -> "0COUNTRY_TEXT"
+"ZO00147" -> "ZOHCRM004"[style=bold,color=green]
+"ZVBPA" -> "ZO00074"[color=red]
+"ZM00083" -> "Z_ZM00083_Q022"
+"/xfer/SYNCRA/D1W/BW20/EW01068RUT.FIL" -> "ZREP_UNIT"
+"ZO00017" -> "Z_ZO00017_Q002_USD"
+"P20CLNT023" -> "ZBW_VBPA_VIEW"
+"ZM00007" -> "Z_ZM00007_Q015"
+"C:\\Documents and Settings\\ps.sujai\\Desktop\\P2W Iobj load\\ZSCHURDLE-P2W.csv" -> ""
+"ZO00141" -> "ZOHCRM011"[style=bold,color=green]
+"ZCRM_ZSYSTEMINFO_ATTR" -> "ZCRM_PROD"[style=bold,color=green]
+"ZC00129" -> "ZM00025"
+"ZKPGOSTD" -> "ZO00114"[color=red]
+"ZC00069" -> "ZM00033"
+"ZO00005" -> "ZO00005"[color=red]
+"ZM00024" -> "Z_ZM00024_Q001"
+"ZXZVCAWNT" -> "Z_GRAIN$T"[color=red]
+"ZM00040" -> "Z_ZM00040_Q007"
+"KS00030" -> "ZO00016"[color=red]
+"ZXZVCAWNT" -> "ZWEEECAT$T"[color=red]
+"ZC00014" -> "ZM00007"
+"/xfer/P20/P2W/ROUTEDUMMY.csv" -> "0ROUTE"
+"ZO00019" -> "Z_ZO00019_K001D"[color=red]
+"ZX_ZREPVERSN" -> "ZREPVERSN$T"[color=red]
+"ZO00078" -> "ZO00204"[color=red]
+"0CRM_SRV_CONFIRM_H" -> "ZO00145"[style=bold,color=green]
+"0MAT_PLANT" -> "Z_0MAT_PLANT_K001"[color=red]
+"2LIS_11_VAHDR" -> "ZO00085"[color=red]
+"/xfer/P20/P2W/IW01173Z0494.FIL" -> "ZDESTSREG"
+"/xfer/P20/P2W/SeqGDWFlatTransType" -> "ZTRANSCD"
+"2LIS_12_VCITM" -> "0SD_C04"[color=red]
+"ZC00027" -> "Z_ZC00027_Q008"
+"ZO00100" -> "ZC00140"[color=red]
+"ZC00155" -> "ZM00043"
+"ZC00016" -> "ZM00078"
+"ZBW_Z0419" -> "Z0419"
+"ZC00072" -> "ZC00073"[color=red]
+"ZCRM_PROD" -> "ZCRM_PROD"[style=bold,color=green]
+"C:\\Documents and Settings\\10130903\\Desktop\\P2W Text Flatfile load.csv" -> "ZSRV_AREA"
+"/xfer/P20/P2W/EW01068RUT.FIL" -> "ZREP_UNIT"
+"ZO00078" -> "ZC00202"[color=red]
+"KS00186" -> "ZO00094"[color=red]
+"0SD_C03" -> "0SD_C03_Q0012"
+"/xfer/P20/P2W/EW01068CCT.FIL" -> "ZCOMPCODE"
+"P2WCLNT023" -> "0TCT_DS23"
+"0TCT_DS11" -> "0TCT_IS11"
+"ZC00016" -> "Z_ZC00016_K004F"[color=red]
+"Z0437" -> "ZO00200"[color=red]
+"ZO00049" -> "0PS_C02"[color=red]
+"/xfer/P20/P2W/IW01035PROFITCTRTXT.FIL" -> "ZPRFT_CTR"
+"ZO00045" -> "0PS_C04"[color=red]
+"0FIAP_C03" -> "Z_0FIAP_C03_Q005"
+"0CRM_SRV_ESCAL_TEXT" -> "ZRESTGOAL"[style=bold,color=green]
+"ZXZVCAWNT" -> "ZWEEEIND$T"[color=red]
+"ZO00060" -> "ZC00052"[color=red]
+"KS00202" -> "ZO00136"[color=red]
+"ZO00171" -> "ZM00077"
+"/xfer/P20/P2W/IW01035_0PRSEGMENTTXT.FIL" -> "ZSEGMENT"
+"C:\\Documents and Settings\\ps.sujai\\Desktop\\ZSCLEASE-P2W_V3.csv" -> ""
+"ZO00017" -> "ZC00033"[color=red]
+"ZM00016" -> "Z_ZM00016_Q017_WEBI"
+"/xfer/P20/P2W/EW01068CCA9902.FIL" -> "ZCOMPCODE"
+"ZO00014" -> "ZC00146"[color=red]
+"ZM00076" -> "Z_ZM00076_Q080"
+"ZM00020" -> "Z_ZM00020_Q001"
+"ZC00069" -> "ZO00078"[color=red]
+"KS00173" -> "ZO00066"[color=red]
+"ZO00095" -> "ZO00138"[color=red]
+"ZXZVCAWNT" -> "ZCISPESRV$T"[color=red]
+"ZM00080" -> "Z_ZM00080_Q001"
+"KS00153" -> "ZO00058"[color=red]
+"ZC00121" -> "ZM00021"
+"ZXZVCAWNT" -> "ZABCMTFLG$T"[color=red]
+"0TCT_IS03" -> "0TCT_C03"[color=red]
+"ZO00012" -> "ZC00026"[color=red]
+"Z0854_ATTR" -> "ZX_ZGEOCNTRY_ATTR"
+"ZO00109" -> "ZO00013"[color=red]
+"ZX_0EMPLOYEE" -> "0EMPLOYEE$T"[color=red]
+"ZO00126" -> "ZO00131"[color=red]
+"0FI_AR_4" -> "0FIAR_O03"[color=red]
+"ZC00189" -> "ZM00079"
+"ZX_0CUSTOMER_ATTR" -> "ZSFORCE"[color=red]
+"ZO00144" -> "ZOHCRM013"[style=bold,color=green]
+"D:\\My Documents\\ZMATPLANT.csv" -> "ZMATPLANT"
+"ZBW_MAT_SLS_VW_SNAPSHOT_DS" -> "ZO00207"[style=bold,color=green]
+"ZM00065" -> "ZM00065_Q002"
+"0BPARTNER_TEXT" -> "0BPARTNER"[style=bold,color=green]
+"/xfer/SYNCRA/D1W/BW20/EW01068CCA.FIL" -> "ZCOMPCODE"
+"0COOM_C02" -> "Z_0COOM_C02_Q007"
+"ZX_ZDPCLSTR_TEXT" -> "ZGEOCLSTR$T"[color=red]
+"ZO00077" -> "ZC00177"[color=red]
+"/xfer/P20/P2W/EW02044_ZCALMONTH_ATTR.FIL" -> "ZCALMONTH"
+"0TCT_VC12" -> "0TCT_MC12"
+"ZM00079" -> "Z_ZM00079_Q011"
+"KS00200" -> "ZC00161"[color=red]
+"ZO00005" -> "Z_ZO00005_K001D"[color=red]
+"ZM00063" -> "ZM00063_Q013"
+"/xfer/P20/P2W/SeqGDWFlatMaterialPlant" -> "ZMATPLANT"
+"ZM00062" -> "Z_ZM00062_Q001"
+"ZM00076" -> "Z_ZM00076_Q062"
+"ZM00046" -> "Z_ZM00046_SEM_RECAST"[color=red]
+"ZC00014" -> "ZM00070"
+"ZO00194" -> "ZO00002"[color=red]
+"KS00073" -> "ZC00159"[color=red]
+"ZC00038" -> "ZC00194"[color=red]
+"ZC00014" -> "ZM00078"
+"ZC00018" -> "ZC00194"[color=red]
+"KS00198" -> "ZO00128"[color=red]
+"0CRM_MPK_1OR_TRANS" -> "ZO00160"[style=bold,color=green]
+"C:\\Data\\Inactive_allocation cycles.csv" -> "ZALOCYCLE"
+"/xfer/P2W/import/IW02810_PLATINUM_ACCOUNTS.FIL" -> "ZGLOBACNT"
+"ZO00002" -> "ZC00151"[color=red]
+"ZC00107" -> "ZM00043"
+"0PS_DAT_PRJ" -> "0PS_C02"[color=red]
+"ZO00207" -> "ZC00207"[style=bold,color=green]
+"/xfer/P20/P2W/IW01173Z0494.FIL" -> "ZSUBREG"
+"ZO00078" -> "ZC00197"[color=red]
+"ZC00156" -> "ZM00065"
+"ZX_ZREPVERSN" -> "ZREPVERSN"[color=red]
+"ZC00146" -> "ZC00027"
+"ZC00025" -> "Z_ZC00025_Q004"
+"ZSCPLNDEF" -> "ZSCPLNDEF"[style=bold,color=green]
+"0BBP_PO" -> "0BBP_DS1"[color=red]
+"ZM00025" -> "Z_ZM00025_Q006"
+"ZC00053" -> "ZM00017"
+"ZXZVCAWNT" -> "ZACTGAUGE$T"[color=red]
+"2LIS_12_VCITM" -> "ZO00089"[color=red]
+"ZX_ZMKTSTAT_ATTR" -> "0COUNTRY"[color=red]
+"0TCT_VCA1" -> "0TCT_MCA1"
+"ZO00217" -> "ZOHSEM001"[style=bold,color=green]
+"ZM00043" -> "Z_ZM00043_Q001"
+"/xfer/P20/P2W/EW01068CCA.FIL" -> "ZCOMPCODE"
+"/CPMB/SKIG5GP" -> "/CPMB/SKMG5GP"
+"KS00204" -> "ZO00084"[style=bold,color=green]
+"ZM00007" -> "Z_ZM00007_Q009"
+"ZC00037" -> "Z_ZC00037_Q001_AOP_RATE"
+"ZO00013" -> "ZC00150"[color=red]
+"Y:\\Commissions\\2015 Requirements\\P2W Data Files\\2015 P2W ZSCRATES - ZSBM - 4-14-2015.csv" -> ""
+"ZC00140" -> "ZO00077"[color=red]
+"ZO00100" -> "ZO00078"[color=red]
+"KS00072" -> "ZC00008"[color=red]
+"0TCT_DS01" -> "0TCT_IS01"
+"ZO00060" -> "ZC00067"[color=red]
+"0CO_OM_WBS_3" -> "0PS_C04"[color=red]
+"ZO00089" -> "ZO00136"[color=red]
+"/xfer/P20/P2W/IW01068PPL.FIL" -> "ZPPL"
+"ZV_A505_KONP" -> "ZSCFLRPRC"[style=bold,color=green]
+"P20CLNT023" -> "ZID_BR_NF_3"
+"C:\\Documents and Settings\\ps.sujai\\Desktop\\P2W Iobj load\\ZSCITMCAT_P2W.csv" -> ""
+"ZXZVCAWNT" -> "ZPLATETYP$T"[color=red]
+"ZBW_MAT_PLANT_VW_SNAPSHOT_DS" -> "ZO00208"[style=bold,color=green]
+"KS00076" -> "ZC00020"[color=red]
+"ZM00061" -> "Z_ZM00061_Q009"
+"KS00013" -> "ZC00010"[color=red]
+"IDW" -> "ZC00014"[color=red]
+"ZO00183" -> "ZO00184"[style=bold,color=green]
+"KS00161" -> "ZO00065"[color=red]
+"G:\\2014 Requirements\\P2W data laod\\ZSCPLNDEF.csv" -> ""
+"ZC00208" -> "ZM00093"
+"ZO00194" -> "ZO00006"[color=red]
+"ZC00071" -> "ZC00072"[color=red]
+"ZO00136" -> "ZC00192"[style=bold,color=green]
+"ZC00158" -> "ZM00065"
+"ZC00016" -> "YUSC_W01"[style=bold,color=green]
+"ZO00006" -> "ZO00006_USC_L2_HISTORY3"[color=red]
+"ZM00076" -> "Z_ZM00076_Q069"
+"0TCT_C02" -> "0TCT_MC02"
+"0NF_DS02" -> "Z_0NF_DS02_K001D"[color=red]
+"ZO00143" -> "ZO00190"[style=bold,color=green]
+"ZX_ZKPA" -> "ZKPA"[color=red]
+"ZC00131" -> "ZM00042"
+"ZO00019" -> "Z_ZO00019_K001F"[color=red]
+"KS00216" -> "ZO00185"[color=red]
+"/xfer/P20/P2W/IW01981_ACCT.FIL" -> "ZMAINACCT"
+"ZM00061" -> "Z_ZM00061_Q004_XLF"
+"ZC00095" -> "ZM00048"
+"KS00093" -> "ZC00038"[color=red]
+"ZSCORDEX" -> "ZSCORDEX"[style=bold,color=green]
+"ZM00020" -> "Z_ZM00020_Q015"
+"/xfer/P20/P2W/IW01068KPA.FIL" -> "ZKPA"
+"KS00145" -> "0NF_DS03"[color=red]
+"ZC00014" -> "Z_ZC00014_K007D"[color=red]
+"ZM00069" -> "Z_ZM00069_Q002"
+"ZO00162" -> "ZOHCRM008"[style=bold,color=green]
+"ZO00019" -> "ZC00038"[color=red]
+"Z0917" -> "ZO00196"[style=bold,color=green]
+"H:\\0BWSIRs\\Commissions\\Master data load\\Q2W Loads\\P2W ZSCREPPAY.csv" -> ""
+"C:\\Users\\u104675\\OneDrive - Eastman Kodak Company\\Sales Analysis Design Steward\\Reorganisation\\HDESTCNTY.csv" -> "ZDESTCNTY"
+"ZC00054" -> "ZM00015"
+"0CO_OM_NAE_2" -> "0PS_C04"[color=red]
+"ZM00062" -> "Z_ZM00062_Q001_1"
+"/xfer/SYNCRA/D1W/BW20/ZSALESTYPE.FIL" -> "ZSALETYPE"
+"0TCT_MC01" -> "0TCT_MC01_Q0433"
+"ZTERM_TEXT" -> "ZTERM"[style=bold,color=green]
+"ZO00053" -> "Z_ZO00053_K001F"[color=red]
+"ZO00125" -> "ZC00077"[color=red]
+"ZC00150" -> "ZM00008"
+"ZM00057" -> "Z_ZM00057_Q005"
+"ZC00032" -> "Z_ZC00032_Q002_LOCAL"
+"ZO00017" -> "Z_ZO00017_Q002_AOP_RATE"
+"/xfer/SYNCRA/D1W/BW20/IW01065REGTER.FIL" -> "ZCUSTTER"
+"0FIAR_O09" -> "ZM00054"
+"ZC00013" -> "Z_ZC00013_K001"[color=red]
+"ZO00078" -> "ZO00182"[color=red]
+"ZREPVERSN" -> "ZM00061"
+"ZO00078" -> "ZC00193"[color=red]
+"/xfer/P20/P2W/EW01068CCA.FIL" -> "0COMP_CODE"
+"ZXZVCAWNT" -> "ZSELLTYP$T"[color=red]
+"/xfer/P20/P2W/IW01028NYMTLTXTPPL.20091005121131" -> "ZPPL"
+"ZM00063" -> "ZM00063_Q001_SUMMARY1"
+"ZO00138" -> "ZC00168"[color=red]
+"/xfer/P20/P2W/ZMINO_IND_TEXT.CSV" -> "ZMINO_IND"
+"ZC00190" -> "ZM00060"
+"/xfer/P20/P2W/IW01068SPU.FIL" -> "ZSPU"
+"ZX_0CUST_COMPC_ATTR" -> "0CUST_SALES"[color=red]
+"KS00028" -> "ZC00149"[color=red]
+"/xfer/P20/P2W/IW01028NYMTLTXTKPA.20091005121821" -> "ZKPA"
+"0EC_PCA_1" -> "ZO00124"[color=red]
+"ZM00025" -> "Z_ZM00025_Q001A"
+"File for ZM Hierarchy" -> "0CUST_SALES"
+"/xfer/P20/P2W/ranieri/newSeqGDWFlatMatlMstrAttribute" -> "ZMATFIN"
+"/xfer/P20/P2W/ZQTR_TEXT_DEFAULT_VALUES.CSV" -> "ZQTR"
+"/xfer/P2W/import/IW02810_GOLD_ACCOUNTS.FIL" -> "ZGLOBACNT"
+"/xfer/P20/P2W/P1516_IW01004MTLMSTR_update2_dos2unix.FIL" -> "0MATERIAL"
+"ZM000010" -> "Z_ZM000010_Q004"
+"ZM00076" -> "Z_ZM00076_Q081"
+"ZC00165" -> "ZM00068"
+"C:\\Documents and Settings\\10130903\\Desktop\\Desktop\\2011\\CRM\\Service_area\\P2w File Reload After 2nd Migration.csv" -> "ZSRV_AREA"
+"ZM00060" -> "Z_ZM00060_Q009"
+"0USAGE_IND_TEXT" -> "ZX_0USAGE_IND_TEXT"
+"2LIS_11_VASTH" -> "ZO00086"[color=red]
+"ZO00100" -> "ZO00077"[color=red]
+"ZXPCAHIER" -> "ZSTPG"[color=red]
+"0RTYPE" -> "ZM00057"
+"ZC00097" -> "ZM00061"
+"KS00015" -> "ZO00006"[color=red]
+"ZC00204" -> "ZM00078"
+"/xfer/P20/P2W/IW01065TERRITORY.FIL" -> "ZSALE_TER"
+"ZM00007" -> "Z_ZM00007_Q003"
+"ZM00066" -> "Z_ZM00066_Q005"
+"P2SCLNT023" -> "ZC00063"
+"ZM00025" -> "Z_ZM00025_Q008"
+"0BBP_PO" -> "Z_0BBP_PO_Q001"
+"ZO00089" -> "ZO00097"[color=red]
+"0FIAR_O03" -> "ZO00119"[color=red]
+"KS00015" -> "ZC00014"[color=red]
+"/xfer/P2W/import/IW02810_STRATEGIC_ACCOUNTS.FIL" -> "ZGLOBACNT"
+"ZXPCAHIER" -> "ZPROFCTR"[color=red]
+"ZM00063" -> "ZM00063_Q001_CUSTOMER"
+"P2SCLNT023" -> "ZC00102"
+"/xfer/P20/P2W/ZVT179T_BW.FIL" -> "ZPACBU"
+"/xfer/P20/P2W/IW01065REGFMGR.FIL" -> "ZRSALEMGR"
+"KS00208" -> "ZO00137"[color=red]
+"ZO00078" -> "ZC00132"[color=red]
+"ZXZVCAWNT" -> "ZWHSLLVL4$T"[color=red]
+"ZC00027" -> "Z_ZC00027_K001"[color=red]
+"ZC00036" -> "Z_ZC00036_Q001_DETAIL_LOCAL"
+"ZC00097" -> "ZM00025"
+"ZO00014" -> "Z_ZO00014_K001D"[color=red]
+"ZX_ZDPREGN_TEXT" -> "ZDPGEOLVL$T"[color=red]
+"C:\\Documents and Settings\\10130903\\Desktop\\SEM-121190\\ZKPA-txt-File.csv" -> "ZKPA"
+"0TCT_DS02" -> "0TCT_IS02"
+"/xfer/P20/P2W/manual_IW01067COHIER.FIL" -> "0CUST_SALES"
+"/xfer/P20/P2W/IW01004MTLMSTRFIN.FIL" -> "ZMATFIN"
+"ZM00016" -> "Z_ZM00016_Q025"
+"Z0851_TEXT" -> "ZX_ZDPREGN_TEXT"
+"/xfer/P20/P2W/IW01068BUC.FIL" -> "ZBUS_CODE"
+"0CO_OM_WBS_1" -> "ZO00045"[color=red]
+"ZM00076" -> "Z_ZM00076_Q070"
+"B:\\Data Warehouse\\2009 Projects\\1722 - GCG Consumables\\GCG Inactive Materials load\\GCG inactive ZMaterials Load.csv" -> "ZMATERIAL"
+"/xfer/P2W/import/IW02810_CHANNEL_ACCOUNTS.FIL" -> "ZGLOBACNT"
+"KS00011" -> "ZC00159"[color=red]
+"ZC00032" -> "Z_ZC00032_Q001_LOCAL"
+"ZO00039" -> "0PS_C02"[color=red]
+"ZM00089" -> "Z_ZM00089_Q001_WEBI"
+"P20CLNT023" -> "0USAGE_IND_TEXT"
+"2LIS_12_VCITM" -> "0SD_O02"[color=red]
+"ZC00108" -> "ZM00057"
+"ZC00085" -> "ZM00021"
+"ZO00175" -> "ZC00181"[color=red]
+"ZM00037" -> "ZM00037_Q005"
+"ZM00022" -> "Z_ZM00022_Q003"
+"KS00032" -> "ZO00017"[color=red]
+"ZC00014" -> "Z_ZC00014_K001D"[color=red]
+"ZM00086" -> "Z_ZM00086_Q002"
+"KS00066" -> "ZO00001"[color=red]
+"ZO00154" -> "ZCRMPRDID"[style=bold,color=green]
+"ZC00165" -> "ZM00070"
+"ZA00003" -> "Z_ZA00003_Q001"
+"ZC00150" -> "ZM00067"
+"ZC00153" -> "ZM00061"
+"2LIS_02_ITM" -> "0BBP_PO"[color=red]
+"ZBW_Z0437" -> "Z0437"
+"/xfer/SYNCRA/D1W/BW20/EW01068CRT.FIL" -> "ZREGION"
+"ZM00076" -> "Z_ZM00076_Q085"
+"ZC00193" -> "ZM00069"
+"/xfer/P20/P2W/ZVT179T_BW.FIL" -> "ZPAC23"
+"ZM00076" -> "Z_ZM00076_Q068"
+"ZM00025" -> "Z_ZM00025_Q025"
+"ZO00019" -> "ZO00218"[style=bold,color=green]
+"ZXZVCAWNT" -> "ZWHSLLVL1$T"[color=red]
+"KS00217" -> "ZO00140"[style=bold,color=green]
+"ZBW_VBPA_VIEW" -> "KS00186"
+"/xfer/P20/P2W/CUTOVER/ZMATSALE.FIL" -> "ZMAT_SALE"
+"D:\\FIClose\\nov\\SeqGDWFlatTransType-2" -> "ZTRANSCD"
+"0CRM_SRV_PROCESS_H" -> "ZO00143"[style=bold,color=green]
+"ZM00079" -> "Z_ZM00079_Q003"
+"ZM00076" -> "Z_ZM00076_Q077"
+"Z0917" -> "ZSCMATIER"[style=bold,color=green]
+"0PS_DAT_PRJ" -> "ZO00040"[color=red]
+"0TCT_VC11" -> "0TCT_MC11"
+"0VENDOR" -> "Z_0VENDOR_K001"[color=red]
+"/xfer/P20/P2W/SeqGDWProcessRptHierarchy" -> "ZORG_HIER"
+"ZC00132" -> "ZM00020"
+"ZM00020" -> "Z_ZM00020_Q002"
+"/xfer/P20/P2W/EW01068_0CCA.FIL" -> "0COMP_CODE"
+"C:\\DATA\\USERS\\L116533\\P2W ZREPGOAL SVC.csv" -> ""
+"ZM00060" -> "Z_ZM00060_Q006"
+"2LIS_11_VAKON" -> "0SD_O05"[color=red]
+"KS00156" -> "ZO00057"[color=red]
+"ZBW_PROJECTED_INVENTORY" -> "ZO00219"[style=bold,color=green]
+"2LIS_08TRTK" -> "ZO00090"[color=red]
+"ZC00149" -> "ZM00008"
+"/xfer/P20/P2W/IW01068MSS.FIL" -> "ZMARK_SUB"
+"ZC00070" -> "ZM00025"
+"P2SCLNT023" -> "ZC00084"
+"0RTYPE" -> "ZM00020"
+"ZO00210" -> "ZOHSEMPR2"[style=bold,color=green]
+"ZO00096" -> "ZO00138"[color=red]
+"ZC00081" -> "ZM00020"
+"ZVEKPVEPO" -> "KS00185"
+"ZO00001" -> "ZO00218"[style=bold,color=green]
+"KS00065" -> "ZC00014"[color=red]
+"G:\\Sales Analysis\\Master Data\\Data\\ACCNTASGNDUMMY.csv" -> "0ACCNT_ASGN"
+"ZO00099" -> "ZO00096"[color=red]
+"ZM00020" -> "Z_ZM00020_Q005"
+"ZC00027" -> "Z_ZC00027_Q011"
+"/xfer/P20/P2W/IW01981_CTRY.FIL" -> "0COUNTRY"
+"ZC00014" -> "Z_ZC00014_K002"[color=red]
+"ZM00045" -> "Z_ZM00045_Q001"
+"KS00079" -> "ZC00148"[color=red]
+"0COOM_C02" -> "Z_0COOM_C02_Q001"
+"ZO00018" -> "ZC00035"[color=red]
+"0SD_O01" -> "Z_0SD_O01_K001D"[color=red]
+"ZC00069" -> "ZM00020"
+"ZC00163" -> "ZM00072"
+"ZO00106" -> "ZC00163"[color=red]
+"ZO00004" -> "Z_ZO00004_K001D"[color=red]
+"ZO00110" -> "ZO00013"[color=red]
+"ZM00025" -> "Z_ZM00025_Q012"
+"P2SCLNT023" -> "0APO_LPROD_ATTR"
+"0SD_C03" -> "ZQ0SD_C03_Q006"
+"ZBW_Z0117" -> "ZO00201"[style=bold,color=green]
+"ZC00035" -> "ZM00007"
+"ZM00063" -> "ZM00063_Q014"
+"0CO_OM_WBS_6" -> "ZO00046"[color=red]
+"ZXPCAHIER" -> "ZRPTGRP$T"[color=red]
+"G:\\Sales Analysis\\Master Data\\Data\\PLANTDUMMY.csv" -> "0PLANT"
+"/xfer/P2W/import/IW02810_ACCT_GRP.FIL" -> "ZMDMACTGR"
+"ZO00057" -> "Z_ZO00057_K001D"[color=red]
+"/xfer/SYNCRA/D1W/BW20/IW01173Z0494.FIL" -> "ZSUBREG"
+"C:\\Documents and Settings\\10161884\\Desktop\\HDESTCNTY.csv" -> "ZDESTCNTY"
+"ZX_ZDPCLSTR_TEXT" -> "ZDPGEOLVL$T"[color=red]
+"Y:\\Commissions\\2015 Requirements\\P2W Data Files\\2015 Monthly Goal File - ZSBM - 4-14-15 (PS_SR).csv" -> ""
+"ZO00194" -> "ZC00014"[color=red]
+"ZC00016" -> "ZM00007"
+"/CPMB/K1IA4YL" -> "/CPMB/K1MA4YL"
+"ZM00016" -> "Z_ZM00016_Q012"
+"KS00210" -> "ZO00059"[color=red]
+"ZMATCLASS" -> "ZMATERIAL"[style=bold,color=green]
+"2LIS_13_VDITM" -> "ZO00019"[color=red]
+"/xfer/P20/P2W/IW01981_COMP.FIL" -> "0COMP_CODE"
+"ZO00077" -> "ZO00078"[color=red]
+"0BBP_CON" -> "Z_0BBP_CON_K001F"[color=red]
+"0NF_DS03" -> "Z_0NF_DS03_K002D"[color=red]
+"ZO00020" -> "Z_ZO00020_K002"[color=red]
+"0CUSTOMER_ATTR" -> "ZX_0CUSTOMER_ATTR"
+"C:\\Documents and Settings\\ps.sujai\\Desktop\\ZSCMEADET-P2W H2.csv" -> ""
+"ZC00151" -> "ZM00069"
+"ZM00040" -> "Z_ZM00040_Q002"
+"ZC00190" -> "ZM00057"
+"ZC00097" -> "ZO00078"[color=red]
+"ZC00177" -> "ZO00187"[style=bold,color=green]
+"KS00187" -> "ZO00104"[color=red]
+"ZC00167" -> "ZM00066"
+"ZC00097" -> "ZM00069"
+"F:\\GDW-ps\\Data Warehouse\\Sales Analysis\\Default Table Values\\IW01070CUSTSLS_DUMMY.FIL" -> "ZCUSTSLS"
+"ZO00077" -> "ZM00046"
+"ZM00025" -> "Z_ZM00025_Q012A"
+"0TCT_VC23" -> "0TCT_MC23"
+"2LIS_11_VASCL" -> "ZO00087"[color=red]
+"ZC00128" -> "ZM000010"
+"ZC00081" -> "ZM00046"
+"ZSMIBKTFL" -> "Z_ZM00090_Q003"
+"c:\\data\\GDW\\Master Data\\ZV0114.FIL" -> "Z0114"
+"P20CLNT023" -> "ZBW_Z0437"
+"ZC00038" -> "ZM00007"
+"ZO00096" -> "ZO00115"[color=red]
+"ZC00128" -> "ZM00060"
+"KS00014" -> "ZC00008"[color=red]
+"ZC00163" -> "ZC00170"[style=bold,color=green]
+"ZO00169" -> "ZM00077"
+"ZXZVCAWNT" -> "ZLABEL_AS$T"[color=red]
+"KS00219" -> "ZO00140"[style=bold,color=green]
+"/xfer/P20/P2W/Profit/IW01035_0PROFITCTRTXT.20091006165133" -> "ZPRFT_CTR"
+"ZC00025" -> "Z_ZC00025_Q006"
+"KS00015" -> "ZO00004"[color=red]
+"ZC00202" -> "ZM00020"
+"ZC00014" -> "ZM00096"
+"ZC00081" -> "ZM00057"
+"ZC00032" -> "Z_ZC00032_Q001_USD"
+"0SD_O05" -> "ZC00118"[color=red]
+"ZO00090" -> "ZO00098"[color=red]
+"KS00029" -> "ZC00032"[color=red]
+"ZO00147" -> "ZOHIBB2B"[style=bold,color=green]
+"ZPROFCTR_ATTR" -> "ZXPCAHIER"
+"/CPMB/SKIK7SP" -> "/CPMB/SKMK7SP"
+"ZC00083" -> "ZM00024"
+"ZC00032" -> "Z_ZC00032_Q002_USD"
+"ZM00063" -> "ZM00063_Q006"
+"ZC00177" -> "ZM00078"
+"KS00121" -> "ZC00057"[color=red]
+"KS00075" -> "ZC00013"[color=red]
+"ZM00061" -> "Z_ZM00061_Q011"
+"0CO_OM_OPA_1" -> "0COOM_C02"[color=red]
+"ZM00060" -> "Z_ZM00060_Q005"
+"ZC00016" -> "ZC00016"[style=bold,color=green]
+"ZO00174" -> "ZC00196"[color=red]
+"KS00034" -> "ZC00036"[color=red]
+"KS00071" -> "ZC00004"[color=red]
+"ZC00097" -> "ZM00046"
+"ZC00151" -> "ZM00061"
+"ZM00060" -> "Z_ZM00060_Q003"
+"ZC00203" -> "ZM00090"
+"ZM00022" -> "Z_ZM00022_Q004"
+"ZC00056" -> "ZC00053"[color=red]
+"ZXZVCAWNT" -> "Z_WIDTH_0$T"[color=red]
+"ZO00077" -> "ZC00128"[color=red]
+"ZC00020" -> "Z_ZC00020_K001"[color=red]
+"ZC00053" -> "ZM00061"
+"ZC00160" -> "ZM00068"
+"ZM00007" -> "Z_ZM00007_Q013"
+"ZO00134" -> "ZO00125"[color=red]
+"0BBP_PO" -> "Z_0BBP_PO_K001F"[color=red]
+"ZO00002" -> "Z_ZO00002_K001F"[color=red]
+"P2SCLNT023" -> "ZBW_APO_9AITRAN_INTRANSIT"
+"ZXZVCAWNT" -> "ZCTBLTYP$T"[color=red]
+"/xfer/P20/P2W/SeqGDWMfgFlowMstr" -> "ZMFLOWH"
+"ZM00089" -> "Z_ZM00089_Q002_WEBI"
+"ZM00010" -> "Z_ZM00010_Q001"
+"C:\\Documents and Settings\\venkakk\\Desktop\\Masterdata\\0ACTTYPE_TEXT.csv" -> "0ACTTYPE"
+"KS00074" -> "ZC00010"[color=red]
+"ZO00005" -> "ZO00218"[style=bold,color=green]
+"0CRM_ORGUNIT_TEXT" -> "0ORGUNIT"[style=bold,color=green]
+"0APO_LPROD_ATTR" -> "ZX_0APO_LPROD_ATTR"
+"c:\\data\\GDW\\Master Data\\ZV0021.FIL" -> "Z0021"
+"0TCT_MC01" -> "0TCT_MC01_Q0133"
+"ZO00143" -> "ZOHCRM012"[style=bold,color=green]
+"ZO00084" -> "ZO00136"[color=red]
+"ZC00052" -> "ZM00015"
+"/CPMB/SKIIUQC" -> "/CPMB/SKMIUQQ"
+"KS00028" -> "ZC00148"[color=red]
+"2LIS_02_ACC" -> "ZO00189"[style=bold,color=green]
+"ZO00136" -> "ZC00189"[style=bold,color=green]
+"/xfer/P20/P2W/IW01065SALESFORCE.FIL" -> "ZSFORCE"
+"ZC00102" -> "KS00173"
+"0PS_DAT_MLS" -> "ZO00049"[color=red]
+"ZM00043" -> "Z_ZM00043_Q003"
+"ZO00141" -> "ZO00153"[style=bold,color=green]
+"ZO00003" -> "Z_ZO00003_K001D"[color=red]
+"/xfer/P20/P2W/ZVT179T_BW.FIL" -> "ZPAC1"
+"0APO_PROD_TEXT" -> "0APO_ATTLP1$T"[color=red]
+"ZO00077" -> "ZC00143"[color=red]
+"ZC00053" -> "ZM00015"
+"P20CLNT023" -> "0CUSTOMER_ATTR"
+"0RTYPE" -> "ZM00016"
+"ZO00194" -> "ZO00004"[color=red]
+"/xfer/P20/P2W/SeqGDWResourceCenterAttr" -> "ZRESOURCE"
+"ZC00202" -> "ZM000010"
+"0APO_LOCNO_ATTR" -> "0APO_LOCNO"[color=red]
+"/xfer/P20/P2W/PLANTDUMMY.csv" -> "0PLANT"
+"2LIS_12_VCHDR" -> "ZO00088"[color=red]
+"ZC00178" -> "ZM00063"
+"ZSCMEADET" -> "ZSCMEADET"[style=bold,color=green]
+"C:\\Data\\Users\\l507105\\LVE SC\\MMC\\historymaterialload\\MMC_mat_sales.csv" -> "0MAT_SALES"
+"ZO00015" -> "ZC00032"[color=red]
+"E:\\Sales Analysis\\Master Data\\Data\\ROUTEDUMMY.csv" -> "0ROUTE"
+"/xfer/P20/P2W/IW01068MAS.FIL" -> "ZMARK_SEG"
+"ZC00198" -> "ZM00088"
+"ZM00061" -> "Z_ZM00061_Q006_XLF"
+"C:\\Users\\u104675\\OneDrive - Eastman Kodak Company\\Sales Analysis Design Steward\\Reorganisation\\HDESTCNTYSubRegion.csv" -> "ZDESTCNTY"
+"2LIS_02_S101" -> "0BBP_INV"[color=red]
+"ZM00076" -> "Z_ZM00076_Q073"
+"\\\\kofs024\\CDG-Call_Center_Hosted_Solution\\Requirements\\Reporting Requirments\\Master Data\\0ACTIONTYPE_TEXT.csv" -> "0ACTIONTYPE"
+"ZX_ZPRODLANE_ATTR" -> "ZPRODLANE"[color=red]
+"/xfer/P20/P2W/IW01028NYMTLTXTKPA.FIL" -> "ZKPA"
+"ZC00100" -> "ZM00030"
+"/CPMB/K1ITX2D" -> "/CPMB/K1MTX2D"
+"0SD_C04" -> "0SD_C04_Q0006"
+"KS00010" -> "ZC00013"[color=red]
+"ZCRM_ZSALESORDRDTL_ATTR" -> "ZCRM_PROD"[style=bold,color=green]
+"KS00096" -> "ZC00035"[color=red]
+"C:\\Documents and Settings\\venkakk\\Desktop\\Masterdata\\0CAT_TYPE.csv" -> "0CAT_TYPE"
+"0PROFIT_CTR_ATTR" -> "ZPRFT_CTR"[style=bold,color=green]
+"2LIS_02_SCL" -> "0BBP_CON"[color=red]
+"KS00015" -> "ZC00018"[color=red]
+"ZO00114" -> "ZC00165"[color=red]
+"ZO00145" -> "ZOHCRM014"[style=bold,color=green]
+"ZM00025" -> "Z_ZM00025_Q026"
+"ZO00006" -> "ZC00179"[color=red]
+"ZO00012" -> "ZC00121"[color=red]
+"/xfer/P20/P2W/IW01074FRMTLCLASS.FIL" -> "ZMATCLASS"
+"ZC00197" -> "ZM00016"
+"ZX_ZMKTSTAT_ATTR" -> "ZDESTCNTY"[color=red]
+"ZO00124" -> "ZC00159"[color=red]
+"/xfer/P20/P2W/IW01068MML.FIL" -> "ZMML"
+"0BBP_CON" -> "ZC00025"[color=red]
+"ZM00097" -> "Z_ZM00097_Q001"
+"KS00115" -> "0COOM_C02"[color=red]
+"/xfer/P2W/import/DW03964SUBCLASS.csv" -> "0CAT_CODE"
+"/CPMB/SKIRCSR" -> "/CPMB/SKMRCSR"
+"ZO00140" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BBP_INV" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"0FIAR_O09" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"/CPMB/SKIMTTN" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00160" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00128" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00132" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00172" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00161" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCREPPAY" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00127" [color=red, style="rounded", shape=box]
+"ZMATCLASS" [color=red, style="rounded", shape=box]
+"ZO00011" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00217" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00177" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00088" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00198" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BWTC_C02" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00026" [color=white, fillcolor="0.38, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BWTC_C03" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"/CPMB/ATIRCJO" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00096" [color=white, fillcolor="0.38, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00156" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00198" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00082" [color=red, style="rounded", shape=box]
+"ZO00203" [color=red, style="rounded", shape=box]
+"ZO00183" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00050" [color=red, style="rounded", shape=box]
+"ZO00062" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00069" [color=white, fillcolor="0.376, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCMEADEF" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00185" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00074" [color=red, style="rounded", shape=box]
+"ZO00041" [color=red, style="rounded", shape=box]
+"ZO00049" [color=red, style="rounded", shape=box]
+"0OPA_O06" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00087" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00008" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZCRMPRDID" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00160" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00120" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0FIAP_C03" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00020" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00131" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCLEASE" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00140" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00083" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0NF_DS03" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCORDEX" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00108" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00099" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00138" [color=white, fillcolor="0.36800000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"0TCT_C23" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00086" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00131" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00207" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00045" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00055" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCITMCAT" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00174" [color=red, style="rounded", shape=box]
+"ZO00109" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00212" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCRATE" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00178" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00078" [color=white, fillcolor="0.38, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00191" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00052" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"0TCT_C03" [color=white, fillcolor="0.36400000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BWTC_C09" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00206" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZMATPLANT" [color=red, style="rounded", shape=box]
+"ZC00190" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00209" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00078" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZCRM_PROD" [color=white, fillcolor="0.27199999999999996, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00203" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00036" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00126" [color=white, fillcolor="0.35200000000000004, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00039" [color=red, style="rounded", shape=box]
+"ZO00059" [color=white, fillcolor="0.336, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00081" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00124" [color=white, fillcolor="0.38, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00057" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0MAT_SALES" [color=red, style="rounded", shape=box]
+"ZO00005" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00101" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0EMPLOYEE" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00014" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00057" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0SD_O05" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0NF_DS02" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"/CPMB/SKIV1IB" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00077" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00054" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00199" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00104" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00175" [color=red, style="rounded", shape=box]
+"ZO00154" [color=white, fillcolor="0.36400000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00208" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00048" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00003" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCPAY" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00189" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00178" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0PS_C04" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00167" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0NF_DS01" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00119" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00006" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"/CPMB/K1ICT1B" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00103" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00139" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00114" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00192" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZCRM_SONR" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00129" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00013" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00017" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"0TCT_CA1" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00085" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00219" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00187" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00145" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00154" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00118" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00143" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00128" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00205" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00066" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00051" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00089" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00146" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00136" [color=white, fillcolor="0.384, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00150" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCGOAL" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0FIAR_O03" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00063" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BBP_CON" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"0PS_C02" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0PS_DS06" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0TCT_C22" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00002" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00142" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00095" [color=white, fillcolor="0.36800000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"0TCT_C01" [color=white, fillcolor="0.36800000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00071" [color=red, style="rounded", shape=box]
+"ZO00161" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0SD_C03" [color=white, fillcolor="0.30400000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00152" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00097" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00018" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00173" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00125" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00121" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00169" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00141" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BWTC_C11" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZMAT_SALE" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00168" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00179" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0SD_O01" [color=white, fillcolor="0.35600000000000004, 0.9, 0.9", style="rounded,filled", shape=box]
+"0MATERIAL" [color=white, fillcolor="0.27199999999999996, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSMIBKTFL" [color=red, style="rounded", shape=box]
+"ZCUSTTER" [color=red, style="rounded", shape=box]
+"ZO00192" [color=red, style="rounded", shape=box]
+"ZSCPLNDET" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00146" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00181" [color=white, fillcolor="0.36400000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00038" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00206" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00025" [color=white, fillcolor="0.384, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00196" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCHURDLE" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00218" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00204" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00158" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00175" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00191" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BBP_DS1" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"0CUSTOMER" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00210" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00153" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00179" [color=red, style="rounded", shape=box]
+"0TCT_C21" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0CUST_SALES" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00100" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00046" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00176" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00019" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00177" [color=red, style="rounded", shape=box]
+"ZO00208" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00162" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0MAT_PLANT" [color=red, style="rounded", shape=box]
+"0SD_O02" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00066" [color=white, fillcolor="0.30800000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00194" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00193" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00202" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00016" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00014" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00096" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00116" [color=red, style="rounded", shape=box]
+"ZO00015" [color=red, style="rounded", shape=box]
+"ZO00042" [color=red, style="rounded", shape=box]
+"ZO00147" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00121" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00042" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00067" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00200" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00165" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00163" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00084" [color=white, fillcolor="0.376, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCMEADET" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00037" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00069" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZBW_TVAK" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00004" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00134" [color=red, style="rounded", shape=box]
+"0TCT_C02" [color=white, fillcolor="0.052000000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00119" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00163" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00124" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00036" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00172" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00210" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00197" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00207" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00020" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00022" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00182" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00148" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00106" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00143" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"YUSC_W01" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00129" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00193" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BPARTNER" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00044" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00047" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00092" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"/CPMB/SKIIUQC" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00068" [color=red, style="rounded", shape=box]
+"ZC00162" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00097" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00060" [color=white, fillcolor="0.27999999999999997, 0.9, 0.9", style="rounded,filled", shape=box]
+"0OPA_O07" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00035" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00033" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0FIAP_O03" [color=white, fillcolor="0.36000000000000004, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00086" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00013" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00053" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0PS_DS05" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00073" [color=red, style="rounded", shape=box]
+"ZC00209" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZREPGOAL" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00157" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00194" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00077" [color=white, fillcolor="0.384, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00149" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00211" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00145" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00187" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00110" [color=red, style="rounded", shape=box]
+"ZC00056" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00155" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00016" [color=red, style="rounded", shape=box]
+"0COOM_C02" [color=white, fillcolor="0.38, 0.9, 0.9", style="rounded,filled", shape=box]
+"/CPMB/ATIKOOK" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00156" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00183" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00137" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00186" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00132" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00201" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00091" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00159" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0SD_C04" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00171" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00139" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00155" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00107" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00034" [color=white, fillcolor="0.376, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00100" [color=red, style="rounded", shape=box]
+"ZC00072" [color=red, style="rounded", shape=box]
+"0FIAR_O10" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00076" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00142" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0FIAR_C05" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"0ORGUNIT" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00095" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00032" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00147" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00070" [color=white, fillcolor="0.396, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00202" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00072" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00115" [color=white, fillcolor="0.36800000000000005, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00190" [color=white, fillcolor="0.388, 0.9, 0.9", style="rounded,filled", shape=box]
+"0FIAR_C03" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00058" [color=white, fillcolor="0.0040000000000000036, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BWTC_C05" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00135" [color=red, style="rounded", shape=box]
+"ZO00012" [color=white, fillcolor="0.38, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00199" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00090" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00021" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00170" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00182" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00018" [color=red, style="rounded", shape=box]
+"ZO00171" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00144" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00117" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00040" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00038" [color=red, style="rounded", shape=box]
+"ZO00001" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00123" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"/CPMB/SKIU7AZ" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00085" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00079" [color=red, style="rounded", shape=box]
+"ZPRODLANE" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZCUSTSLS" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZO00153" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00130" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZC00151" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZMATERIAL" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BBP_PO" [color=white, fillcolor="0.392, 0.9, 0.9", style="rounded,filled", shape=box]
+"0BWTC_C04" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZSCPLNDEF" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+"ZBILLTYPE" [color=white, fillcolor="0.4, 0.9, 0.9", style="rounded,filled", shape=box]
+}
