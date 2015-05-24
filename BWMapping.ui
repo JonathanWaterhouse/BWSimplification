@@ -218,6 +218,7 @@
      <string>File</string>
     </property>
     <addaction name="fileRegenerate_Database"/>
+    <addaction name="actionLocate_dot"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -225,6 +226,11 @@
   <action name="fileRegenerate_Database">
    <property name="text">
     <string>Regenerate Database</string>
+   </property>
+  </action>
+  <action name="actionLocate_dot">
+   <property name="text">
+    <string>Locate 'dot' Executable</string>
    </property>
   </action>
  </widget>

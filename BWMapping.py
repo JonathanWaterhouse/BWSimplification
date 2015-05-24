@@ -2,7 +2,8 @@
 
 # Form implementation generated from reading ui file 'BWMapping.ui'
 #
-# Created by: PyQt5 UI code generator 5.4.1
+# Created: Sun May 24 20:41:19 2015
+#      by: PyQt5 UI code generator 5.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -78,7 +79,10 @@ class Ui_BWMapping(object):
         BWMapping.setStatusBar(self.statusbar)
         self.fileRegenerate_Database = QtWidgets.QAction(BWMapping)
         self.fileRegenerate_Database.setObjectName("fileRegenerate_Database")
+        self.actionLocate_dot = QtWidgets.QAction(BWMapping)
+        self.actionLocate_dot.setObjectName("actionLocate_dot")
         self.menuFile.addAction(self.fileRegenerate_Database)
+        self.menuFile.addAction(self.actionLocate_dot)
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(BWMapping)
@@ -100,4 +104,5 @@ class Ui_BWMapping(object):
         self.storedRec_checkBox.setText(_translate("BWMapping", "Stored Record Count"))
         self.menuFile.setTitle(_translate("BWMapping", "File"))
         self.fileRegenerate_Database.setText(_translate("BWMapping", "Regenerate Database"))
+        self.actionLocate_dot.setText(_translate("BWMapping", "Locate \'dot\' Executable"))
 

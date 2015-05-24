@@ -1,9 +1,12 @@
 import subprocess
+import os
+import os.path
 
 __author__ = 'U104675'
 import sys
 import sqlite3
-sys.path.append('C:\\Users\\u104675\\Jon_Waterhouse_Docs\\OneDrive - Eastman Koda~1\\PythonProjects\\')
+#sys.path.append('C:\\Users\\u104675\\Jon_Waterhouse_Docs\\OneDrive - Eastman Koda~1\\PythonProjects\\')
+sys.path.append(os.path.dirname(os.getcwd()))
 import FileManipulation.LoadTextToSQLite as SQL
 class BWFlowTable():
     """
@@ -398,7 +401,8 @@ class BWFlowTable():
         ####################################
         # Generate Size Ranges based on a regular distribution between lowest and highest
         ####################################
-        max_size = max(sizes.values()) #Maximum number of records in any datastore
+        try: max_size = max(sizes.values()) #Maximum number of records in any datastore
+        except (ValueError): max_size = 0
         num_intervals = 100 #How finely we want the heat map to be divided
         size_ranges = []
         base_interval = int(max_size / num_intervals)
@@ -493,7 +497,7 @@ class BWFlowTable():
 
         return out_graph
 
-    def create_svg_file(self, graphviz_format_iterable, svg_file_out):
+    def create_svg_file(self, graphviz_format_iterable, svg_file_out, dot_loc):
         #intermdiate text file
         graphviz_text_file = svg_file_out[0:svg_file_out.find('.')] + '.txt'
         fo = open(graphviz_text_file,'w')
@@ -501,7 +505,7 @@ class BWFlowTable():
             fo.write(line)
         fo.close()
         # Call dot program to output svg file
-        dot_loc = "c:\\Program Files\\Graphviz2.38\\bin\\dot.exe"
+        #dot_loc = "c:\\Program Files\\Graphviz2.38\\bin\\dot.exe"
         try:
             subprocess.call([dot_loc,'-Tsvg', graphviz_text_file, '-o',
                          svg_file_out], stderr = None, shell=False)
