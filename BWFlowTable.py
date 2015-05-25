@@ -538,8 +538,12 @@ class BWFlowTable():
     def get_node_text(self,node):
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
-        for row in c.execute("SELECT TXTLG FROM RSDCUBET WHERE INFOCUBE=?",(node,)):
-            return row[0]
+        for row in c.execute("SELECT TXTLG FROM RSDCUBET WHERE INFOCUBE=? AND OBJVERS=? AND LANGU=?", (node,'A','EN')):
+            if row[0] != "": return row[0]
+            else:
+                for row in c.execute("SELECT TXTLG FROM RSDODSOT WHERE ODSOBJECT=? AND OBJVERS=? AND LANGU=?", (node,'A','EN')):
+                    if row[0] != "": return row[0]
+                    else: return ""
 
     def _unsplit(self, fileIn, fileOut, field_sep):
         """

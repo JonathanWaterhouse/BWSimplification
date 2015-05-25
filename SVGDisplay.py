@@ -30,7 +30,9 @@ class SVGDisplay(Ui_Dialog):
         self.webView.setZoomFactor(self.horizontalSlider.sliderPosition()/100)
 
     def showDetails(self):
-        try: name = self._db.get_node_text(self.webView.selectedText())
+        try:
+            key = self.webView.selectedText()
+            name = self._db.get_node_text(key)
         except KeyError: return
         label = QLabel('<font style="color: grey; background-color: yellow"><p>' + repr(name) + '</p></font>')
         label.move(QCursor.pos().x()+30,QCursor.pos().y()+20)

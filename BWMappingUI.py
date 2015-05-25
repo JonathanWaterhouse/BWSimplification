@@ -113,7 +113,8 @@ class BWMappingUI(Ui_BWMapping):
                               RSLDPIOT="RSLDPIOT.txt", RSBSPOKE="RSBSPOKE.txt", RSBOHDEST="RSBOHDEST.txt",
                               RSIS="RSIS.txt", RSUPDINFO="RSUPDINFO.txt", RSDCUBEMULTI='RSDCUBEMULTI.txt',
                               RSRREPDIR='RSRREPDIR.txt', RSDCUBET='RSDCUBET.txt', RSZELTDIR='RSZELTDIR.txt',
-                              RSMDATASTATE_EXT='RSMDATASTATE_EXT.txt', RSSTATMANPART='RSSTATMANPART.txt')
+                              RSMDATASTATE_EXT='RSMDATASTATE_EXT.txt', RSSTATMANPART='RSSTATMANPART.txt',
+                              RSDODSOT='RSDODSOT.txt')
 
     def generateMap(self):
         svg_file = ''
