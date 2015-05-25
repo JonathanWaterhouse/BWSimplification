@@ -1,19 +1,20 @@
-__author__ = 'user'
+from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtNetwork import *
 from SVGView import Ui_Dialog
-from PyQt5.QtWebKit import *
-from PyQt5.QtPrintSupport import *
+__author__ = 'jonathan.waterhouse@gmail.com'
 
 class SVGDisplay(Ui_Dialog):
     """
     Create a small webkit based box to display schedule diagrams
+    A test comment to test git branching
     """
-    def __init__(self,parent,svgFile):
+    def __init__(self,parent,svgFile, database):
         """
         Create the display box based on input parent widget and populated with
-        svg file whose fully qualified path and filename must be passed
         """
+        self._db = database
         dlg = QtWidgets.QDialog()
         self.setupUi(dlg)
         imageUrl = QtCore.QUrl.fromLocalFile(svgFile) # Fully qualified filename
@@ -21,9 +22,19 @@ class SVGDisplay(Ui_Dialog):
         self.webView.setZoomFactor(0.5)
         self.horizontalSlider.setValue(50)
         self.horizontalSlider.valueChanged.connect(self.magnification)
+        self.webView.selectionChanged.connect(self.showDetails)
         dlg.setVisible(True)
         dlg.exec_()
 
     def magnification(self):
         self.webView.setZoomFactor(self.horizontalSlider.sliderPosition()/100)
+
+    def showDetails(self):
+        try: name = self._db.get_node_text(self.webView.selectedText())
+        except KeyError: return
+        label = QLabel('<font style="color: grey; background-color: yellow"><p>' + repr(name) + '</p></font>')
+        label.move(QCursor.pos().x()+30,QCursor.pos().y()+20)
+        label.setWindowFlags(QtCore.Qt.SplashScreen)
+        label.show()
+        QTimer.singleShot(10000,label.destroy)
 

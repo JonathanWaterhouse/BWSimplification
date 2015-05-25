@@ -535,6 +535,12 @@ class BWFlowTable():
             if row[1] != '': nodes.add(row[1])
         return sorted(list(nodes))
 
+    def get_node_text(self,node):
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        for row in c.execute("SELECT TXTLG FROM RSDCUBET WHERE INFOCUBE=?",(node,)):
+            return row[0]
+
     def _unsplit(self, fileIn, fileOut, field_sep):
         """
         takes a file downloaded by ZSE16 in unconverted format, where the lines

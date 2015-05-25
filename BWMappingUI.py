@@ -171,7 +171,7 @@ class BWMappingUI(Ui_BWMapping):
         self.statusbar.showMessage("Graph created in " + svg_file,10000)
 
         dataDir = os.getcwd() + os.sep
-        SVGDisplay(self, dataDir + svg_file)
+        SVGDisplay(self, dataDir + svg_file, self._t)
         #TODO Add ability to touch a datastore and get its name
         #TODO nice icon for svgdisplay
         return
