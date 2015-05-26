@@ -32,7 +32,8 @@ class SVGDisplay(Ui_Dialog):
     def showDetails(self):
         try:
             key = self.webView.selectedText()
-            name = self._db.get_node_text(key)
+            if key != '': name = self._db.get_node_text(key)
+            else: name = ''
         except KeyError: return
         label = QLabel('<font style="color: grey; background-color: yellow"><p>' + repr(name) + '</p></font>')
         label.move(QCursor.pos().x()+30,QCursor.pos().y()+20)
