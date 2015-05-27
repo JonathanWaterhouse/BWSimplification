@@ -260,7 +260,7 @@ class BWFlowTable():
         """)
         conn.commit()
 
-    def create_mini_graph(self, start_node, forward):
+    def create_mini_graph(self, start_node, forward, show_queries):
         """
         This method creates a graph in graphviz format for links in dataflow starting at node and going EITHER forwards
         (forward = True) or backwards (forwards = False). Going forward from the node only nodes connected  in that
@@ -271,14 +271,14 @@ class BWFlowTable():
         :param forward: Direction to explore the data flow
         :return: An iterable lines which could be out put to a file and be read by graphviz "dot" program
         """
-        result_graph = self._create_mini_graph_recursion(start_node,forward, [])
+        result_graph = self._create_mini_graph_recursion(start_node,forward, [], show_queries)
         out_graph = []
         out_graph.append('digraph {ranksep=2\n')
         for line in set(result_graph): out_graph.append(line)
         out_graph.append('}')
         return out_graph
 
-    def create_mini_graph_bwd_fwd(self, start_node):
+    def create_mini_graph_bwd_fwd(self, start_node, show_queries):
         """
         This method creates a graph in graphviz format for links in dataflow starting at node and going BOTH forwards
         and backwards. Going forward from the node only nodes connected  in that direction are shown. For example if
@@ -287,8 +287,8 @@ class BWFlowTable():
         :param start_node: Node to start the graph from
         :return: An iterable of lines which could be out put to a file and be read by graphviz "dot" program
         """
-        result_graph_fwd = self._create_mini_graph_recursion(start_node,True, [])
-        result_graph_bwd = self._create_mini_graph_recursion(start_node,False, [])
+        result_graph_fwd = self._create_mini_graph_recursion(start_node,True, [], show_queries)
+        result_graph_bwd = self._create_mini_graph_recursion(start_node,False, [], show_queries)
         out_graph = []
         out = set()
         out_graph.append('digraph {ranksep=2\n')
@@ -299,7 +299,7 @@ class BWFlowTable():
         out_graph.append('}')
         return out_graph
 
-    def create_mini_graph_connections(self,start_node):
+    def create_mini_graph_connections(self,start_node, show_queries):
         """
         This method creates a graph in graphviz format for links in dataflow starting at node and going BOTH forwards
         and backwards. Unlike methods create_mini_graph_bwd_fwd and create_mini_graph this method will capture all
@@ -312,7 +312,8 @@ class BWFlowTable():
         c = conn.cursor()
         sql_fwd = "SELECT DISTINCT TARGET FROM DATAFLOWS WHERE DERIVED_FROM != ? AND SOURCE =?"
         sql_bwd = "SELECT DISTINCT SOURCE FROM DATAFLOWS WHERE DERIVED_FROM != ? AND TARGET =?"
-        omit_derived_from_table = "RSRREPDIR"
+        if show_queries: omit_derived_from_table = ""
+        else: omit_derived_from_table = "RSRREPDIR"
         complete = set()
         nodes = set()
         nodes.add(start_node)
@@ -337,7 +338,7 @@ class BWFlowTable():
         result_graph.append('}')
         return result_graph
 
-    def _create_mini_graph_recursion(self, start_node, forward, result_graph):
+    def _create_mini_graph_recursion(self, start_node, forward, result_graph, show_queries):
         """
         A convenience method to handle recirsion in the look up of all related nodes in the graph
         :param start_node: current start node
@@ -351,11 +352,13 @@ class BWFlowTable():
         sql_bwd = "SELECT DISTINCT SOURCE FROM DATAFLOWS WHERE DERIVED_FROM != ? AND TARGET =?"
         if forward: sql = sql_fwd
         else: sql = sql_bwd
-        for row in c.execute(sql, ("RSRREPDIR", start_node,)):
+        if show_queries: omit_derived_from_table = ""
+        else: omit_derived_from_table = "RSRREPDIR"
+        for row in c.execute(sql, (omit_derived_from_table, start_node,)):
             if forward: graph_link = '"' + start_node + '"' + ' -> ' + '"' + row[0] + '"' + '\n'
             else: graph_link = '"' + row[0] + '"' + ' -> ' + '"' + start_node + '"' + '\n'
             result_graph.append(graph_link)
-            if row[0] != start_node: self._create_mini_graph_recursion(row[0],forward, result_graph)
+            if row[0] != start_node: self._create_mini_graph_recursion(row[0],forward, result_graph, show_queries)
         return result_graph
 
     def create_full_graph(self):

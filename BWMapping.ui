@@ -203,6 +203,19 @@
      <string>Stored Record Count</string>
     </property>
    </widget>
+   <widget class="QCheckBox" name="queries_checkBox">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>260</y>
+      <width>151</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Show Queries</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

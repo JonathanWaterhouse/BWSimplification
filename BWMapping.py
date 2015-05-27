@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'BWMapping.ui'
 #
-# Created: Sun May 24 20:41:19 2015
-#      by: PyQt5 UI code generator 5.4
+# Created by: PyQt5 UI code generator 5.4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -67,6 +66,9 @@ class Ui_BWMapping(object):
         self.storedRec_checkBox = QtWidgets.QCheckBox(self.centralwidget)
         self.storedRec_checkBox.setGeometry(QtCore.QRect(30, 240, 171, 17))
         self.storedRec_checkBox.setObjectName("storedRec_checkBox")
+        self.queries_checkBox = QtWidgets.QCheckBox(self.centralwidget)
+        self.queries_checkBox.setGeometry(QtCore.QRect(30, 260, 151, 17))
+        self.queries_checkBox.setObjectName("queries_checkBox")
         BWMapping.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(BWMapping)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 518, 21))
@@ -102,6 +104,7 @@ class Ui_BWMapping(object):
         self.BI7_checkBox.setText(_translate("BWMapping", "BI7 Converted Flows"))
         self.flowVol_checkBox.setText(_translate("BWMapping", "Flow Volumes for Last Run"))
         self.storedRec_checkBox.setText(_translate("BWMapping", "Stored Record Count"))
+        self.queries_checkBox.setText(_translate("BWMapping", "Show Queries"))
         self.menuFile.setTitle(_translate("BWMapping", "File"))
         self.fileRegenerate_Database.setText(_translate("BWMapping", "Regenerate Database"))
         self.actionLocate_dot.setText(_translate("BWMapping", "Locate \'dot\' Executable"))

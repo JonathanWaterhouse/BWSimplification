@@ -3,6 +3,9 @@ from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtCore, QtGui, QtWidgets
 from SVGView import Ui_Dialog
+from PyQt5.QtNetwork import *
+from PyQt5.QtWebKit import *
+from PyQt5.QtPrintSupport import *
 __author__ = 'jonathan.waterhouse@gmail.com'
 
 class SVGDisplay(Ui_Dialog):

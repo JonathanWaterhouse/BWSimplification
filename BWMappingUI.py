@@ -122,6 +122,8 @@ class BWMappingUI(Ui_BWMapping):
         if self.BI7_checkBox.isChecked(): extras.append('BI7 Converted')
         if self.flowVol_checkBox.isChecked(): extras.append('Flow Volumes last Run')
         if self.storedRec_checkBox.isChecked(): extras.append('Stored Record Count')
+        if self.queries_checkBox.isChecked(): show_queries = True
+        else: show_queries = False
 
         try:
             graphviz_iterable = None
@@ -138,15 +140,15 @@ class BWMappingUI(Ui_BWMapping):
                 self.statusbar.showMessage("Creating graph in " + svg_file,10000)
                 #Get correct graph connection mode
                 if direction == 'Forward' :
-                    log_dir = True
-                    graphviz_iterable = self._t.create_mini_graph(start_node,log_dir)
+                    forward = True
+                    graphviz_iterable = self._t.create_mini_graph(start_node,forward, show_queries)
                 elif direction == 'Backward' :
-                    log_dir = False
-                    graphviz_iterable = self._t.create_mini_graph(start_node,log_dir)
+                    forward = False
+                    graphviz_iterable = self._t.create_mini_graph(start_node,forward, show_queries)
                 elif direction == 'Forward & Backward' :
-                    graphviz_iterable = self._t.create_mini_graph_bwd_fwd(start_node)
+                    graphviz_iterable = self._t.create_mini_graph_bwd_fwd(start_node, show_queries)
                 elif direction == 'All Connections' :
-                    graphviz_iterable = self._t.create_mini_graph_connections(start_node)
+                    graphviz_iterable = self._t.create_mini_graph_connections(start_node, show_queries)
                 else: print ('Invalid mapping direction supplied')
         except (OperationalError):
             msg = QMessageBox()
@@ -225,4 +227,4 @@ if __name__ == '__main__':
     ui = BWMappingUI(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
+#TODO Option to display inactive (why does ZOHCRM003 show which has inactive update rule).
