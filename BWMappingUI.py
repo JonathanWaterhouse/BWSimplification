@@ -228,3 +228,7 @@ if __name__ == '__main__':
     MainWindow.show()
     sys.exit(app.exec_())
 #TODO Option to display inactive (why does ZOHCRM003 show which has inactive update rule).
+#TODO Populate node listbox after initial db regeneration
+#TODO correct icons on error message boxwes
+#TODO map connectivity and start node irrelevant for full map
+#TODO Exit button does no work after initial regeneration of db
