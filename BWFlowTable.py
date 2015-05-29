@@ -7,7 +7,7 @@ import sys
 import sqlite3
 #sys.path.append('C:\\Users\\u104675\\Jon_Waterhouse_Docs\\OneDrive - Eastman Koda~1\\PythonProjects\\')
 sys.path.append(os.path.dirname(os.getcwd()))
-import FileManipulation.LoadTextToSQLite as SQL
+import LoadToSqlite as SQL
 class BWFlowTable():
     """
     This class is used to create a database of SAP tables, currently from SAP text downloads using SE16.
