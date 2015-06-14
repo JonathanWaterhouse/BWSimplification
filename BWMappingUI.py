@@ -16,6 +16,26 @@ class BWMappingUI(Ui_BWMapping):
         dataDir = self.getDataDir() + os.sep
         self._iniFile = dataDir + "BWMapping.ini"
         self._files= {}
+        # location of text files to populate sqlite tables
+        #Get RSLDPSEL text file in correct format
+        try:
+            fin = "RSLDPSEL.txt" # This file has one line split over two
+            fout = "RSLDPSELUnsplit.txt" # After joining the two line halves this is the new filename
+            sep = "|" # fieldseparator in the file
+            self._t._unsplit(fin, fout, sep) #this method does the unsplitting
+        except(FileNotFoundError):
+            msg = QMessageBox()
+            msg.setText("ERROR")
+            msg.setIcon(QMessageBox.Critical)
+            msg.setInformativeText("Database table source text file RSLDPSEL is missing. Please supply before continuing.")
+            msg.exec()
+            return
+        self._table_file_map = dict(RSTRAN="RSTRAN.txt", RSISOSMAP="RSISOSMAP.txt", RSLDPSEL=fout, RSLDPIO="RSLDPIO.txt",
+                    RSLDPIOT="RSLDPIOT.txt", RSBSPOKE="RSBSPOKE.txt", RSBOHDEST="RSBOHDEST.txt",
+                    RSIS="RSIS.txt", RSUPDINFO="RSUPDINFO.txt", RSDCUBEMULTI='RSDCUBEMULTI.txt',
+                    RSRREPDIR='RSRREPDIR.txt', RSDCUBET='RSDCUBET.txt', RSZELTDIR='RSZELTDIR.txt',
+                    RSMDATASTATE_EXT='RSMDATASTATE_EXT.txt', RSSTATMANPART='RSSTATMANPART.txt',
+                    RSDODSOT='RSDODSOT.txt')
         # Read the ini file containing the graphviz executable location
         try:
             f = open(self._iniFile,'rb')
@@ -99,22 +119,12 @@ class BWMappingUI(Ui_BWMapping):
             msg.setIcon(QMessageBox.Critical)
             msg.setInformativeText("There is no database configured. Please use command - File\Regenerate Db")
             msg.exec()
+            self.progressBar.setVisible(False)
+            return
         self.map_startpoint_combo.setCurrentIndex(0)
         self.map_connectivity_combo.addItems(['Forward','Backward', 'Forward & Backward','All Connections'])
 
         self.progressBar.setVisible(False)
-
-        # location of text files to populate sqlite tables
-        fin = "RSLDPSEL.txt" # This file has one line split over two
-        fout = "RSLDPSELUnsplit.txt" # After joining the two line halves this is the new filename
-        sep = "|" # fieldseparator in the file
-        self._t._unsplit(fin, fout, sep) #this method does the unsplitting
-        self._table_file_map = dict(RSTRAN="RSTRAN.txt", RSISOSMAP="RSISOSMAP.txt", RSLDPSEL=fout, RSLDPIO="RSLDPIO.txt",
-                              RSLDPIOT="RSLDPIOT.txt", RSBSPOKE="RSBSPOKE.txt", RSBOHDEST="RSBOHDEST.txt",
-                              RSIS="RSIS.txt", RSUPDINFO="RSUPDINFO.txt", RSDCUBEMULTI='RSDCUBEMULTI.txt',
-                              RSRREPDIR='RSRREPDIR.txt', RSDCUBET='RSDCUBET.txt', RSZELTDIR='RSZELTDIR.txt',
-                              RSMDATASTATE_EXT='RSMDATASTATE_EXT.txt', RSSTATMANPART='RSSTATMANPART.txt',
-                              RSDODSOT='RSDODSOT.txt')
 
     def generateMap(self):
         svg_file = ''
@@ -169,7 +179,17 @@ class BWMappingUI(Ui_BWMapping):
             graphviz_iterable = self._t.decorate_graph_sizes(graphviz_iterable)
             self.statusbar.showMessage("Generating data store size information",10000)
 
-        dot_exec_loc = self._files["DOT"]
+        try:
+            dot_exec_loc = self._files["DOT"]
+        except (KeyError):
+            self.statusbar.showMessage("Graphviz 'dot' executable location must be selected.")
+            msg = QMessageBox()
+            msg.setText("Warning")
+            msg.setInformativeText("Graphviz 'dot' executable location must be selected. Please use file menu")
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec()
+            return
+
         self._t.create_svg_file(graphviz_iterable,svg_file,dot_exec_loc)
         self.statusbar.showMessage("Graph created in " + svg_file,10000)
 
@@ -187,6 +207,15 @@ class BWMappingUI(Ui_BWMapping):
         self.progressBar.setMaximum(len(self._table_file_map)+ 1)
         self.progressBar.setVisible(True)
         #Update tables from SAP
+        if len(self._table_file_map) == 0:
+            msg = QMessageBox()
+            msg.setText("ERROR")
+            msg.setIcon(QMessageBox.Critical)
+            msg.setInformativeText("Internal program error. No database table source text file names specified.")
+            msg.exec()
+            self.progressBar.setVisible(False)
+            return
+
         for table, file in self._table_file_map.items():
             self.statusbar.showMessage("Regenerating " + table,0)
             try:
