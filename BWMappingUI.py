@@ -246,7 +246,7 @@ class BWMappingUI(Ui_BWMapping):
         for node in self._t.get_nodes(): self.map_startpoint_combo.addItem(node)
 
     def exit(self):
-        exit(0)
+        sys.exit(0)
 
 if __name__ == '__main__':
     import sys
