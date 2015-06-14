@@ -17,20 +17,10 @@ class BWMappingUI(Ui_BWMapping):
         self._iniFile = dataDir + "BWMapping.ini"
         self._files= {}
         # location of text files to populate sqlite tables
-        #Get RSLDPSEL text file in correct format
-        try:
-            fin = "RSLDPSEL.txt" # This file has one line split over two
-            fout = "RSLDPSELUnsplit.txt" # After joining the two line halves this is the new filename
-            sep = "|" # fieldseparator in the file
-            self._t._unsplit(fin, fout, sep) #this method does the unsplitting
-        except(FileNotFoundError):
-            msg = QMessageBox()
-            msg.setText("ERROR")
-            msg.setIcon(QMessageBox.Critical)
-            msg.setInformativeText("Database table source text file RSLDPSEL is missing. Please supply before continuing.")
-            msg.exec()
-            return
-        self._table_file_map = dict(RSTRAN="RSTRAN.txt", RSISOSMAP="RSISOSMAP.txt", RSLDPSEL=fout, RSLDPIO="RSLDPIO.txt",
+        self._RSLDPSEL_fil = "RSLDPSEL.txt" # This file has one line split over two
+        self._RSLDPSEL_unsplit_fil = "RSLDPSELUnsplit.txt" # After joining the two line halves this is the new filename
+        self._table_file_map = dict(RSTRAN="RSTRAN.txt", RSISOSMAP="RSISOSMAP.txt",
+                    RSLDPSEL=self._RSLDPSEL_unsplit_fil, RSLDPIO="RSLDPIO.txt",
                     RSLDPIOT="RSLDPIOT.txt", RSBSPOKE="RSBSPOKE.txt", RSBOHDEST="RSBOHDEST.txt",
                     RSIS="RSIS.txt", RSUPDINFO="RSUPDINFO.txt", RSDCUBEMULTI='RSDCUBEMULTI.txt',
                     RSRREPDIR='RSRREPDIR.txt', RSDCUBET='RSDCUBET.txt', RSZELTDIR='RSZELTDIR.txt',
@@ -40,22 +30,18 @@ class BWMappingUI(Ui_BWMapping):
         try:
             f = open(self._iniFile,'rb')
         except (FileNotFoundError):
-            self._inputFilesExist = False
-            msg = QMessageBox()
-            msg.setText("Warning")
-            msg.setInformativeText("Graphviz 'dot' executable location must be selected. Please use file menu")
-            msg.setIcon(QMessageBox.Warning)
-            msg.exec()
+            self._files["DOT"] = ''
+            f = open(self._iniFile,'wb')
+            pickle.dump(self._files,f)
             return
         else:
             try:
                 self._files = pickle.load(f)
             except (pickle.UnpicklingError, EOFError):
-                self._inputFilesExist = False
                 msg = QMessageBox()
                 msg.setText("Error")
                 msg.setIcon(QMessageBox.Critical)
-                msg.setInformativeText(" Application ini file is corrupt. Close application, delete the file, "
+                msg.setInformativeText(self._inifile + " is corrupt. Close application, delete the file, "
                                        "then reopen the application")
                 msg.exec()
                 raise(FileNotFoundError)
@@ -110,7 +96,8 @@ class BWMappingUI(Ui_BWMapping):
         self._graph_file = "BWGraph.svg"
         self._mini_graph_file = "BWMiniGraph.svg"
 
-        # Populate combo boxes
+        # Populate combo box
+        self.map_connectivity_combo.addItems(['Forward','Backward', 'Forward & Backward','All Connections'])
         try:
             for node in self._t.get_nodes(): self.map_startpoint_combo.addItem(node)
         except (OperationalError):
@@ -122,7 +109,6 @@ class BWMappingUI(Ui_BWMapping):
             self.progressBar.setVisible(False)
             return
         self.map_startpoint_combo.setCurrentIndex(0)
-        self.map_connectivity_combo.addItems(['Forward','Backward', 'Forward & Backward','All Connections'])
 
         self.progressBar.setVisible(False)
 
@@ -181,6 +167,7 @@ class BWMappingUI(Ui_BWMapping):
 
         try:
             dot_exec_loc = self._files["DOT"]
+            if dot_exec_loc == "": raise (KeyError)
         except (KeyError):
             self.statusbar.showMessage("Graphviz 'dot' executable location must be selected.")
             msg = QMessageBox()
@@ -195,8 +182,6 @@ class BWMappingUI(Ui_BWMapping):
 
         dataDir = os.getcwd() + os.sep
         SVGDisplay(self, dataDir + svg_file, self._t)
-        #TODO Add ability to touch a datastore and get its name
-        #TODO nice icon for svgdisplay
         return
 
     def generateDb(self):
@@ -206,7 +191,7 @@ class BWMappingUI(Ui_BWMapping):
         self.progressBar.setMinimum(i)
         self.progressBar.setMaximum(len(self._table_file_map)+ 1)
         self.progressBar.setVisible(True)
-        #Update tables from SAP
+        #Check file names are initialised
         if len(self._table_file_map) == 0:
             msg = QMessageBox()
             msg.setText("ERROR")
@@ -215,7 +200,19 @@ class BWMappingUI(Ui_BWMapping):
             msg.exec()
             self.progressBar.setVisible(False)
             return
-
+        #Unsplit RSLDPSEL file
+        try:
+            sep = "|" # fieldseparator in the file
+            self._t._unsplit(self._RSLDPSEL_fil, self._RSLDPSEL_unsplit_fil, sep)
+        except(FileNotFoundError):
+            msg = QMessageBox()
+            msg.setText("ERROR")
+            msg.setIcon(QMessageBox.Critical)
+            msg.setInformativeText("Database table source text file RSLDPSEL is missing. Please supply before continuing.")
+            msg.exec()
+            self.progressBar.setVisible(False)
+            return
+        #Update tables from SAP
         for table, file in self._table_file_map.items():
             self.statusbar.showMessage("Regenerating " + table,0)
             try:
@@ -245,6 +242,8 @@ class BWMappingUI(Ui_BWMapping):
         self.progressBar.setValue(i+1)
         self.progressBar.setVisible(False)
         self.statusbar.showMessage("Db tables regenerated.",10000)
+        #Populate combo box of possible starting nodes for mapping
+        for node in self._t.get_nodes(): self.map_startpoint_combo.addItem(node)
 
     def exit(self):
         exit(0)
@@ -260,4 +259,4 @@ if __name__ == '__main__':
 #TODO Populate node listbox after initial db regeneration
 #TODO correct icons on error message boxwes
 #TODO map connectivity and start node irrelevant for full map
-#TODO Exit button does no work after initial regeneration of db
+#TODO Exit button does no work in cx_freeze distributed version
