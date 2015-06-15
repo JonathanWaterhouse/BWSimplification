@@ -37,6 +37,7 @@ class Ui_BWMapping(object):
         self.map_connectivity_combo.setObjectName("map_connectivity_combo")
         self.map_startpoint_combo = QtWidgets.QComboBox(self.centralwidget)
         self.map_startpoint_combo.setGeometry(QtCore.QRect(240, 140, 241, 22))
+        self.map_startpoint_combo.setEditable(True)
         self.map_startpoint_combo.setObjectName("map_startpoint_combo")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(30, 110, 91, 16))

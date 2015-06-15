@@ -89,6 +89,7 @@ class BWMappingUI(Ui_BWMapping):
         self.fileRegenerate_Database.triggered.connect(self.generateDb)
         self.actionLocate_dot.triggered.connect(self.locate_dot)
         self.exitButton.clicked.connect(self.exit)
+        self.map_startpoint_combo.activated.connect(self.locate_node_by_index)
 
         path = ''
         database = path + 'BWStructure.db'
@@ -112,6 +113,14 @@ class BWMappingUI(Ui_BWMapping):
 
         self.progressBar.setVisible(False)
 
+    def locate_node_by_index(self,idx):
+        if self.map_startpoint_combo.currentIndex() != -1:
+            node = self.map_startpoint_combo.currentText()
+            if self._t.get_node(node):
+                self.statusbar.showMessage("", 0)
+                return
+            else: self.statusbar.showMessage(node + " does not exist in BW Map.", 0)
+
     def generateMap(self):
         svg_file = ''
         extras = []
@@ -125,13 +134,21 @@ class BWMappingUI(Ui_BWMapping):
             graphviz_iterable = None
             if self.fullmap_radio.isChecked(): # generate full map
                 svg_file = self._graph_file
-                self.statusbar.showMessage("Creating graph in " + svg_file,0)
+                self.statusbar.showMessage("Creating graph in " + svg_file,10000)
                 graphviz_iterable = self._t.create_full_graph()
                 self.statusbar.showMessage("Graph created in " + svg_file,10000)
+
             else: # Generate partial map
+
                 svg_file = self._mini_graph_file
                 start_node = self.map_startpoint_combo.currentText()
                 direction = self.map_connectivity_combo.currentText()
+
+                #Check start node exists
+                if not self._t.get_node(start_node):
+                    self.statusbar.showMessage(start_node + " does not exist in BW Map.", 0)
+                    return
+                else: self.statusbar.showMessage("", 0)
 
                 self.statusbar.showMessage("Creating graph in " + svg_file,10000)
                 #Get correct graph connection mode

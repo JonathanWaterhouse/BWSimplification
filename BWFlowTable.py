@@ -538,6 +538,18 @@ class BWFlowTable():
             if row[1] != '': nodes.add(row[1])
         return sorted(list(nodes))
 
+    def get_node(self,node):
+        """
+        Check if a given node exists
+        :returns boolean False if node does not exist and True if exists
+        """
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        c.execute("SELECT SOURCE FROM DATAFLOWS WHERE SOURCE =?",(node,))
+        row = c.fetchone()
+        if row is None: return False
+        else: return True
+
     def get_node_text(self,node):
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
