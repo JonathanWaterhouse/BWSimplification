@@ -480,10 +480,10 @@ class BWFlowTable():
         for el in rows:
             try:
                 DTA = OLTPSOURCE[el[0]] #Get the dict element to update it. Will fail with KeyError if not created previously
-                DTA[el[1]] = el[2],el[3]
+                DTA[el[1]] = el[2],el[3],el[4]
                 OLTPSOURCE[el[0]] = DTA
             except (KeyError):
-                OLTPSOURCE[el[0]] = {el[1]:(el[2],el[3])}
+                OLTPSOURCE[el[0]] = {el[1]:(el[2],el[3],el[4])}
 
         for line in graph_to_decorate:
             try:
@@ -491,7 +491,7 @@ class BWFlowTable():
                 link.append (line.split('"')[3])
                 try:
                     result = OLTPSOURCE[link[0]][link[1]] #Lookup one of the records stored before and reconstruct line if necessary
-                    out_graph.append(line.strip("\n") + "[label=" + '"' + result[0] + "\n" + result[1] + '"]' + "\n")
+                    out_graph.append(line.strip("\n") + "[label=" + '"' + result[2] + "\n" + result[0] + "\n" + result[1] + '"]' + "\n")
                 except (KeyError):
                     out_graph.append(line)
                 link = []
