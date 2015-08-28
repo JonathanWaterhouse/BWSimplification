@@ -3,7 +3,7 @@ import sys, os
 from cx_Freeze import setup, Executable
 sys.path.append(os.path.dirname(os.getcwd()))
 # Dependencies are automatically detected, but it might need fine tuning.
-build_exe_options = {'packages':["PyQT5.QtNetwork"], "include_files":["thread_16xLG.png"]}
+build_exe_options = {'packages':["PyQT4.QtNetwork"], "include_files":["thread_16xLG.png"]}
 # GUI applications require a different base on Windows (the default is for a
 # console application).
 base = None

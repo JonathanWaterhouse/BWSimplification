@@ -1,11 +1,10 @@
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QCursor
-from PyQt5.QtWidgets import QLabel
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt4.QtCore import QTimer, QString, Qt
+from PyQt4.QtGui import QCursor, QDialog, QLabel, QTextFormat
+from PyQt4 import QtCore, QtGui
 from SVGView import Ui_Dialog
-from PyQt5.QtNetwork import *
-from PyQt5.QtWebKit import *
-from PyQt5.QtPrintSupport import *
+#from PyQt4.QtNetwork import *
+#from PyQt4.QtWebKit import *
+#from PyQt4.QtPrintSupport import *
 __author__ = 'jonathan.waterhouse@gmail.com'
 
 class SVGDisplay(Ui_Dialog):
@@ -18,29 +17,38 @@ class SVGDisplay(Ui_Dialog):
         Create the display box based on input parent widget and populated with
         """
         self._db = database
-        dlg = QtWidgets.QDialog()
+        dlg = QDialog()
         self.setupUi(dlg)
-        imageUrl = QtCore.QUrl.fromLocalFile(svgFile) # Fully qualified filename
-        self.webView.load(imageUrl)
+        self.imageUrl = QtCore.QUrl.fromLocalFile(svgFile) # Fully qualified filename
+        self.webView.load(self.imageUrl)
         self.webView.setZoomFactor(0.5)
+        self.horizontalSlider.setMinimum(0)
+        self.horizontalSlider.setMaximum(100)
         self.horizontalSlider.setValue(50)
+        self.horizontalSlider.setTracking(True)
         self.horizontalSlider.valueChanged.connect(self.magnification)
         self.webView.selectionChanged.connect(self.showDetails)
         dlg.setVisible(True)
         dlg.exec_()
 
     def magnification(self):
-        self.webView.setZoomFactor(self.horizontalSlider.sliderPosition()/100)
+        self.webView.setZoomFactor(self.horizontalSlider.sliderPosition()/100.0)
 
     def showDetails(self):
         try:
-            key = self.webView.selectedText()
+            key = str(self.webView.selectedText())
             if key != '': name = self._db.get_node_text(key)
             else: name = ''
         except KeyError: return
-        label = QLabel('<font style="color: grey; background-color: yellow"><p>' + repr(name) + '</p></font>')
-        label.move(QCursor.pos().x()+30,QCursor.pos().y()+20)
+        label = QLabel(name)
+        label.textFormat = Qt.RichText
+        label.alignment = Qt.AlignLeft
+        label.move(QCursor.pos().x()-40,QCursor.pos().y()+20)
         label.setWindowFlags(QtCore.Qt.SplashScreen)
         label.show()
-        QTimer.singleShot(10000,label.destroy)
+        timer = QTimer()
+        timer.setSingleShot(True)
+        timer.connect(label,timer.timeout(),label.destroy(True))
+        timer.start(1000)
+
 

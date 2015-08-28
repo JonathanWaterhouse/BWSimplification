@@ -1,15 +1,18 @@
+from __future__ import division
+from __future__ import absolute_import
 import subprocess
 import os
 import os.path
+from io import open
 
-__author__ = 'U104675'
+__author__ = u'U104675'
 import sys
 import sqlite3
 #sys.path.append('C:\\Users\\u104675\\Jon_Waterhouse_Docs\\OneDrive - Eastman Koda~1\\PythonProjects\\')
-sys.path.append(os.path.dirname(os.getcwd()))
+sys.path.append(os.path.dirname(os.getcwdu()))
 import LoadToSqlite as SQL
-class BWFlowTable():
-    """
+class BWFlowTable(object):
+    u"""
     This class is used to create a database of SAP tables, currently from SAP text downloads using SE16.
 
     The following tables are currently used
@@ -27,14 +30,14 @@ class BWFlowTable():
     RSMDATASTATE_EXT - Record Counts
     """
     def __init__(self, database):
-        """
+        u"""
         :param database: sets the database name storing all tje internal information
         :return: nothing
         """
         self._database = database
 
     def update_table(self,table_file_map, unwanted_cols):
-        """
+        u"""
         Populates specified sqlite databse tables from flat files in SAP "Unconverted" output format ie fields
         separated by "|"
         :param database: database we will create tables in
@@ -47,7 +50,7 @@ class BWFlowTable():
             SQL.TextInSQL(self._database, file, table, unwanted_cols)
 
     def create_flow_table(self):
-        """
+        u"""
         This method creates the empty table that will ultimately contain all the database dataflows in form SOURCE ->
         TARGET
         :return: nothing
@@ -55,14 +58,14 @@ class BWFlowTable():
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Delete table if already exists
-        c.execute('DROP TABLE IF EXISTS ' + 'DATAFLOWS')
-        c.execute('''CREATE TABLE DATAFLOWS (SOURCE text, TRANSFORM text, TARGET text, DERIVED_FROM text, SOURCE_TYPE text,
+        c.execute(u'DROP TABLE IF EXISTS ' + u'DATAFLOWS')
+        c.execute(u'''CREATE TABLE DATAFLOWS (SOURCE text, TRANSFORM text, TARGET text, DERIVED_FROM text, SOURCE_TYPE text,
         SOURCE_SYSTEM text,SOURCE_SUB_TYP text, TARGET_TYPE text, TARGET_SUB_TYPE text, NAME text)
         ''')
         conn.commit()
 
     def update_flow_from_RSUPDINFO(self):
-        """
+        u"""
         method create_flow_table must be called before this method to create table DATAFLOWS
         This method updates that table with relevant information from table RSUPDINFO concerning BW3.5 update rules
         :return: nothing
@@ -70,7 +73,7 @@ class BWFlowTable():
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
-        c.executescript("""
+        c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TRANSFORM, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT DISTINCT CASE WHEN SUBSTR(A.ISOURCE,1,1)="8" THEN SUBSTR(A.ISOURCE,2,LENGTH(A.ISOURCE)) ELSE A.ISOURCE END,
@@ -83,7 +86,7 @@ class BWFlowTable():
         conn.commit()
 
     def update_flow_from_RSTRAN(self):
-        """
+        u"""
         method create_flow_table must be called before this method to create table DATAFLOWS
         This method updates that table with relevant information from table RSTRAN concerning BI7 transformations
         :return: nothing
@@ -92,34 +95,34 @@ class BWFlowTable():
         c = conn.cursor()
         result_set = []
         #Assume target already exists and we are appending records
-        for row in c.execute ('''SELECT A.SOURCENAME , A.TARGETNAME , "RSTRAN" , A.SOURCETYPE , A.SOURCENAME , A.SOURCESUBTYPE , A.TARGETTYPE ,
+        for row in c.execute (u'''SELECT A.SOURCENAME , A.TARGETNAME , "RSTRAN" , A.SOURCETYPE , A.SOURCENAME , A.SOURCESUBTYPE , A.TARGETTYPE ,
         A.TARGETSUBTYPE , A.TXTLG FROM RSTRAN AS A WHERE A.OBJVERS = "A" AND A.OBJSTAT = "ACT"
         '''):
             # Build a new line. We do this because SOURCENAME may have two parts separated by a blank character, we need
             #the first and second pieces.
             line = []
             i = len(row)
-            for i in range(0,len(row)):
+            for i in xrange(0,len(row)):
                 col = row[i]
                 if i == 0:
-                    if col.find(" ") == -1:  line.append(col)
-                    else: line.append(col[0:col.find(" ")])
+                    if col.find(u" ") == -1:  line.append(col)
+                    else: line.append(col[0:col.find(u" ")])
                 elif i == 4:
-                    if col.find(" ") == -1:  line.append(col)
-                    else: line.append(col[col.rfind(" ")+ 1 :len(col)])
+                    if col.find(u" ") == -1:  line.append(col)
+                    else: line.append(col[col.rfind(u" ")+ 1 :len(col)])
                 else: line.append(col)
             result_set.append(tuple(line))
             line = []
 
         for row in result_set:
-            c.execute('''INSERT INTO DATAFLOWS (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM,
+            c.execute(u'''INSERT INTO DATAFLOWS (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM,
             SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
             VALUES (?,?,?,?,?,?,?,?,?)''', row)
 
         conn.commit()
 
     def update_flow_from_RSIOSMAP(self):
-        """
+        u"""
         method create_flow_table must be called before this method to create table DATAFLOWS
         This method updates that table with relevant information from table RSIOSMAP with information concerning
         infosources
@@ -128,7 +131,7 @@ class BWFlowTable():
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
-        c.executescript("""
+        c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT A.LOGSYS,
@@ -138,7 +141,7 @@ class BWFlowTable():
         WHERE A.OBJVERS = "A" AND B.OBJVERS = "A" AND A.OLTPSOURCE != A.ISOURCE
         """)
         conn.commit()
-        c.executescript("""
+        c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT CASE WHEN SUBSTR(A.OLTPSOURCE,1,1)="8" THEN SUBSTR(A.OLTPSOURCE,2,LENGTH(A.OLTPSOURCE)) ELSE A.OLTPSOURCE END,
@@ -150,7 +153,7 @@ class BWFlowTable():
         conn.commit()
 
     def update_flow_from_RSBSPOKE(self):
-        """
+        u"""
         method create_flow_table must be called before this method to create table DATAFLOWS
         This method updates that table with relevant information from table RSBSPOKE with information concerning BW3.5
         infospokes
@@ -159,7 +162,7 @@ class BWFlowTable():
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
-        c.executescript("""
+        c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT A.OHSOURCE , A.INFOSPOKE , "RSBSPOKE" , A.OHSRCTYPE , "P2WCLNT023" , "" , "INFOSPOKE" ,
@@ -170,7 +173,7 @@ class BWFlowTable():
         conn.commit()
 
     def update_flow_from_RSBOHDEST(self):
-        """
+        u"""
         method create_flow_table must be called before this method to create table DATAFLOWS
         This method updates that table with relevant information from table RSBOHDEST with information concerning BI7
         open hub destinations
@@ -179,7 +182,7 @@ class BWFlowTable():
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
-        c.executescript("""
+        c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT A.SOURCEOBJNM , A.OHDEST , "RSBOHDEST" , A.SOURCETLOGO , "P2WCLNT023" , A.SOURCETLOGOSUB ,
@@ -191,7 +194,7 @@ class BWFlowTable():
         conn.commit()
 
     def update_flow_from_RSLDPSEL(self):
-        """
+        u"""
         method create_flow_table must be called before this method to create table DATAFLOWS
         This method updates that table with relevant information from table RSLDPSEL and RSLDPIO to give information
         on flat file loads in infopackages.
@@ -200,7 +203,7 @@ class BWFlowTable():
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
-        c.executescript("""
+        c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TRANSFORM, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT A.FILENAME, B.OLTPSOURCE, B.SOURCE, "RSLDPSEL", B.LOGSYS,  "", "",
@@ -221,7 +224,7 @@ class BWFlowTable():
         conn.commit()
 
     def update_flow_from_RSDCUBEMULTI(self):
-        """
+        u"""
         method create_flow_table must be called before this method to create table DATAFLOWS
         This method updates that table with relevant information from table RSDCUBEMULTI  concerning cube contents of
         multiproviders
@@ -230,7 +233,7 @@ class BWFlowTable():
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
-        c.executescript("""
+        c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT A.PARTCUBE , A.INFOCUBE , "RSDCUBEMULTI" , "CUBE" , "P2WCLNT023" , "" , "MULTIPROVIDER" ,
@@ -241,7 +244,7 @@ class BWFlowTable():
         conn.commit()
 
     def update_flow_from_RSRREPDIR(self):
-        """
+        u"""
         method create_flow_table must be called before this method to create table DATAFLOWS
         This method updates that table with relevant information from table RSRREPDIR to get information on report
         connections to cubes and multiproviders.
@@ -250,7 +253,7 @@ class BWFlowTable():
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
-        c.executescript("""
+        c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT A.INFOCUBE , A.COMPID , "RSRREPDIR" , "INFOCUBE" , "P2WCLNT023" , "" , A.COMPTYPE ,
@@ -261,7 +264,7 @@ class BWFlowTable():
         conn.commit()
 
     def create_mini_graph(self, start_node, forward, show_queries):
-        """
+        u"""
         This method creates a graph in graphviz format for links in dataflow starting at node and going EITHER forwards
         (forward = True) or backwards (forwards = False). Going forward from the node only nodes connected  in that
         direction are shown. For example if start_node is A and it connects A -> B -> C but als D connects to C as
@@ -273,13 +276,13 @@ class BWFlowTable():
         """
         result_graph = self._create_mini_graph_recursion(start_node,forward, [], show_queries)
         out_graph = []
-        out_graph.append('digraph {ranksep=2\n')
+        out_graph.append(u'digraph {ranksep=2\n')
         for line in set(result_graph): out_graph.append(line)
-        out_graph.append('}')
+        out_graph.append(u'}')
         return out_graph
 
     def create_mini_graph_bwd_fwd(self, start_node, show_queries):
-        """
+        u"""
         This method creates a graph in graphviz format for links in dataflow starting at node and going BOTH forwards
         and backwards. Going forward from the node only nodes connected  in that direction are shown. For example if
         start_node is A and it connects A -> B -> C but als D connects to C as D -> C, D will NOT be shown.
@@ -291,16 +294,16 @@ class BWFlowTable():
         result_graph_bwd = self._create_mini_graph_recursion(start_node,False, [], show_queries)
         out_graph = []
         out = set()
-        out_graph.append('digraph {ranksep=2\n')
+        out_graph.append(u'digraph {ranksep=2\n')
         #Remove duplicates by means of set
         for line in result_graph_fwd: out.add(line)
         for line in result_graph_bwd: out.add(line)
         for line in out: out_graph.append(line)
-        out_graph.append('}')
+        out_graph.append(u'}')
         return out_graph
 
     def create_mini_graph_connections(self,start_node, show_queries):
-        """
+        u"""
         This method creates a graph in graphviz format for links in dataflow starting at node and going BOTH forwards
         and backwards. Unlike methods create_mini_graph_bwd_fwd and create_mini_graph this method will capture all
         connectons. For example if start_node is A and it connects A -> B -> C but also D connects to C as D -> C, D WILL
@@ -310,10 +313,10 @@ class BWFlowTable():
         """
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
-        sql_fwd = "SELECT DISTINCT TARGET FROM DATAFLOWS WHERE DERIVED_FROM != ? AND SOURCE =?"
-        sql_bwd = "SELECT DISTINCT SOURCE FROM DATAFLOWS WHERE DERIVED_FROM != ? AND TARGET =?"
-        if show_queries: omit_derived_from_table = ""
-        else: omit_derived_from_table = "RSRREPDIR"
+        sql_fwd = u"SELECT DISTINCT TARGET FROM DATAFLOWS WHERE DERIVED_FROM != ? AND SOURCE =?"
+        sql_bwd = u"SELECT DISTINCT SOURCE FROM DATAFLOWS WHERE DERIVED_FROM != ? AND TARGET =?"
+        if show_queries: omit_derived_from_table = u""
+        else: omit_derived_from_table = u"RSRREPDIR"
         complete = set()
         nodes = set()
         nodes.add(start_node)
@@ -329,17 +332,17 @@ class BWFlowTable():
 
         for el in complete:
             for row in c.execute(sql_fwd,(omit_derived_from_table, el)):
-                graph_set.add('"' + el + '"' + ' -> ' + '"' + row[0] + '"' + '\n')
+                graph_set.add(u'"' + el + u'"' + u' -> ' + u'"' + row[0] + u'"' + u'\n')
             for row in c.execute(sql_bwd,(omit_derived_from_table, el)):
-                graph_set.add('"' + row[0] + '"' + ' -> ' + '"' + el + '"' + '\n')
+                graph_set.add(u'"' + row[0] + u'"' + u' -> ' + u'"' + el + u'"' + u'\n')
 
-        result_graph.append('digraph {ranksep=2\n')
+        result_graph.append(u'digraph {ranksep=2\n')
         for line in graph_set: result_graph.append(line)
-        result_graph.append('}')
+        result_graph.append(u'}')
         return result_graph
 
     def _create_mini_graph_recursion(self, start_node, forward, result_graph, show_queries):
-        """
+        u"""
         A convenience method to handle recirsion in the look up of all related nodes in the graph
         :param start_node: current start node
         :param forward: which direction we are looking up forward = True or False
@@ -348,21 +351,22 @@ class BWFlowTable():
         """
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
-        sql_fwd = "SELECT DISTINCT TARGET FROM DATAFLOWS WHERE DERIVED_FROM != ? AND SOURCE =?"
-        sql_bwd = "SELECT DISTINCT SOURCE FROM DATAFLOWS WHERE DERIVED_FROM != ? AND TARGET =?"
+        sql_fwd = u"SELECT DISTINCT TARGET FROM DATAFLOWS WHERE DERIVED_FROM != ? AND SOURCE =?"
+        sql_bwd = u"SELECT DISTINCT SOURCE FROM DATAFLOWS WHERE DERIVED_FROM != ? AND TARGET =?"
         if forward: sql = sql_fwd
         else: sql = sql_bwd
-        if show_queries: omit_derived_from_table = ""
-        else: omit_derived_from_table = "RSRREPDIR"
-        for row in c.execute(sql, (omit_derived_from_table, start_node,)):
-            if forward: graph_link = '"' + start_node + '"' + ' -> ' + '"' + row[0] + '"' + '\n'
-            else: graph_link = '"' + row[0] + '"' + ' -> ' + '"' + start_node + '"' + '\n'
+        if show_queries: omit_derived_from_table = u""
+        else: omit_derived_from_table = u"RSRREPDIR"
+        #Note that in PyQt4 start_node is QString and sqlite3 does not like that
+        for row in c.execute(sql, (omit_derived_from_table, str(start_node),)):
+            if forward: graph_link = u'"' + start_node + u'"' + u' -> ' + u'"' + row[0] + u'"' + u'\n'
+            else: graph_link = u'"' + row[0] + u'"' + u' -> ' + u'"' + start_node + u'"' + u'\n'
             result_graph.append(graph_link)
             if row[0] != start_node: self._create_mini_graph_recursion(row[0],forward, result_graph, show_queries)
         return result_graph
 
     def create_full_graph(self):
-        """
+        u"""
         Create a fully connected graph from all nodes in the DATAFLOWS table
         :return: An iterable of lines which could be out put to a file and be read by graphviz "dot" program
         """
@@ -370,30 +374,30 @@ class BWFlowTable():
         c = conn.cursor()
         out = set() #Removes duplicates
         out_graph = []
-        out_graph.append('digraph {ranksep=2\n')
-        for row in c.execute ('''SELECT A.SOURCE, A.TARGET FROM DATAFLOWS AS A'''):
-            out.add('"' + row[0] + '"' + ' -> ' + '"' + row[1] + '"' + '\n')
+        out_graph.append(u'digraph {ranksep=2\n')
+        for row in c.execute (u'''SELECT A.SOURCE, A.TARGET FROM DATAFLOWS AS A'''):
+            out.add(u'"' + row[0] + u'"' + u' -> ' + u'"' + row[1] + u'"' + u'\n')
         for line in out: out_graph.append(line)
-        out_graph.append('}')
+        out_graph.append(u'}')
         return out_graph
 
     def decorate_graph_sizes(self, graph_to_decorate):
-        """
+        u"""
         Take input of a file ready to be graphed by dot and add information regarding number of records in the datastore
         """
         # Identify the nodes we are interested in - just the ones in the incoming graph
         nodes_we_want = []
         for line in graph_to_decorate:
-            if "->" in line: nodes_we_want.append(line.split('"')[1])
+            if u"->" in line: nodes_we_want.append(line.split(u'"')[1])
 
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         out_graph = []
         sizes = {}
         for node in nodes_we_want:
-            row = c.execute("SELECT DTA, RECORDSALL FROM RSMDATASTATE_EXT WHERE DTATYPE != ? AND DTA = ?", ("DATASRC", node))
+            row = c.execute(u"SELECT DTA, RECORDSALL FROM RSMDATASTATE_EXT WHERE DTATYPE != ? AND DTA = ?", (u"DATASRC", node))
             for r in row:
-                sizes[r[0]] = int(r[1].replace(',','')) # convert RECORDSALL in format "123,456,789" to integer
+                sizes[r[0]] = int(r[1].replace(u',',u'')) # convert RECORDSALL in format "123,456,789" to integer
 
         #for row in c.execute('''SELECT DTA, RECORDSALL FROM RSMDATASTATE_EXT
         #WHERE DTATYPE != "DTASRC"
@@ -411,33 +415,33 @@ class BWFlowTable():
         base_interval = int(max_size / num_intervals)
         #Generate the intervals which will get a different color
         start = 1
-        for i in range(num_intervals):
-            size_ranges.append(range(i*base_interval,(i+1)*base_interval)) # The intervals of size
+        for i in xrange(num_intervals):
+            size_ranges.append(xrange(i*base_interval,(i+1)*base_interval)) # The intervals of size
         #Last interval should end at max_size, rounding errors can mean it dos not. Ensure it does
-        last_range = range((i-1)*base_interval, max_size+1)
+        last_range = xrange((i-1)*base_interval, max_size+1)
         del size_ranges[-1]
         size_ranges.append(last_range)
         #Generate color values (in HSV format - http://www.graphviz.org/doc/info/attrs.html#k:color)
         #Hue, Saturation, Brightness. Hue in range 0.4 (green) to 0.0 (orange)
-        HSV_tuples = [(-1.0*((x*1.0/num_intervals)-1)*0.4, 0.9, 0.9) for x in range(num_intervals)]
+        HSV_tuples = [(-1.0*((x*1.0/num_intervals)-1)*0.4, 0.9, 0.9) for x in xrange(num_intervals)]
         #Loop over datastore records
         for data_store ,size in sizes.items():
-            fmtString = ''
+            fmtString = u''
             i = 0
             for rg in size_ranges:
                 if size in rg:
-                    fmtString = '[color=white, fillcolor="' + repr(HSV_tuples[i]).lstrip('(').rstrip(')') + '", style="rounded,filled", shape=box]'
+                    fmtString = u'[color=white, fillcolor="' + repr(HSV_tuples[i]).lstrip(u'(').rstrip(u')') + u'", style="rounded,filled", shape=box]'
                     break
                 i += 1
-            if size == 0: fmtString = '[color=red, style="rounded", shape=box]'
-            out_graph.append('"' + data_store + '" ' + fmtString + '\n')
+            if size == 0: fmtString = u'[color=red, style="rounded", shape=box]'
+            out_graph.append(u'"' + data_store + u'" ' + fmtString + u'\n')
         del graph_to_decorate[-1] # remove delimiting "}"
         graph_to_decorate.extend(out_graph)
-        graph_to_decorate.append('}') # Add back delimiter
+        graph_to_decorate.append(u'}') # Add back delimiter
         return graph_to_decorate
 
     def decorate_graph_BI7Flow(self, graph_to_decorate):
-        """
+        u"""
         Take input of a file ready to be graphed by dot and add information regarding whether connections are BI7
         transformations or infosources
         """
@@ -447,12 +451,12 @@ class BWFlowTable():
         connections, out_graph, link = [], [], []
         for line in graph_to_decorate:
             try:
-                link.append(line.split('"')[1])
-                link.append (line.split('"')[3])
-                row =  c.execute("SELECT DERIVED_FROM FROM DATAFLOWS WHERE SOURCE=? and TARGET=?",(link[0],link[1]))
+                link.append(line.split(u'"')[1])
+                link.append (line.split(u'"')[3])
+                row =  c.execute(u"SELECT DERIVED_FROM FROM DATAFLOWS WHERE SOURCE=? and TARGET=?",(str(link[0]),str(link[1])))
                 for result in row: derived_from = result[0]
-                if derived_from == "RSUPDINFO" or derived_from == "RSBSPOKE": out_graph.append(line.strip("\n") + "[color=red]\n")
-                elif derived_from == "RSTRAN" or derived_from == "RSBOHDEST": out_graph.append(line.strip("\n") + "[style=bold,color=green]\n")
+                if derived_from == u"RSUPDINFO" or derived_from == u"RSBSPOKE": out_graph.append(str(line).strip(u"\n") + u"[color=red]\n")
+                elif derived_from == u"RSTRAN" or derived_from == u"RSBOHDEST": out_graph.append(str(line).strip(u"\n") + u"[style=bold,color=green]\n")
                 else: out_graph.append(line)
                 link = []
             except (IndexError):
@@ -465,7 +469,7 @@ class BWFlowTable():
         c = conn.cursor()
         connections, out_graph, link = [], [], []
         #This sql statement looks up records with a transaction date as near as possible to today
-        rows = c.execute('''SELECT
+        rows = c.execute(u'''SELECT
                         CASE WHEN SUBSTR (OLTPSOURCE, 1, 1) = "8" THEN SUBSTR (OLTPSOURCE, 2, LENGTH(OLTPSOURCE))
                         ELSE OLTPSOURCE END,
                         DTA, ANZRECS, INSERTRECS,
@@ -487,11 +491,11 @@ class BWFlowTable():
 
         for line in graph_to_decorate:
             try:
-                link.append(line.split('"')[1])
-                link.append (line.split('"')[3])
+                link.append(line.split(u'"')[1])
+                link.append (line.split(u'"')[3])
                 try:
                     result = OLTPSOURCE[link[0]][link[1]] #Lookup one of the records stored before and reconstruct line if necessary
-                    out_graph.append(line.strip("\n") + "[label=" + '"' + result[2] + "\n" + result[0] + "\n" + result[1] + '"]' + "\n")
+                    out_graph.append(line.strip(u"\n") + u"[label=" + u'"' + result[2] + u"\n" + result[0] + u"\n" + result[1] + u'"]' + u"\n")
                 except (KeyError):
                     out_graph.append(line)
                 link = []
@@ -502,50 +506,51 @@ class BWFlowTable():
 
     def create_svg_file(self, graphviz_format_iterable, svg_file_out, dot_loc):
         #intermdiate text file
-        graphviz_text_file = svg_file_out[0:svg_file_out.find('.')] + '.txt'
-        fo = open(graphviz_text_file,'w')
+        graphviz_text_file = svg_file_out[0:svg_file_out.find(u'.')] + u'.txt'
+        fo = open(graphviz_text_file,u'w')
         for line in graphviz_format_iterable:
-            fo.write(line)
+            fo.write(unicode(str(line)))
         fo.close()
         # Call dot program to output svg file
         #dot_loc = "c:\\Program Files\\Graphviz2.38\\bin\\dot.exe"
         try:
-            subprocess.call([dot_loc,'-Tsvg', graphviz_text_file, '-o',
+            subprocess.call([dot_loc,u'-Tsvg', graphviz_text_file, u'-o',
                          svg_file_out], stderr = None, shell=False)
-            subprocess.check_call([dot_loc,'-Tsvg', graphviz_text_file, '-o',
+            subprocess.check_call([dot_loc,u'-Tsvg', graphviz_text_file, u'-o',
                          svg_file_out],stderr = None, shell=False)
-        except (subprocess.CalledProcessError) as e:
-            print ("CalledProcessError error Handling.......")
-            print("Returncode {0} command {1} output {2}".format(e.returncode, e.cmd, e.output))
-        except OSError as e:
-            print ("OSError error Handling.......")
-            print("Returncode = {0} meaning '{1}' file = {2}".format(e.errno, e.strerror, e.filename))
-        except ValueError as e:
-            print ("ValueError error Handling.......")
+        except (subprocess.CalledProcessError), e:
+            print u"CalledProcessError error Handling......."
+            print u"Returncode {0} command {1} output {2}".format(e.returncode, e.cmd, e.output)
+        except OSError, e:
+            print u"OSError error Handling......."
+            print u"Returncode = {0} meaning '{1}' file = {2}".format(e.errno, e.strerror, e.filename)
+        except ValueError, e:
+            print u"ValueError error Handling......."
 
         return
 
     def get_nodes(self):
-        """
+        u"""
             get the graph nodes in an ordered list if they exist
         """
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         nodes = set()
-        for row in c.execute('''SELECT SOURCE, TARGET FROM DATAFLOWS
+        for row in c.execute(u'''SELECT SOURCE, TARGET FROM DATAFLOWS
         '''):
-            if row[0] != '': nodes.add(row[0])
-            if row[1] != '': nodes.add(row[1])
+            if row[0] != u'': nodes.add(row[0])
+            if row[1] != u'': nodes.add(row[1])
         return sorted(list(nodes))
 
     def get_node(self,node):
-        """
+        u"""
         Check if a given node exists
         :returns boolean False if node does not exist and True if exists
         """
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
-        c.execute("SELECT SOURCE FROM DATAFLOWS WHERE SOURCE =?",(node,))
+        #note that in PyQt4 incoming node is QString and sqlite3 does not like that
+        c.execute(u"SELECT SOURCE FROM DATAFLOWS WHERE SOURCE =?",(str(node),))
         row = c.fetchone()
         if row is None: return False
         else: return True
@@ -553,45 +558,45 @@ class BWFlowTable():
     def get_node_text(self,node):
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
-        c.execute("SELECT TXTLG FROM RSDCUBET WHERE INFOCUBE=? AND OBJVERS=?", (node,'A'))
+        c.execute(u"SELECT TXTLG FROM RSDCUBET WHERE INFOCUBE=? AND OBJVERS=?", (node,u'A'))
         row = c.fetchone()
         if row is not None: return row[0]
         else:
-            c.execute("SELECT TXTLG FROM RSDODSOT WHERE ODSOBJECT=? AND OBJVERS=?", (node,'A'))
+            c.execute(u"SELECT TXTLG FROM RSDODSOT WHERE ODSOBJECT=? AND OBJVERS=?", (node,u'A'))
             row = c.fetchone()
             if row is not None: return row[0]
-            else: return ""
+            else: return u""
 
     def _unsplit(self, fileIn, fileOut, field_sep):
-        """
+        u"""
         takes a file downloaded by ZSE16 in unconverted format, where the lines
         are long enough to have wrapped. Joins the two have lines
         """
-        fi = open(fileIn,'r')
-        fo = open(fileOut,'w')
+        fi = open(fileIn,u'r')
+        fo = open(fileOut,u'w')
         inCount = 0
         outCount = 0
         l1 = []
         l2 = []
         for line in fi:
-            if line[0] != "|": continue
+            if line[0] != u"|": continue
             if inCount%2 == 0:
-                ln = line.rstrip(field_sep + '\n')
+                ln = line.rstrip(field_sep + u'\n')
                 l1 = ln.split(field_sep)
             else:
-                ln = line.rstrip('\n')
+                ln = line.rstrip(u'\n')
                 l2 = ln.split(field_sep)
                 l1.extend(l2)
-                fo.write(field_sep.join(l1) + '|\n')
+                fo.write(field_sep.join(l1) + u'|\n')
                 l1, l2 = [], []
                 outCount += 1
             inCount += 1
         fi.close()
         fo.close()
 
-if __name__ == "__main__":
+if __name__ == u"__main__":
     #path = 'C:\\Users\\u104675\\OneDrive - Eastman Kodak Company\\P2238 Reorganisation\\MDGeogAttribs\\'
-    """
+    u"""
     RSIS - Infosource
     RSUPDINFO - Update Rules Infoprovider to infosource (Transactions and flexible Infosource?)
     RSTRAN - BI7 Data transformations
@@ -605,19 +610,19 @@ if __name__ == "__main__":
     RSDCUBET - Cube and Multiprovider texts
     RSMDATASTATE_EXT - Record Counts
     """
-    path = ''
-    database = path + 'BWStructure.db'
+    path = u''
+    database = path + u'BWStructure.db'
     unwanted_cols = []
     t = BWFlowTable(database)
-    fin = "RSLDPSEL.txt"
-    fout = "RSLDPSELUnsplit.txt"
-    sep = "|"
+    fin = u"RSLDPSEL.txt"
+    fout = u"RSLDPSELUnsplit.txt"
+    sep = u"|"
     t._unsplit(fin, fout, sep)
-    table_file_map = {"RSTRAN": "RSTRAN.txt", 'RSISOSMAP':"RSISOSMAP.txt",'RSLDPSEL':fout,
-                      'RSLDPIO':"RSLDPIO.txt", 'RSLDPIOT': "RSLDPIOT.txt", 'RSBSPOKE': "RSBSPOKE.txt",
-                      'RSBOHDEST':"RSBOHDEST.txt", "RSIS":"RSIS.txt", "RSUPDINFO":"RSUPDINFO.txt",
-                      'RSDCUBEMULTI':'RSDCUBEMULTI.txt', 'RSRREPDIR':'RSRREPDIR.txt', 'RSDCUBET':'RSDCUBET.txt',
-                      'RSZELTDIR':'RSZELTDIR.txt', 'RSMDATASTATE_EXT':'RSMDATASTATE_EXT.txt', 'RSSTATMANPART': 'RSSTATMANPART.txt'}
+    table_file_map = {u"RSTRAN": u"RSTRAN.txt", u'RSISOSMAP':u"RSISOSMAP.txt",u'RSLDPSEL':fout,
+                      u'RSLDPIO':u"RSLDPIO.txt", u'RSLDPIOT': u"RSLDPIOT.txt", u'RSBSPOKE': u"RSBSPOKE.txt",
+                      u'RSBOHDEST':u"RSBOHDEST.txt", u"RSIS":u"RSIS.txt", u"RSUPDINFO":u"RSUPDINFO.txt",
+                      u'RSDCUBEMULTI':u'RSDCUBEMULTI.txt', u'RSRREPDIR':u'RSRREPDIR.txt', u'RSDCUBET':u'RSDCUBET.txt',
+                      u'RSZELTDIR':u'RSZELTDIR.txt', u'RSMDATASTATE_EXT':u'RSMDATASTATE_EXT.txt', u'RSSTATMANPART': u'RSSTATMANPART.txt'}
     #table_file_map = {'RSSTATMANPART': 'RSSTATMANPART.txt'}
     #t. update_table(table_file_map, unwanted_cols)
     #t.create_flow_table()
@@ -637,6 +642,6 @@ if __name__ == "__main__":
     #graph_file = "BWGraph.svg"
     #t.create_svg_file(t.decorate_graph_flow_volumes(t.create_full_graph()), graph_file)
     forward = True
-    graph_file = "BWMiniGraph.svg"
-    t.create_svg_file(t.decorate_graph_BI7Flow(t.decorate_graph_flow_volumes(t.create_mini_graph_bwd_fwd('ZC00165'))), graph_file)
+    graph_file = u"BWMiniGraph.svg"
+    t.create_svg_file(t.decorate_graph_BI7Flow(t.decorate_graph_flow_volumes(t.create_mini_graph_bwd_fwd(u'ZC00165'))), graph_file)
     #t.create_svg_file(t.decorate_graph_flow_volumes(t.create_mini_graph_connections('ZO00143')), graph_file)

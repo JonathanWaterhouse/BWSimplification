@@ -2,46 +2,60 @@
 
 # Form implementation generated from reading ui file 'SVGView.ui'
 #
-# Created by: PyQt5 UI code generator 5.4.1
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt4 import QtCore, QtGui
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
+        Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(1616, 839)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("thread_16xLG.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("thread_16xLG.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Dialog.setWindowIcon(icon)
         Dialog.setSizeGripEnabled(True)
-        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.webView = QtWebKitWidgets.QWebView(Dialog)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.webView = QtWebKit.QWebView(Dialog)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.webView.sizePolicy().hasHeightForWidth())
         self.webView.setSizePolicy(sizePolicy)
-        self.webView.setUrl(QtCore.QUrl("about:blank"))
-        self.webView.setObjectName("webView")
+        self.webView.setUrl(QtCore.QUrl(_fromUtf8("about:blank")))
+        self.webView.setObjectName(_fromUtf8("webView"))
         self.verticalLayout.addWidget(self.webView)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.horizontalSlider = QtWidgets.QSlider(Dialog)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.horizontalSlider = QtGui.QSlider(Dialog)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.horizontalSlider.sizePolicy().hasHeightForWidth())
         self.horizontalSlider.setSizePolicy(sizePolicy)
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider.setObjectName("horizontalSlider")
+        self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
         self.horizontalLayout.addWidget(self.horizontalSlider)
-        self.label = QtWidgets.QLabel(Dialog)
-        self.label.setObjectName("label")
+        self.label = QtGui.QLabel(Dialog)
+        self.label.setObjectName(_fromUtf8("label"))
         self.horizontalLayout.addWidget(self.label)
-        spacerItem = QtWidgets.QSpacerItem(488, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtGui.QSpacerItem(488, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
 
@@ -49,8 +63,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Display Graph"))
-        self.label.setText(_translate("Dialog", "Set Zoom"))
+        Dialog.setWindowTitle(_translate("Dialog", "Display Graph", None))
+        self.label.setText(_translate("Dialog", "Set Zoom", None))
 
-from PyQt5 import QtWebKitWidgets
+from PyQt4 import QtWebKit

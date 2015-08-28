@@ -1,5 +1,5 @@
 from sqlite3 import OperationalError
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QFileDialog
+from PyQt4.QtGui import QApplication, QMainWindow, QMessageBox, QWidget, QFileDialog
 from BWMapping import Ui_BWMapping
 from BWFlowTable import BWFlowTable
 from SVGDisplay import *
@@ -29,7 +29,7 @@ class BWMappingUI(Ui_BWMapping):
         # Read the ini file containing the graphviz executable location
         try:
             f = open(self._iniFile,'rb')
-        except (FileNotFoundError):
+        except (IOError):
             self._files["DOT"] = ''
             f = open(self._iniFile,'wb')
             pickle.dump(self._files,f)
@@ -43,8 +43,8 @@ class BWMappingUI(Ui_BWMapping):
                 msg.setIcon(QMessageBox.Critical)
                 msg.setInformativeText(self._inifile + " is corrupt. Close application, delete the file, "
                                        "then reopen the application")
-                msg.exec()
-                raise(FileNotFoundError)
+                msg.exec_()
+                raise IOError
             else: self._dot_file_loc = self._files["DOT"]
 
     def getDataDir(self):
@@ -72,7 +72,7 @@ class BWMappingUI(Ui_BWMapping):
         File specification is performed via the File menu on the gui.
         """
         w = QWidget()
-        dotLoc = QFileDialog.getOpenFileName(w,"Select dot executable file")[0]
+        dotLoc = str(QFileDialog.getOpenFileName(w,"Select dot executable file"))
         if dotLoc != "": self._files["DOT"] = dotLoc #Allow cancellation and retain current value
         f = open(self._iniFile,'wb')
         pickle.dump(self._files,f)
@@ -106,7 +106,7 @@ class BWMappingUI(Ui_BWMapping):
             msg.setText("ERROR")
             msg.setIcon(QMessageBox.Critical)
             msg.setInformativeText("There is no database configured. Please use command - File\Regenerate Db")
-            msg.exec()
+            msg.exec_()
             self.progressBar.setVisible(False)
             return
         self.map_startpoint_combo.setCurrentIndex(0)
@@ -115,7 +115,7 @@ class BWMappingUI(Ui_BWMapping):
 
     def locate_node_by_index(self,idx):
         if self.map_startpoint_combo.currentIndex() != -1:
-            node = self.map_startpoint_combo.currentText()
+            node = str(self.map_startpoint_combo.currentText())
             if self._t.get_node(node):
                 self.statusbar.showMessage("", 0)
                 return
@@ -141,8 +141,8 @@ class BWMappingUI(Ui_BWMapping):
             else: # Generate partial map
 
                 svg_file = self._mini_graph_file
-                start_node = self.map_startpoint_combo.currentText()
-                direction = self.map_connectivity_combo.currentText()
+                start_node = str(self.map_startpoint_combo.currentText())
+                direction = str(self.map_connectivity_combo.currentText())
 
                 #Check start node exists
                 if not self._t.get_node(start_node):
@@ -168,7 +168,7 @@ class BWMappingUI(Ui_BWMapping):
             msg.setText("ERROR")
             msg.setIcon(QMessageBox.Critical)
             msg.setInformativeText("There is no database configured. Please use command - File\Regenerate Db")
-            msg.exec()
+            msg.exec_()
             self.statusbar.showMessage("There is no database configured. Please use command - File\Regenerate Db")
             return
         #Add decorations
@@ -191,7 +191,7 @@ class BWMappingUI(Ui_BWMapping):
             msg.setText("Warning")
             msg.setInformativeText("Graphviz 'dot' executable location must be selected. Please use file menu")
             msg.setIcon(QMessageBox.Warning)
-            msg.exec()
+            msg.exec_()
             return
 
         self._t.create_svg_file(graphviz_iterable,svg_file,dot_exec_loc)
@@ -214,19 +214,19 @@ class BWMappingUI(Ui_BWMapping):
             msg.setText("ERROR")
             msg.setIcon(QMessageBox.Critical)
             msg.setInformativeText("Internal program error. No database table source text file names specified.")
-            msg.exec()
+            msg.exec_()
             self.progressBar.setVisible(False)
             return
         #Unsplit RSLDPSEL file
         try:
             sep = "|" # fieldseparator in the file
             self._t._unsplit(self._RSLDPSEL_fil, self._RSLDPSEL_unsplit_fil, sep)
-        except(FileNotFoundError):
+        except IOError:
             msg = QMessageBox()
             msg.setText("ERROR")
             msg.setIcon(QMessageBox.Critical)
             msg.setInformativeText("Database table source text file RSLDPSEL is missing. Please supply before continuing.")
-            msg.exec()
+            msg.exec_()
             self.progressBar.setVisible(False)
             return
         #Update tables from SAP
@@ -234,12 +234,12 @@ class BWMappingUI(Ui_BWMapping):
             self.statusbar.showMessage("Regenerating " + table,0)
             try:
                 self._t.update_table({table : file}, unwanted_cols)
-            except (FileNotFoundError):
+            except IOError:
                 msg = QMessageBox()
                 msg.setText("ERROR")
                 msg.setIcon(QMessageBox.Critical)
                 msg.setInformativeText("File " + file + " cannot be found.")
-                msg.exec()
+                msg.exec_()
                 self.progressBar.setVisible(False)
                 self.statusbar.showMessage("Error populating database.",0)
                 return
@@ -276,4 +276,3 @@ if __name__ == '__main__':
 #TODO Populate node listbox after initial db regeneration
 #TODO correct icons on error message boxwes
 #TODO map connectivity and start node irrelevant for full map
-#TODO Exit button does no work in cx_freeze distributed version
