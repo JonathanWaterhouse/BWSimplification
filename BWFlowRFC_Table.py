@@ -4,16 +4,21 @@ import subprocess
 import os
 import os.path
 from io import open
+from COMSAPConn import *
+from collections import OrderedDict
+import sys
+sys.setrecursionlimit(10000)
 
-__author__ = u'U104675'
+__author__ = u'jonathan.waterhouse@gmail.com'
 import sys
 import sqlite3
-#sys.path.append('C:\\Users\\u104675\\Jon_Waterhouse_Docs\\OneDrive - Eastman Koda~1\\PythonProjects\\')
+
 sys.path.append(os.path.dirname(os.getcwdu()))
-import LoadToSqlite as SQL
+
 class BWFlowTable(object):
     u"""
-    This class is used to create a database of SAP tables, currently from SAP text downloads using SE16.
+    This class is used to create a database of SAP tables, using pyRFC module from SAP to call FM
+    RFC_READ_TABLE. The data is stored in a local sqlite3 database for local querying.
 
     The following tables are currently used
     RSIS - Infosource
@@ -31,23 +36,147 @@ class BWFlowTable(object):
     """
     def __init__(self, database):
         u"""
-        :param database: sets the database name storing all tje internal information
+        :param database: sets the database name storing all the internal information
         :return: nothing
         """
         self._database = database
+        self._max_rows = 100000 #Maximum rows we will attempt to pull from a table in one RFC call
+        #Next section defines the tables we want, the fields, any sql "WHERE" criteria and whetherw we want data or just
+        #a table spec.
+        self.tab_spec = OrderedDict(
+            RSBOHDEST= {'FIELDS' :[],
+                        'MAXROWS': self._max_rows,
+                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''},
+            RSBOHDESTT= {'FIELDS' :[],
+                        'MAXROWS': self._max_rows,
+                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
+                        'RETRIEVEDATA' : ''},
+            RSBSPOKE= {'FIELDS' :[],
+                       'MAXROWS': self._max_rows,
+                       'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                       'RETRIEVEDATA' : ''},
+            RSBSPOKET= {'FIELDS' :[],
+                       'MAXROWS': self._max_rows,
+                       'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
+                       'RETRIEVEDATA' : ''},
+            RSDCUBEMULTI= {'FIELDS' :[],
+                           'MAXROWS': self._max_rows,
+                           'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                           'RETRIEVEDATA' : ''},
+            RSDCUBET= {'FIELDS' :[],
+                       'MAXROWS': self._max_rows,
+                       'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
+                       'RETRIEVEDATA' : ''},
+            RSDODSOT= {'FIELDS' :[],
+                       'MAXROWS': self._max_rows,
+                       'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
+                       'RETRIEVEDATA' : ''},
+            RSIS= {'FIELDS' :[],
+                   'MAXROWS': self._max_rows,
+                   'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                   'RETRIEVEDATA' : ''},
+            RSIST= {'FIELDS' :[],
+                   'MAXROWS': self._max_rows,
+                   'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
+                   'RETRIEVEDATA' : ''},
+            RSISOSMAP= {'FIELDS' :[],
+                        'MAXROWS': self._max_rows,
+                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''},
+            RSLDPIO= {'FIELDS' :[],
+                      'MAXROWS': self._max_rows,
+                      'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                      'RETRIEVEDATA' : ''},
+            RSLDPIOT= {'FIELDS' :[],
+                       'MAXROWS': self._max_rows,
+                       'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
+                       'RETRIEVEDATA' : ''},
+            RSLDPSEL= {'FIELDS' :['LOGDPID', 'OBJVERS', 'KIND', 'FILENAME'],
+                       'MAXROWS': self._max_rows,
+                       'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                       'RETRIEVEDATA' : ''},
+            RSMDATASTATE_EXT= {'FIELDS' :['DTA', 'DTA_TYPE', 'RECORDS_ALL'],
+                               'MAXROWS': self._max_rows,
+                               'SELECTION' : [],
+                               'RETRIEVEDATA' : ''},
+            RSRREPDIR= {'FIELDS' :['COMPID', 'OBJVERS', 'OBJSTAT', 'INFOCUBE', 'COMPTYPE'],
+                        'MAXROWS': self._max_rows,
+                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''},
+            RSTRAN= {'FIELDS' :[],
+                     'MAXROWS': self._max_rows,
+                     'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                     'RETRIEVEDATA' : ''},
+            RSTRANT= {'FIELDS' :[],
+                     'MAXROWS': self._max_rows,
+                     'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
+                     'RETRIEVEDATA' : ''},
+            RSUPDINFO= {'FIELDS' :[],
+                        'MAXROWS': self._max_rows,
+                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''},
+            RSZELTDIR= {'FIELDS' :[],
+                        'MAXROWS': self._max_rows,
+                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''},
+            RSZELTTXT= {'FIELDS' :[],
+                        'MAXROWS': self._max_rows,
+                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
+                        'RETRIEVEDATA' : ''},
+            RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
+                                      'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
+                           'MAXROWS': self._max_rows, # 0 brings all records back
+                           'SELECTION' : [], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
+                           'RETRIEVEDATA' : ''} #Blank means retrieve data
+        )
 
-    def update_table(self,table_file_map, unwanted_cols):
-        u"""
-        Populates specified sqlite databse tables from flat files in SAP "Unconverted" output format ie fields
-        separated by "|"
-        :param database: database we will create tables in
-        :param table_file_map: dictionary with key target table name to be created and value the source text file
-        :param unwanted_cols: Ability to remove columns in incoming text file. Specified as a list with column numbers
-        which need not be in correct sequence
-        :return: nothing
-        """
-        for table,file in table_file_map.items():
-            SQL.TextInSQL(self._database, file, table, unwanted_cols)
+    def update_table_RFC (self,statusbar, progressBar, tableNumInt):
+
+        sqlite_db_name = self._database
+        SAP = SAP_to_sqlite_table()
+        SAP.login_to_SAP()
+        for tab in self.tab_spec.keys():
+            print 'reading SAP table ' + tab
+            statusbar.showMessage('reading SAP table ' + tab, 0)
+            tableNumInt += 1
+            progressBar.setValue(tableNumInt)
+            #Retrieve data limited (set by self._max_rows) records at a time to conserve resources
+            skip_rows = 0
+            read_more = True
+            first_time = True
+            while read_more:
+                RFC_READ_TABLE_output = SAP.read_SAP_table(tab, self.tab_spec[tab]['MAXROWS'], skip_rows, self.tab_spec[tab]['SELECTION'],
+                                                           self.tab_spec[tab]['FIELDS'], self.tab_spec[tab]['RETRIEVEDATA'])
+                retrieved_recs = len(RFC_READ_TABLE_output['DATA'])
+                if first_time:
+                    print RFC_READ_TABLE_output['OPTIONS']
+                    i = 0
+                    for v in RFC_READ_TABLE_output['FIELDS']:
+                        i += 1
+                        print v
+                    print 'Number of entries : ' + repr(i)
+                    statusbar.showMessage('Number of entries : ' + repr(i), 0)
+                    append = False
+                    first_time = False
+                else:
+                    append = True
+
+                print 'Number of data records retrieved  from SAP : ' + repr(len(RFC_READ_TABLE_output['DATA']))
+                statusbar.showMessage('Number of data records retrieved  from SAP : ' + repr(len(RFC_READ_TABLE_output['DATA'])),0)
+
+                if self.tab_spec[tab]['RETRIEVEDATA'] == '':
+                    print 'Adding ' + tab + ' records ' + repr(skip_rows+ 1) + ' to ' + repr(skip_rows + retrieved_recs) + ' to sqlite database'
+                    statusbar.showMessage('Adding ' + tab + ' records ' + repr(skip_rows+ 1) + ' to ' + repr(skip_rows + retrieved_recs) + ' to sqlite database',0)
+                    SAP.update_sqlite_table(sqlite_db_name, tab, append, RFC_READ_TABLE_output)
+                if not retrieved_recs == self._max_rows: #we got the last of the records from the SAP table
+                    read_more = False
+                else:
+                    skip_rows = skip_rows + self._max_rows
+                    read_more = True
+
+        #Close SAP Connection
+        SAP.close_SAP_connection()
 
     def create_flow_table(self):
         u"""
@@ -79,7 +208,7 @@ class BWFlowTable(object):
         SELECT DISTINCT CASE WHEN SUBSTR(A.ISOURCE,1,1)="8" THEN SUBSTR(A.ISOURCE,2,LENGTH(A.ISOURCE)) ELSE A.ISOURCE END,
         A.ISOURCE , A.INFOCUBE , "RSUPDINFO", "INFOSOURCE", "", "", "", B.LOGSYS, C.TXTLG
         FROM (RSUPDINFO AS A LEFT OUTER JOIN RSISOSMAP AS B ON A.ISOURCE = B.ISOURCE)
-        LEFT OUTER JOIN RSIS AS C ON C.ISOURCE = A.ISOURCE
+        LEFT OUTER JOIN RSIST AS C ON C.ISOURCE = A.ISOURCE
         WHERE A.OBJVERS = "A" AND A.OBJSTAT = "ACT" AND B.OBJVERS = "A" AND A.ISOURCE != A.INFOCUBE
         order by A.ISOURCE
         """)
@@ -96,7 +225,9 @@ class BWFlowTable(object):
         result_set = []
         #Assume target already exists and we are appending records
         for row in c.execute (u'''SELECT A.SOURCENAME , A.TARGETNAME , "RSTRAN" , A.SOURCETYPE , A.SOURCENAME , A.SOURCESUBTYPE , A.TARGETTYPE ,
-        A.TARGETSUBTYPE , A.TXTLG FROM RSTRAN AS A WHERE A.OBJVERS = "A" AND A.OBJSTAT = "ACT"
+        A.TARGETSUBTYPE , B.TXTLG
+        FROM RSTRAN AS A LEFT OUTER JOIN RSTRANT AS B ON A.TRANID = B.TRANID
+        WHERE A.OBJVERS = "A" AND A.OBJSTAT = "ACT"
         '''):
             # Build a new line. We do this because SOURCENAME may have two parts separated by a blank character, we need
             #the first and second pieces.
@@ -137,7 +268,7 @@ class BWFlowTable(object):
         SELECT A.LOGSYS,
         CASE WHEN SUBSTR(A.OLTPSOURCE,1,1)="8" THEN SUBSTR(A.OLTPSOURCE,2,LENGTH(A.OLTPSOURCE)) ELSE A.OLTPSOURCE END,
         "RSISOSMAP" , "EXTSYST TO DATASOURCE" , A.LOGSYS , "" , A.ISTYPE , A.ISTYPE , B.TXTLG
-        FROM RSISOSMAP AS A LEFT OUTER JOIN RSIS AS B ON A.ISOURCE = B.ISOURCE
+        FROM RSISOSMAP AS A LEFT OUTER JOIN RSIST AS B ON A.ISOURCE = B.ISOURCE
         WHERE A.OBJVERS = "A" AND B.OBJVERS = "A" AND A.OLTPSOURCE != A.ISOURCE
         """)
         conn.commit()
@@ -147,7 +278,7 @@ class BWFlowTable(object):
         SELECT CASE WHEN SUBSTR(A.OLTPSOURCE,1,1)="8" THEN SUBSTR(A.OLTPSOURCE,2,LENGTH(A.OLTPSOURCE)) ELSE A.OLTPSOURCE END,
         CASE WHEN SUBSTR(A.ISOURCE,1,1)="8" THEN SUBSTR(A.ISOURCE,2,LENGTH(A.ISOURCE)) ELSE A.ISOURCE END,
         "RSISOSMAP" , "DATASOURCE TO INFOSOURCE" , A.LOGSYS , "" , A.ISTYPE , A.ISTYPE , B.TXTLG
-        FROM RSISOSMAP AS A LEFT OUTER JOIN RSIS AS B ON A.ISOURCE = B.ISOURCE
+        FROM RSISOSMAP AS A LEFT OUTER JOIN RSIST AS B ON A.ISOURCE = B.ISOURCE
         WHERE A.OBJVERS = "A" AND B.OBJVERS = "A" AND A.OLTPSOURCE != A.ISOURCE
         """)
         conn.commit()
@@ -165,9 +296,9 @@ class BWFlowTable(object):
         c.executescript(u"""
         INSERT INTO DATAFLOWS
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
-        SELECT A.OHSOURCE , A.INFOSPOKE , "RSBSPOKE" , A.OHSRCTYPE , "P2WCLNT023" , "" , "INFOSPOKE" ,
-        A.OHDEST , A.TXTLG
-        FROM RSBSPOKE AS A
+        SELECT A.OHSOURCE , A.INFOSPOKE , "RSBSPOKE" , A.OHSRCTYPE , "P2WCLNT023" , "" , "INFSPOKE" ,
+        A.OHDEST , B.TXTLG
+        FROM RSBSPOKE AS A LEFT OUTER JOIN RSBSPOKET AS B ON A.INFOSPOKE = B.INFOSPOKE
         WHERE A.OBJVERS = "A" AND A.OBJSTAT = "ACT"
         """)
         conn.commit()
@@ -187,8 +318,8 @@ class BWFlowTable(object):
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT A.SOURCEOBJNM , A.OHDEST , "RSBOHDEST" , A.SOURCETLOGO , "P2WCLNT023" , A.SOURCETLOGOSUB ,
         "OPENHUB" ,
-        A.OHDEST , A.TXTLG
-        FROM RSBOHDEST AS A
+        A.OHDEST , B.TXTLG
+        FROM RSBOHDEST AS A LEFT OUTER JOIN RSBOHDESTT AS B ON A.OHDEST = B.OHDEST
         WHERE A.OBJVERS = "A" AND A.SOURCETLOGO != "" AND A.OBJSTAT = "ACT"
         """)
         conn.commit()
@@ -257,50 +388,69 @@ class BWFlowTable(object):
         INSERT INTO DATAFLOWS
         (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
         SELECT A.INFOCUBE , A.COMPID , "RSRREPDIR" , "INFOCUBE" , "P2WCLNT023" , "" , A.COMPTYPE ,
-        "" , B.TXTLG
-        FROM RSRREPDIR AS A LEFT OUTER JOIN RSZELTDIR AS B ON A.COMPID = B.MAPNAME
+        "" , C.TXTLG
+        FROM (RSRREPDIR AS A LEFT OUTER JOIN RSZELTDIR AS B ON A.COMPID = B.MAPNAME)
+        LEFT OUTER JOIN RSZELTTXT AS C on B.ELTUID = C.ELTUID
         WHERE A.OBJVERS = "A" AND A.OBJSTAT = "ACT" AND B.OBJVERS = "A" AND B.DEFTP = "REP"
+        AND C.OBJVERS = "A" AND C.LANGU = "E"
         """)
         conn.commit()
 
-    def create_mini_graph(self, start_node, forward, show_queries):
+    def create_mini_graph_2(self,start_node, forward, show_queries):
         u"""
-        This method creates a graph in graphviz format for links in dataflow starting at node and going EITHER forwards
-        (forward = True) or backwards (forwards = False). Going forward from the node only nodes connected  in that
-        direction are shown. For example if start_node is A and it connects A -> B -> C but als D connects to C as
-        D -> C, D will NOT be shown. Similarly going backwards, if c -> B -> A but also C -> D and D does not go to A,
-        then D will not be shown.
-        :param start_node: Node to start the graph from
-        :param forward: Direction to explore the data flow
-        :return: An iterable lines which could be out put to a file and be read by graphviz "dot" program
-        """
-        result_graph = self._create_mini_graph_recursion(start_node,forward, [], show_queries)
-        out_graph = []
-        out_graph.append(u'digraph {ranksep=2\n')
-        for line in set(result_graph): out_graph.append(line)
-        out_graph.append(u'}')
-        return out_graph
-
-    def create_mini_graph_bwd_fwd(self, start_node, show_queries):
-        u"""
-        This method creates a graph in graphviz format for links in dataflow starting at node and going BOTH forwards
-        and backwards. Going forward from the node only nodes connected  in that direction are shown. For example if
+        This method creates a graph in graphviz format for links in dataflow starting at node and going either forwards
+        or backwards. Going forward from the node only nodes connected  in that direction are shown. For example if
         start_node is A and it connects A -> B -> C but als D connects to C as D -> C, D will NOT be shown.
         Similarly going backwards, if c -> B -> A but also C -> D and D does not go to A, then D will not be shown.
         :param start_node: Node to start the graph from
-        :return: An iterable of lines which could be out put to a file and be read by graphviz "dot" program
+        :param forward: Boolean indicating if we are looking forward in the graph or backwards
+        :param show_queries: Boolean. True if the map should show queries. False if not.
+        :return: An sequenced list of lines which could be out put to a file and be read by graphviz "dot" program. Sequenced
+                because start and end entry are required by graphviz program "dot"
         """
-        result_graph_fwd = self._create_mini_graph_recursion(start_node,True, [], show_queries)
-        result_graph_bwd = self._create_mini_graph_recursion(start_node,False, [], show_queries)
-        out_graph = []
-        out = set()
-        out_graph.append(u'digraph {ranksep=2\n')
-        #Remove duplicates by means of set
-        for line in result_graph_fwd: out.add(line)
-        for line in result_graph_bwd: out.add(line)
-        for line in out: out_graph.append(line)
-        out_graph.append(u'}')
-        return out_graph
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        sql_fwd = u"SELECT DISTINCT TARGET FROM DATAFLOWS WHERE DERIVED_FROM != ? AND SOURCE =?"
+        sql_bwd = u"SELECT DISTINCT SOURCE FROM DATAFLOWS WHERE DERIVED_FROM != ? AND TARGET =?"
+        if show_queries: omit_derived_from_table = u""
+        else: omit_derived_from_table = u"RSRREPDIR"
+        complete = set()
+        nodes = set()
+        nodes.add(start_node)
+        result_graph = []
+        graph_set = set()
+        while len(nodes) != 0:
+            curr_node = nodes.pop()
+            if forward:
+                for row in c.execute(sql_fwd,(omit_derived_from_table, curr_node)):
+                    if row[0] not in complete: nodes.add(row[0])
+            else:
+                for row in c.execute(sql_bwd,(omit_derived_from_table, curr_node)):
+                    if row[0] not in complete: nodes.add(row[0])
+            complete.add(curr_node)
+
+        for el in complete:
+            if forward:
+                for row in c.execute(sql_fwd,(omit_derived_from_table, el)):
+                    graph_set.add(u'"' + el + u'"' + u' -> ' + u'"' + row[0] + u'"' + u'\n')
+            else:
+                for row in c.execute(sql_bwd,(omit_derived_from_table, el)):
+                    graph_set.add(u'"' + row[0] + u'"' + u' -> ' + u'"' + el + u'"' + u'\n')
+
+        result_graph.append(u'digraph {ranksep=2\n')
+        for line in graph_set: result_graph.append(line)
+        result_graph.append(u'}')
+        return result_graph
+
+    def add_graphviz_iterables(self,list1, list2):
+        list1.pop(0) #Remove first element u'digraph {ranksep=2\n'
+        list1.pop()  # Remove last element u'}'
+        list2.pop(0)
+        list2.pop()
+        list1.extend(list2) #Join the lists
+        list1.insert(0,u'digraph {ranksep=2\n')
+        list1.append(u'}')
+        return list1
 
     def create_mini_graph_connections(self,start_node, show_queries):
         u"""
@@ -309,6 +459,7 @@ class BWFlowTable(object):
         connectons. For example if start_node is A and it connects A -> B -> C but also D connects to C as D -> C, D WILL
         be shown together with its forward and backward dependencies. Similarly going backwards.
         :param start_node: Node to start the graph from
+        :param show_queries: Boolean. True if the map should show queries. False if not.
         :return: An iterable of lines which could be out put to a file and be read by graphviz "dot" program
         """
         conn = sqlite3.connect(self._database)
@@ -341,30 +492,6 @@ class BWFlowTable(object):
         result_graph.append(u'}')
         return result_graph
 
-    def _create_mini_graph_recursion(self, start_node, forward, result_graph, show_queries):
-        u"""
-        A convenience method to handle recirsion in the look up of all related nodes in the graph
-        :param start_node: current start node
-        :param forward: which direction we are looking up forward = True or False
-        :param result_graph:
-        :return: An iterable of lines which could be out put to a file and be read by graphviz "dot" program
-        """
-        conn = sqlite3.connect(self._database)
-        c = conn.cursor()
-        sql_fwd = u"SELECT DISTINCT TARGET FROM DATAFLOWS WHERE DERIVED_FROM != ? AND SOURCE =?"
-        sql_bwd = u"SELECT DISTINCT SOURCE FROM DATAFLOWS WHERE DERIVED_FROM != ? AND TARGET =?"
-        if forward: sql = sql_fwd
-        else: sql = sql_bwd
-        if show_queries: omit_derived_from_table = u""
-        else: omit_derived_from_table = u"RSRREPDIR"
-        #Note that in PyQt4 start_node is QString and sqlite3 does not like that
-        for row in c.execute(sql, (omit_derived_from_table, str(start_node),)):
-            if forward: graph_link = u'"' + start_node + u'"' + u' -> ' + u'"' + row[0] + u'"' + u'\n'
-            else: graph_link = u'"' + row[0] + u'"' + u' -> ' + u'"' + start_node + u'"' + u'\n'
-            result_graph.append(graph_link)
-            if row[0] != start_node: self._create_mini_graph_recursion(row[0],forward, result_graph, show_queries)
-        return result_graph
-
     def create_full_graph(self):
         u"""
         Create a fully connected graph from all nodes in the DATAFLOWS table
@@ -395,7 +522,7 @@ class BWFlowTable(object):
         out_graph = []
         sizes = {}
         for node in nodes_we_want:
-            row = c.execute(u"SELECT DTA, RECORDSALL FROM RSMDATASTATE_EXT WHERE DTATYPE != ? AND DTA = ?", (u"DATASRC", node))
+            row = c.execute(u"SELECT DTA, RECORDS_ALL FROM RSMDATASTATE_EXT WHERE DTA_TYPE != ? AND DTA = ?", (u"DTASRC", node))
             for r in row:
                 sizes[r[0]] = int(r[1].replace(u',',u'')) # convert RECORDSALL in format "123,456,789" to integer
 
@@ -412,13 +539,13 @@ class BWFlowTable(object):
         except (ValueError): max_size = 0
         num_intervals = 100 #How finely we want the heat map to be divided
         size_ranges = []
-        base_interval = int(max_size / num_intervals)
+        base_interval = max_size / num_intervals
         #Generate the intervals which will get a different color
         start = 1
-        for i in xrange(num_intervals):
-            size_ranges.append(xrange(i*base_interval,(i+1)*base_interval)) # The intervals of size
+        for i in range(num_intervals):
+            size_ranges.append((int(i*base_interval),int((i+1)*base_interval))) # The intervals of size (tuple (start end))
         #Last interval should end at max_size, rounding errors can mean it dos not. Ensure it does
-        last_range = xrange((i-1)*base_interval, max_size+1)
+        last_range = (int((i-1)*base_interval), int(max_size+1))
         del size_ranges[-1]
         size_ranges.append(last_range)
         #Generate color values (in HSV format - http://www.graphviz.org/doc/info/attrs.html#k:color)
@@ -428,8 +555,8 @@ class BWFlowTable(object):
         for data_store ,size in sizes.items():
             fmtString = u''
             i = 0
-            for rg in size_ranges:
-                if size in rg:
+            for rg in size_ranges: #List of tuples of size intervals
+                if size >= rg[0] and size < rg[1]:
                     fmtString = u'[color=white, fillcolor="' + repr(HSV_tuples[i]).lstrip(u'(').rstrip(u')') + u'", style="rounded,filled", shape=box]'
                     break
                 i += 1
@@ -472,10 +599,10 @@ class BWFlowTable(object):
         rows = c.execute(u'''SELECT
                         CASE WHEN SUBSTR (OLTPSOURCE, 1, 1) = "8" THEN SUBSTR (OLTPSOURCE, 2, LENGTH(OLTPSOURCE))
                         ELSE OLTPSOURCE END,
-                        DTA, ANZRECS, INSERTRECS,
-                        MAX(SUBSTR(DATUMANF,7,4)||"-"||SUBSTR(DATUMANF,4,2)||"-"||SUBSTR(DATUMANF,1,2))
+                        DTA, ANZ_RECS, INSERT_RECS,
+                        MAX(SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2))
                         FROM RSSTATMANPART
-                        WHERE SUBSTR(DATUMANF,7,4)||"-"||SUBSTR(DATUMANF,4,2)||"-"||SUBSTR(DATUMANF,1,2) < date('now')
+                        WHERE SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2) < date('now')
                         GROUP BY OLTPSOURCE, DTA
                          ''')
         #Store OLTPSOURCE, DTA, ANZRECS, INSERTRECS in internal keyed structure
@@ -558,14 +685,22 @@ class BWFlowTable(object):
     def get_node_text(self,node):
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
-        c.execute(u"SELECT TXTLG FROM RSDCUBET WHERE INFOCUBE=? AND OBJVERS=?", (node,u'A'))
+        c.execute(u"SELECT TXTLG FROM RSDCUBET WHERE INFOCUBE=? AND OBJVERS=?", (node,u'A')) #Cube
         row = c.fetchone()
         if row is not None: return row[0]
-        else:
+        else: #DSO
             c.execute(u"SELECT TXTLG FROM RSDODSOT WHERE ODSOBJECT=? AND OBJVERS=?", (node,u'A'))
             row = c.fetchone()
             if row is not None: return row[0]
-            else: return u""
+            else: #Infospoke
+                c.execute(u"SELECT TXTLG FROM RSBSPOKET WHERE INFOSPOKE=? AND OBJVERS=?", (node,u'A'))
+                row = c.fetchone()
+                if row is not None: return row[0]
+                else: #Queries
+                    c.execute("SELECT B.TXTLG FROM RSZELTDIR AS A INNER JOIN RSZELTTXT AS B ON A.ELTUID = B.ELTUID \
+                     WHERE A.MAPNAME=? AND A.OBJVERS=? AND B.LANGU=?", (node, u'A', u'E'))
+                    if row is not None: return row[0]
+                    else: return u""
 
     def _unsplit(self, fileIn, fileOut, field_sep):
         u"""
@@ -594,54 +729,8 @@ class BWFlowTable(object):
         fi.close()
         fo.close()
 
-if __name__ == u"__main__":
-    #path = 'C:\\Users\\u104675\\OneDrive - Eastman Kodak Company\\P2238 Reorganisation\\MDGeogAttribs\\'
-    u"""
-    RSIS - Infosource
-    RSUPDINFO - Update Rules Infoprovider to infosource (Transactions and flexible Infosource?)
-    RSTRAN - BI7 Data transformations
-    RSISOSMAP (OLTP to BW Infosource Map) Active Only
-    RSLDPSEL (OBJVERS = A, FILENAME = non blank, KIND = T,M ie master data/texts) - Selections in Infopackages;
-        combined with info from RSLDPIO/RSLDPIOT keyed on LOGDPID For flat file loads
-    RSBSPOKE (Active Only)
-    RSBOHDEST (OBJVERS = A, NEW_OHD = X to exclude infospokes)
-    RSDCUBEMULTI - Cube contents of multiproviders
-    RSRREPDIR - Cubes and multiproviders and queries off them
-    RSDCUBET - Cube and Multiprovider texts
-    RSMDATASTATE_EXT - Record Counts
-    """
-    path = u''
-    database = path + u'BWStructure.db'
-    unwanted_cols = []
-    t = BWFlowTable(database)
-    fin = u"RSLDPSEL.txt"
-    fout = u"RSLDPSELUnsplit.txt"
-    sep = u"|"
-    t._unsplit(fin, fout, sep)
-    table_file_map = {u"RSTRAN": u"RSTRAN.txt", u'RSISOSMAP':u"RSISOSMAP.txt",u'RSLDPSEL':fout,
-                      u'RSLDPIO':u"RSLDPIO.txt", u'RSLDPIOT': u"RSLDPIOT.txt", u'RSBSPOKE': u"RSBSPOKE.txt",
-                      u'RSBOHDEST':u"RSBOHDEST.txt", u"RSIS":u"RSIS.txt", u"RSUPDINFO":u"RSUPDINFO.txt",
-                      u'RSDCUBEMULTI':u'RSDCUBEMULTI.txt', u'RSRREPDIR':u'RSRREPDIR.txt', u'RSDCUBET':u'RSDCUBET.txt',
-                      u'RSZELTDIR':u'RSZELTDIR.txt', u'RSMDATASTATE_EXT':u'RSMDATASTATE_EXT.txt', u'RSSTATMANPART': u'RSSTATMANPART.txt'}
-    #table_file_map = {'RSSTATMANPART': 'RSSTATMANPART.txt'}
-    #t. update_table(table_file_map, unwanted_cols)
-    #t.create_flow_table()
-    #t.update_flow_from_RSUPDINFO()
-    #t.update_flow_from_RSTRAN()
-    #t.update_flow_from_RSIOSMAP()
-    #t.update_flow_from_RSBSPOKE()
-    #t.update_flow_from_RSBOHDEST()
-    #t.update_flow_from_RSLDPSEL()
-    #t.update_flow_from_RSDCUBEMULTI()
-    #t.update_flow_from_RSRREPDIR()
-    #TODO General check of data accuracy and possible confusion of ISOURCE, and SOURCE
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
-    #TODO Add text to datastores
-    #TODO the search algorthm probably search routes multiple times which is ineffcient
-    #TODO Connections between 1 source and one target
-    #graph_file = "BWGraph.svg"
-    #t.create_svg_file(t.decorate_graph_flow_volumes(t.create_full_graph()), graph_file)
-    forward = True
-    graph_file = u"BWMiniGraph.svg"
-    t.create_svg_file(t.decorate_graph_BI7Flow(t.decorate_graph_flow_volumes(t.create_mini_graph_bwd_fwd(u'ZC00165'))), graph_file)
-    #t.create_svg_file(t.decorate_graph_flow_volumes(t.create_mini_graph_connections('ZO00143')), graph_file)
+    #TODO Fix the progress bar. When have long running table loads it does not update.
+    #TODO Text values for all report objects
+
+

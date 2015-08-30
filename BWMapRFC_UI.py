@@ -1,13 +1,12 @@
+__author__ = 'jonathan.waterhouse@gmail.com'
 from sqlite3 import OperationalError
-from PyQt4.QtGui import QApplication, QMainWindow, QMessageBox, QWidget, QFileDialog
+import PyQt4.QtGui
 from BWMapping import Ui_BWMapping
-from BWFlowTable import BWFlowTable
+from BWFlowRFC_Table import BWFlowTable
 from SVGDisplay import *
 import os
 import pickle
 
-__author__ = 'U104675'
-import BWMapping
 class BWMappingUI(Ui_BWMapping):
     def __init__(self,MainWindow):
         self.setupUi(MainWindow)
@@ -16,16 +15,6 @@ class BWMappingUI(Ui_BWMapping):
         dataDir = self.getDataDir() + os.sep
         self._iniFile = dataDir + "BWMapping.ini"
         self._files= {}
-        # location of text files to populate sqlite tables
-        self._RSLDPSEL_fil = "RSLDPSEL.txt" # This file has one line split over two
-        self._RSLDPSEL_unsplit_fil = "RSLDPSELUnsplit.txt" # After joining the two line halves this is the new filename
-        self._table_file_map = dict(RSTRAN="RSTRAN.txt", RSISOSMAP="RSISOSMAP.txt",
-                    RSLDPSEL=self._RSLDPSEL_unsplit_fil, RSLDPIO="RSLDPIO.txt",
-                    RSLDPIOT="RSLDPIOT.txt", RSBSPOKE="RSBSPOKE.txt", RSBOHDEST="RSBOHDEST.txt",
-                    RSIS="RSIS.txt", RSUPDINFO="RSUPDINFO.txt", RSDCUBEMULTI='RSDCUBEMULTI.txt',
-                    RSRREPDIR='RSRREPDIR.txt', RSDCUBET='RSDCUBET.txt', RSZELTDIR='RSZELTDIR.txt',
-                    RSMDATASTATE_EXT='RSMDATASTATE_EXT.txt', RSSTATMANPART='RSSTATMANPART.txt',
-                    RSDODSOT='RSDODSOT.txt')
         # Read the ini file containing the graphviz executable location
         try:
             f = open(self._iniFile,'rb')
@@ -71,8 +60,8 @@ class BWMappingUI(Ui_BWMapping):
         future runs of the program, until next changed.
         File specification is performed via the File menu on the gui.
         """
-        w = QWidget()
-        dotLoc = str(QFileDialog.getOpenFileName(w,"Select dot executable file"))
+        w = PyQt4.QtGui.QWidget()
+        dotLoc = str(PyQt4.QtGui.QFileDialog.getOpenFileName(w,"Select dot executable file"))
         if dotLoc != "": self._files["DOT"] = dotLoc #Allow cancellation and retain current value
         f = open(self._iniFile,'wb')
         pickle.dump(self._files,f)
@@ -154,12 +143,16 @@ class BWMappingUI(Ui_BWMapping):
                 #Get correct graph connection mode
                 if direction == 'Forward' :
                     forward = True
-                    graphviz_iterable = self._t.create_mini_graph(start_node,forward, show_queries)
+                    graphviz_iterable = self._t.create_mini_graph_2(start_node,forward, show_queries)
                 elif direction == 'Backward' :
                     forward = False
-                    graphviz_iterable = self._t.create_mini_graph(start_node,forward, show_queries)
+                    graphviz_iterable = self._t.create_mini_graph_2(start_node,forward, show_queries)
                 elif direction == 'Forward & Backward' :
-                    graphviz_iterable = self._t.create_mini_graph_bwd_fwd(start_node, show_queries)
+                    forward = True
+                    graphviz_iterable_1 = self._t.create_mini_graph_2(start_node,forward, show_queries)
+                    forward = False
+                    graphviz_iterable_2 = self._t.create_mini_graph_2(start_node,forward, show_queries)
+                    graphviz_iterable = self._t.add_graphviz_iterables(graphviz_iterable_1, graphviz_iterable_2)
                 elif direction == 'All Connections' :
                     graphviz_iterable = self._t.create_mini_graph_connections(start_node, show_queries)
                 else: print ('Invalid mapping direction supplied')
@@ -202,51 +195,27 @@ class BWMappingUI(Ui_BWMapping):
         return
 
     def generateDb(self):
-        unwanted_cols = []
         #Show progress since this is a long running operation
         i=0
+        max_status_bar_value = len(self._t.tab_spec) + 1
         self.progressBar.setMinimum(i)
-        self.progressBar.setMaximum(len(self._table_file_map)+ 1)
+        self.progressBar.setMaximum(max_status_bar_value)
         self.progressBar.setVisible(True)
-        #Check file names are initialised
-        if len(self._table_file_map) == 0:
-            msg = QMessageBox()
-            msg.setText("ERROR")
-            msg.setIcon(QMessageBox.Critical)
-            msg.setInformativeText("Internal program error. No database table source text file names specified.")
-            msg.exec_()
-            self.progressBar.setVisible(False)
-            return
-        #Unsplit RSLDPSEL file
+        #Update tables from SAP
+        self.statusbar.showMessage("Regenerating.",0)
         try:
-            sep = "|" # fieldseparator in the file
-            self._t._unsplit(self._RSLDPSEL_fil, self._RSLDPSEL_unsplit_fil, sep)
+            self._t.update_table_RFC(self.statusbar,self.progressBar,i)
         except IOError:
             msg = QMessageBox()
             msg.setText("ERROR")
             msg.setIcon(QMessageBox.Critical)
-            msg.setInformativeText("Database table source text file RSLDPSEL is missing. Please supply before continuing.")
+            msg.setInformativeText("File " + file + " cannot be found.")
             msg.exec_()
             self.progressBar.setVisible(False)
-            return
-        #Update tables from SAP
-        for table, file in self._table_file_map.items():
-            self.statusbar.showMessage("Regenerating " + table,0)
-            try:
-                self._t.update_table({table : file}, unwanted_cols)
-            except IOError:
-                msg = QMessageBox()
-                msg.setText("ERROR")
-                msg.setIcon(QMessageBox.Critical)
-                msg.setInformativeText("File " + file + " cannot be found.")
-                msg.exec_()
-                self.progressBar.setVisible(False)
-                self.statusbar.showMessage("Error populating database.",0)
-                return
-            i += 1
-            self.progressBar.setValue(i)
+            self.statusbar.showMessage("Error populating database.",0)
+            return # on error
         #Update flow table
-        self.statusbar.showMessage("Regenerating flow table",0)
+        self.statusbar.showMessage("Regenerating DATAFLOW table",0)
         self._t.create_flow_table()
         self._t.update_flow_from_RSUPDINFO()
         self._t.update_flow_from_RSTRAN()
@@ -256,7 +225,7 @@ class BWMappingUI(Ui_BWMapping):
         self._t.update_flow_from_RSLDPSEL()
         self._t.update_flow_from_RSDCUBEMULTI()
         self._t.update_flow_from_RSRREPDIR()
-        self.progressBar.setValue(i+1)
+        self.progressBar.setValue(max_status_bar_value)
         self.progressBar.setVisible(False)
         self.statusbar.showMessage("Db tables regenerated.",10000)
         #Populate combo box of possible starting nodes for mapping
@@ -267,12 +236,10 @@ class BWMappingUI(Ui_BWMapping):
 
 if __name__ == '__main__':
     import sys
-    app = QApplication(sys.argv)
-    MainWindow = QMainWindow()
+    app = PyQt4.QtGui.QApplication(sys.argv)
+    MainWindow = PyQt4.QtGui.QMainWindow()
     ui = BWMappingUI(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
 #TODO Option to display inactive (why does ZOHCRM003 show which has inactive update rule).
-#TODO Populate node listbox after initial db regeneration
-#TODO correct icons on error message boxwes
-#TODO map connectivity and start node irrelevant for full map
+#TODO GUI does not update during heavy processing (use threads?)

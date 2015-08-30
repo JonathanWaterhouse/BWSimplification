@@ -1,6 +1,8 @@
-from PyQt4.QtCore import QTimer, QString, Qt
-from PyQt4.QtGui import QCursor, QDialog, QLabel, QTextFormat
-from PyQt4 import QtCore, QtGui
+import PyQt4.QtGui
+import PyQt4.QtCore
+import PyQt4.Qt
+#import PyQt4.QtGui.QTimer, PyQt4.QtGui.QString, PyQt4.QtGui.Qt
+#import PyQt4.QtGui.QCursor, PyQt4.QtGui.QDialog, PyQt4.QtGui.QLabel, PyQt4.QtGui.QTextFormat
 from SVGView import Ui_Dialog
 #from PyQt4.QtNetwork import *
 #from PyQt4.QtWebKit import *
@@ -17,9 +19,9 @@ class SVGDisplay(Ui_Dialog):
         Create the display box based on input parent widget and populated with
         """
         self._db = database
-        dlg = QDialog()
+        dlg = PyQt4.QtGui.QDialog()
         self.setupUi(dlg)
-        self.imageUrl = QtCore.QUrl.fromLocalFile(svgFile) # Fully qualified filename
+        self.imageUrl = PyQt4.QtCore.QUrl.fromLocalFile(svgFile) # Fully qualified filename
         self.webView.load(self.imageUrl)
         self.webView.setZoomFactor(0.5)
         self.horizontalSlider.setMinimum(0)
@@ -40,13 +42,13 @@ class SVGDisplay(Ui_Dialog):
             if key != '': name = self._db.get_node_text(key)
             else: name = ''
         except KeyError: return
-        label = QLabel(name)
-        label.textFormat = Qt.RichText
-        label.alignment = Qt.AlignLeft
-        label.move(QCursor.pos().x()-40,QCursor.pos().y()+20)
-        label.setWindowFlags(QtCore.Qt.SplashScreen)
+        label = PyQt4.QtGui.QLabel(name)
+        #label.setTextFormat(PyQt4.Qt.QtCore.RichText)
+        #label.alignment = PyQt4.Qt.AlignLeft
+        label.move(PyQt4.QtGui.QCursor.pos().x()-40,PyQt4.QtGui.QCursor.pos().y()+20)
+        label.setWindowFlags(PyQt4.QtCore.Qt.SplashScreen)
         label.show()
-        timer = QTimer()
+        timer = PyQt4.QtCore.QTimer()
         timer.setSingleShot(True)
         timer.connect(label,timer.timeout(),label.destroy(True))
         timer.start(1000)
