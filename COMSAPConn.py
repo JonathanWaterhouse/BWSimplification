@@ -10,6 +10,14 @@ class SAP_to_sqlite_table():
         self._FM = 'RFC_READ_TABLE'
 
     def login_to_SAP(self):
+        """
+        Login to SAP. To do this a simple UI is presented to allow user input of credentials and target system. This
+        avoids any hard coding of credentials and flexibility as to target system eg dev, QA, Prod.
+        :return: None. Sets a class connection object used by other methods.
+        """
+        """
+        :return:
+        """
         login = SAPLogonUI()
         self._SAP_conn = login.get_SAP_connection() #SAP Connection Object
 
@@ -53,9 +61,15 @@ class SAP_to_sqlite_table():
 
     def update_sqlite_table(self, sqlite_db_name, table, append, RFC_READ_TABLE_input):
         """
-
+        Takes the output from SAP FM FRC_READ_TABLE and adds to table in sqlite database whose name is passed. If it is
+        the first write to the table for this program call then the table (it it exists) is dropped, and then created
+        afresh The table specifications including fieldnames and lengths are all taken from the output of the SAP FM.
+        This depends upon the fact the the FM only returns the field specifications for the fields requested in the
+        function call
         :param sqlite_db_name: database name as known to windows eg database.db
         :param table: table to create and populate in database.db
+        :param append: A boolean indicating whether we are to process a further set of records for a table or if it is
+                the first set. In the latter case we drop the table first.
         :param RFC_READ_TABLE_input: the output of RFC_READ_TABLE having format defined in method read_SAP_table
         :return: nothing. Result of running tis method is a sqlite db with newly filled table.
         """
@@ -94,8 +108,8 @@ class SAP_to_sqlite_table():
             sql_stmt_field_defs.append(field['FIELDNAME'])
         val_qmarks = ['?' for el in sql_stmt_field_defs]
         sql_stmt = 'INSERT INTO ' + table + ' (' + ','.join(sql_stmt_field_defs) + ') VALUES (' + ','.join(val_qmarks) + ')'
-        for values in record_tup:
-            c.execute(sql_stmt,values)
+
+        c.executemany(sql_stmt,record_tup)
 
         #We are done. Commit and close sqlite connection
         sqlite_conn.commit()

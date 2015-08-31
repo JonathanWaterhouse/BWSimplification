@@ -40,7 +40,7 @@ class BWFlowTable(object):
         :return: nothing
         """
         self._database = database
-        self._max_rows = 100000 #Maximum rows we will attempt to pull from a table in one RFC call
+        self._max_rows = 75000 #Maximum rows we will attempt to pull from a table in one RFC call.
         #Next section defines the tables we want, the fields, any sql "WHERE" criteria and whetherw we want data or just
         #a table spec.
         self.tab_spec = OrderedDict(
@@ -137,8 +137,8 @@ class BWFlowTable(object):
         SAP = SAP_to_sqlite_table()
         SAP.login_to_SAP()
         for tab in self.tab_spec.keys():
-            print 'reading SAP table ' + tab
-            statusbar.showMessage('reading SAP table ' + tab, 0)
+            print 'Reading SAP table ' + tab
+            statusbar.showMessage('Reading SAP table ' + tab, 0)
             tableNumInt += 1
             progressBar.setValue(tableNumInt)
             #Retrieve data limited (set by self._max_rows) records at a time to conserve resources
@@ -146,6 +146,8 @@ class BWFlowTable(object):
             read_more = True
             first_time = True
             while read_more:
+                print 'Retrieving ' + tab + ' records from SAP via RFC call'
+                statusbar.showMessage('Retrieving ' + tab + ' records from SAP via RFC call', 0)
                 RFC_READ_TABLE_output = SAP.read_SAP_table(tab, self.tab_spec[tab]['MAXROWS'], skip_rows, self.tab_spec[tab]['SELECTION'],
                                                            self.tab_spec[tab]['FIELDS'], self.tab_spec[tab]['RETRIEVEDATA'])
                 retrieved_recs = len(RFC_READ_TABLE_output['DATA'])
@@ -697,40 +699,14 @@ class BWFlowTable(object):
                 row = c.fetchone()
                 if row is not None: return row[0]
                 else: #Queries
-                    c.execute("SELECT B.TXTLG FROM RSZELTDIR AS A INNER JOIN RSZELTTXT AS B ON A.ELTUID = B.ELTUID \
+                    c.execute(u"SELECT B.TXTLG FROM RSZELTDIR AS A INNER JOIN RSZELTTXT AS B ON A.ELTUID = B.ELTUID \
                      WHERE A.MAPNAME=? AND A.OBJVERS=? AND B.LANGU=?", (node, u'A', u'E'))
                     if row is not None: return row[0]
                     else: return u""
 
-    def _unsplit(self, fileIn, fileOut, field_sep):
-        u"""
-        takes a file downloaded by ZSE16 in unconverted format, where the lines
-        are long enough to have wrapped. Joins the two have lines
-        """
-        fi = open(fileIn,u'r')
-        fo = open(fileOut,u'w')
-        inCount = 0
-        outCount = 0
-        l1 = []
-        l2 = []
-        for line in fi:
-            if line[0] != u"|": continue
-            if inCount%2 == 0:
-                ln = line.rstrip(field_sep + u'\n')
-                l1 = ln.split(field_sep)
-            else:
-                ln = line.rstrip(u'\n')
-                l2 = ln.split(field_sep)
-                l1.extend(l2)
-                fo.write(field_sep.join(l1) + u'|\n')
-                l1, l2 = [], []
-                outCount += 1
-            inCount += 1
-        fi.close()
-        fo.close()
-
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
     #TODO Fix the progress bar. When have long running table loads it does not update.
     #TODO Text values for all report objects
+    #TODO reduce the ime to download RSSTATMANPART table from SAP and, more importantly, to load it to sqlite db
 
 
