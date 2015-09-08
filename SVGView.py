@@ -43,6 +43,9 @@ class Ui_Dialog(object):
         self.verticalLayout.addWidget(self.webView)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.label = QtGui.QLabel(Dialog)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.horizontalLayout.addWidget(self.label)
         self.horizontalSlider = QtGui.QSlider(Dialog)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -52,9 +55,12 @@ class Ui_Dialog(object):
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
         self.horizontalLayout.addWidget(self.horizontalSlider)
-        self.label = QtGui.QLabel(Dialog)
-        self.label.setObjectName(_fromUtf8("label"))
-        self.horizontalLayout.addWidget(self.label)
+        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.horizontalLayout.addWidget(self.label_2)
+        self.search_lineEdit = QtGui.QLineEdit(Dialog)
+        self.search_lineEdit.setObjectName(_fromUtf8("search_lineEdit"))
+        self.horizontalLayout.addWidget(self.search_lineEdit)
         spacerItem = QtGui.QSpacerItem(488, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -65,5 +71,6 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Display Graph", None))
         self.label.setText(_translate("Dialog", "Set Zoom", None))
+        self.label_2.setText(_translate("Dialog", "Search", None))
 
 from PyQt4 import QtWebKit

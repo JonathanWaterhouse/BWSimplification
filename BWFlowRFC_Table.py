@@ -7,7 +7,6 @@ from io import open
 from COMSAPConn import *
 from collections import OrderedDict
 import sys
-sys.setrecursionlimit(10000)
 
 __author__ = u'jonathan.waterhouse@gmail.com'
 import sys
@@ -118,7 +117,7 @@ class BWFlowTable(object):
                         'RETRIEVEDATA' : ''},
             RSZELTDIR= {'FIELDS' :[],
                         'MAXROWS': self._max_rows,
-                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A'"}],
+                        'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND DEFTP = 'REP'"}],
                         'RETRIEVEDATA' : ''},
             RSZELTTXT= {'FIELDS' :[],
                         'MAXROWS': self._max_rows,
@@ -127,7 +126,7 @@ class BWFlowTable(object):
             RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
                                       'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
                            'MAXROWS': self._max_rows, # 0 brings all records back
-                           'SELECTION' : [], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
+                           'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
                            'RETRIEVEDATA' : ''} #Blank means retrieve data
         )
 
@@ -604,7 +603,7 @@ class BWFlowTable(object):
                         DTA, ANZ_RECS, INSERT_RECS,
                         MAX(SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2))
                         FROM RSSTATMANPART
-                        WHERE SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2) < date('now')
+                        WHERE SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2) <= date('now')
                         GROUP BY OLTPSOURCE, DTA
                          ''')
         #Store OLTPSOURCE, DTA, ANZRECS, INSERTRECS in internal keyed structure
@@ -684,29 +683,47 @@ class BWFlowTable(object):
         if row is None: return False
         else: return True
 
+    def update_text_table(self):
+        """
+        Populate an internal table of BW object texts for easy retrieval at various points. Need to have loaded
+        base SAP tables via RFC first.
+        :return: none
+        """
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        #Delete table if already exists
+        c.execute(u'DROP TABLE IF EXISTS ' + u'TEXTS')
+        c.execute(u'''CREATE TABLE TEXTS (OBJECT text, TEXT text, SOURCE text)''')
+        data = []
+        #Infocube
+        for row in c.execute("SELECT INFOCUBE, TXTLG FROM RSDCUBET WHERE OBJVERS ='A'"):
+            data.append((row[0],row[1],'RSDCUBET'))
+        #DSO
+        for row in c.execute("SELECT ODSOBJECT, TXTLG FROM RSDODSOT WHERE OBJVERS ='A'"):
+            data.append((row[0],row[1],'RSDODSOT'))
+        #Infospoke
+        for row in c.execute("SELECT INFOSPOKE, TXTLG FROM RSBSPOKET WHERE OBJVERS ='A'"):
+            data.append((row[0],row[1],'RSBSPOKET'))
+        #Open Hub
+        for row in c.execute("SELECT OHDEST, TXTLG FROM RSBOHDESTT WHERE OBJVERS ='A'"):
+            data.append((row[0],row[1],'RSBOHDESTT'))
+        #Query
+        for row in c.execute("SELECT A.MAPNAME, B.TXTLG FROM RSZELTDIR AS A INNER JOIN RSZELTTXT AS B ON A.ELTUID = B.ELTUID \
+                     WHERE A.OBJVERS='A' AND B.LANGU='E'"):
+            data.append((row[0],row[1],'RSZELTTXT'))
+        c.executemany("INSERT INTO TEXTS (OBJECT, TEXT, SOURCE) VALUES (?,?,?)",data)
+        conn.commit()
+
     def get_node_text(self,node):
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
-        c.execute(u"SELECT TXTLG FROM RSDCUBET WHERE INFOCUBE=? AND OBJVERS=?", (node,u'A')) #Cube
+        c.execute(u"SELECT TEXT FROM TEXTS WHERE OBJECT=?", (node,))
         row = c.fetchone()
         if row is not None: return row[0]
-        else: #DSO
-            c.execute(u"SELECT TXTLG FROM RSDODSOT WHERE ODSOBJECT=? AND OBJVERS=?", (node,u'A'))
-            row = c.fetchone()
-            if row is not None: return row[0]
-            else: #Infospoke
-                c.execute(u"SELECT TXTLG FROM RSBSPOKET WHERE INFOSPOKE=? AND OBJVERS=?", (node,u'A'))
-                row = c.fetchone()
-                if row is not None: return row[0]
-                else: #Queries
-                    c.execute(u"SELECT B.TXTLG FROM RSZELTDIR AS A INNER JOIN RSZELTTXT AS B ON A.ELTUID = B.ELTUID \
-                     WHERE A.MAPNAME=? AND A.OBJVERS=? AND B.LANGU=?", (node, u'A', u'E'))
-                    if row is not None: return row[0]
-                    else: return u""
+        else: return u""
 
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
     #TODO Fix the progress bar. When have long running table loads it does not update.
-    #TODO Text values for all report objects
     #TODO reduce the ime to download RSSTATMANPART table from SAP and, more importantly, to load it to sqlite db
 
 

@@ -27,9 +27,9 @@ class BWMappingUI(Ui_BWMapping):
             try:
                 self._files = pickle.load(f)
             except (pickle.UnpicklingError, EOFError):
-                msg = QMessageBox()
+                msg = PyQt4.QtGui.QMessageBox()
                 msg.setText("Error")
-                msg.setIcon(QMessageBox.Critical)
+                msg.setIcon(PyQt4.QtGui.QMessageBox.Critical)
                 msg.setInformativeText(self._inifile + " is corrupt. Close application, delete the file, "
                                        "then reopen the application")
                 msg.exec_()
@@ -89,11 +89,12 @@ class BWMappingUI(Ui_BWMapping):
         # Populate combo box
         self.map_connectivity_combo.addItems(['Forward','Backward', 'Forward & Backward','All Connections'])
         try:
-            for node in self._t.get_nodes(): self.map_startpoint_combo.addItem(node)
+            for node in self._t.get_nodes():
+                self.map_startpoint_combo.addItem(node)
         except (OperationalError):
-            msg = QMessageBox()
+            msg = PyQt4.QtGui.QMessageBox()
             msg.setText("ERROR")
-            msg.setIcon(QMessageBox.Critical)
+            msg.setIcon(PyQt4.QtGui.QMessageBox.Critical)
             msg.setInformativeText("There is no database configured. Please use command - File\Regenerate Db")
             msg.exec_()
             self.progressBar.setVisible(False)
@@ -157,9 +158,9 @@ class BWMappingUI(Ui_BWMapping):
                     graphviz_iterable = self._t.create_mini_graph_connections(start_node, show_queries)
                 else: print ('Invalid mapping direction supplied')
         except (OperationalError):
-            msg = QMessageBox()
+            msg = PyQt4.QtGui.QMessageBox()
             msg.setText("ERROR")
-            msg.setIcon(QMessageBox.Critical)
+            msg.setIcon(PyQt4.QtGui.QMessageBox.Critical)
             msg.setInformativeText("There is no database configured. Please use command - File\Regenerate Db")
             msg.exec_()
             self.statusbar.showMessage("There is no database configured. Please use command - File\Regenerate Db")
@@ -180,10 +181,10 @@ class BWMappingUI(Ui_BWMapping):
             if dot_exec_loc == "": raise (KeyError)
         except (KeyError):
             self.statusbar.showMessage("Graphviz 'dot' executable location must be selected.")
-            msg = QMessageBox()
+            msg = PyQt4.QtGui.QMessageBox()
             msg.setText("Warning")
             msg.setInformativeText("Graphviz 'dot' executable location must be selected. Please use file menu")
-            msg.setIcon(QMessageBox.Warning)
+            msg.setIcon(PyQt4.QtGui.QMessageBox.Warning)
             msg.exec_()
             return
 
@@ -205,10 +206,11 @@ class BWMappingUI(Ui_BWMapping):
         self.statusbar.showMessage("Regenerating.",0)
         try:
             self._t.update_table_RFC(self.statusbar,self.progressBar,i)
+
         except IOError:
-            msg = QMessageBox()
+            msg = PyQt4.QtGui.QMessageBox()
             msg.setText("ERROR")
-            msg.setIcon(QMessageBox.Critical)
+            msg.setIcon(PyQt4.QtGui.QMessageBox.Critical)
             msg.setInformativeText("File " + file + " cannot be found.")
             msg.exec_()
             self.progressBar.setVisible(False)
@@ -217,6 +219,7 @@ class BWMappingUI(Ui_BWMapping):
         #Update flow table
         self.statusbar.showMessage("Regenerating DATAFLOW table",0)
         self._t.create_flow_table()
+        self._t.update_text_table()
         self._t.update_flow_from_RSUPDINFO()
         self._t.update_flow_from_RSTRAN()
         self._t.update_flow_from_RSIOSMAP()
@@ -243,3 +246,8 @@ if __name__ == '__main__':
     sys.exit(app.exec_())
 #TODO Option to display inactive (why does ZOHCRM003 show which has inactive update rule).
 #TODO GUI does not update during heavy processing (use threads?)
+#TODO Some mechanism to identify a flow associated with a process area eg CMIS which has many disconnected flows
+#TODO     This could be as simple as populating datastore names in the dropdown list box (and allowing sorting by text)
+#TODO     to allow easy identification of relevant datastores. Alternatively some sort of wider map display that is
+#TODO     not everything
+#TODO Search of the output map for a particular text string

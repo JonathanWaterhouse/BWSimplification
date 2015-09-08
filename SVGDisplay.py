@@ -30,6 +30,7 @@ class SVGDisplay(Ui_Dialog):
         self.horizontalSlider.setTracking(True)
         self.horizontalSlider.valueChanged.connect(self.magnification)
         self.webView.selectionChanged.connect(self.showDetails)
+        self.search_lineEdit.returnPressed.connect(self.find)
         dlg.setVisible(True)
         dlg.exec_()
 
@@ -53,4 +54,7 @@ class SVGDisplay(Ui_Dialog):
         timer.connect(label,timer.timeout(),label.destroy(True))
         timer.start(1000)
 
-
+    def find(self):
+        text = self.search_lineEdit.text()
+        self.webView.findText(text,PyQt4.QtWebKit.QWebPage.FindWrapsAroundDocument)
+        return
