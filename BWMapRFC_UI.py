@@ -75,21 +75,22 @@ class BWMappingUI(Ui_BWMapping):
         """
         #Actions
         self.generate_pushButton.clicked.connect(self.generateMap)
-        self.fileRegenerate_Database.triggered.connect(self.generateDb)
+        self.fileRegenerate_Database.triggered.connect(self.generate_flow_Db)
+        self.fileGenerate_User_Activity.triggered.connect(self.generate_user_activity)
         self.actionLocate_dot.triggered.connect(self.locate_dot)
         self.exitButton.clicked.connect(self.exit)
         self.map_startpoint_combo.activated.connect(self.locate_node_by_index)
 
         path = ''
         database = path + 'BWStructure.db'
-        self._t = BWFlowTable(database)
+        self._flow_table = BWFlowTable(database)
         self._graph_file = "BWGraph.svg"
         self._mini_graph_file = "BWMiniGraph.svg"
 
         # Populate combo box
         self.map_connectivity_combo.addItems(['Forward','Backward', 'Forward & Backward','All Connections'])
         try:
-            for node in self._t.get_nodes():
+            for node in self._flow_table.get_nodes():
                 self.map_startpoint_combo.addItem(node)
         except (OperationalError):
             msg = PyQt4.QtGui.QMessageBox()
@@ -106,7 +107,7 @@ class BWMappingUI(Ui_BWMapping):
     def locate_node_by_index(self,idx):
         if self.map_startpoint_combo.currentIndex() != -1:
             node = str(self.map_startpoint_combo.currentText())
-            if self._t.get_node(node):
+            if self._flow_table.get_node(node):
                 self.statusbar.showMessage("", 0)
                 return
             else: self.statusbar.showMessage(node + " does not exist in BW Map.", 0)
@@ -125,7 +126,7 @@ class BWMappingUI(Ui_BWMapping):
             if self.fullmap_radio.isChecked(): # generate full map
                 svg_file = self._graph_file
                 self.statusbar.showMessage("Creating graph in " + svg_file,10000)
-                graphviz_iterable = self._t.create_full_graph()
+                graphviz_iterable = self._flow_table.create_full_graph()
                 self.statusbar.showMessage("Graph created in " + svg_file,10000)
 
             else: # Generate partial map
@@ -135,7 +136,7 @@ class BWMappingUI(Ui_BWMapping):
                 direction = str(self.map_connectivity_combo.currentText())
 
                 #Check start node exists
-                if not self._t.get_node(start_node):
+                if not self._flow_table.get_node(start_node):
                     self.statusbar.showMessage(start_node + " does not exist in BW Map.", 0)
                     return
                 else: self.statusbar.showMessage("", 0)
@@ -144,18 +145,18 @@ class BWMappingUI(Ui_BWMapping):
                 #Get correct graph connection mode
                 if direction == 'Forward' :
                     forward = True
-                    graphviz_iterable = self._t.create_mini_graph_2(start_node,forward, show_queries)
+                    graphviz_iterable = self._flow_table.create_mini_graph_2(start_node,forward, show_queries)
                 elif direction == 'Backward' :
                     forward = False
-                    graphviz_iterable = self._t.create_mini_graph_2(start_node,forward, show_queries)
+                    graphviz_iterable = self._flow_table.create_mini_graph_2(start_node,forward, show_queries)
                 elif direction == 'Forward & Backward' :
                     forward = True
-                    graphviz_iterable_1 = self._t.create_mini_graph_2(start_node,forward, show_queries)
+                    graphviz_iterable_1 = self._flow_table.create_mini_graph_2(start_node,forward, show_queries)
                     forward = False
-                    graphviz_iterable_2 = self._t.create_mini_graph_2(start_node,forward, show_queries)
-                    graphviz_iterable = self._t.add_graphviz_iterables(graphviz_iterable_1, graphviz_iterable_2)
+                    graphviz_iterable_2 = self._flow_table.create_mini_graph_2(start_node,forward, show_queries)
+                    graphviz_iterable = self._flow_table.add_graphviz_iterables(graphviz_iterable_1, graphviz_iterable_2)
                 elif direction == 'All Connections' :
-                    graphviz_iterable = self._t.create_mini_graph_connections(start_node, show_queries)
+                    graphviz_iterable = self._flow_table.create_mini_graph_connections(start_node, show_queries)
                 else: print ('Invalid mapping direction supplied')
         except (OperationalError):
             msg = PyQt4.QtGui.QMessageBox()
@@ -167,13 +168,13 @@ class BWMappingUI(Ui_BWMapping):
             return
         #Add decorations
         if 'BI7 Converted' in extras:
-            graphviz_iterable = self._t.decorate_graph_BI7Flow(graphviz_iterable)
+            graphviz_iterable = self._flow_table.decorate_graph_BI7Flow(graphviz_iterable)
             self.statusbar.showMessage("Generating BI7 conversion information",10000)
         if 'Flow Volumes last Run' in extras:
-            graphviz_iterable = self._t.decorate_graph_flow_volumes(graphviz_iterable)
+            graphviz_iterable = self._flow_table.decorate_graph_flow_volumes(graphviz_iterable)
             self.statusbar.showMessage("Generating flow volumes information",10000)
         if 'Stored Record Count' in extras:
-            graphviz_iterable = self._t.decorate_graph_sizes(graphviz_iterable)
+            graphviz_iterable = self._flow_table.decorate_graph_sizes(graphviz_iterable)
             self.statusbar.showMessage("Generating data store size information",10000)
 
         try:
@@ -188,24 +189,24 @@ class BWMappingUI(Ui_BWMapping):
             msg.exec_()
             return
 
-        self._t.create_svg_file(graphviz_iterable,svg_file,dot_exec_loc)
+        self._flow_table.create_svg_file(graphviz_iterable,svg_file,dot_exec_loc)
         self.statusbar.showMessage("Graph created in " + svg_file,10000)
 
         dataDir = os.getcwd() + os.sep
-        SVGDisplay(self, dataDir + svg_file, self._t)
+        SVGDisplay(self, dataDir + svg_file, self._flow_table)
         return
 
-    def generateDb(self):
+    def generate_flow_Db(self):
         #Show progress since this is a long running operation
         i=0
-        max_status_bar_value = len(self._t.tab_spec) + 1
+        max_status_bar_value = len(self._flow_table.tab_spec) + 1
         self.progressBar.setMinimum(i)
         self.progressBar.setMaximum(max_status_bar_value)
         self.progressBar.setVisible(True)
         #Update tables from SAP
         self.statusbar.showMessage("Regenerating.",0)
         try:
-            self._t.update_table_RFC(self.statusbar,self.progressBar,i)
+            self._flow_table.update_table_RFC(self.statusbar,self.progressBar,i)
 
         except IOError:
             msg = PyQt4.QtGui.QMessageBox()
@@ -218,21 +219,24 @@ class BWMappingUI(Ui_BWMapping):
             return # on error
         #Update flow table
         self.statusbar.showMessage("Regenerating DATAFLOW table",0)
-        self._t.create_flow_table()
-        self._t.update_text_table()
-        self._t.update_flow_from_RSUPDINFO()
-        self._t.update_flow_from_RSTRAN()
-        self._t.update_flow_from_RSIOSMAP()
-        self._t.update_flow_from_RSBSPOKE()
-        self._t.update_flow_from_RSBOHDEST()
-        self._t.update_flow_from_RSLDPSEL()
-        self._t.update_flow_from_RSDCUBEMULTI()
-        self._t.update_flow_from_RSRREPDIR()
+        self._flow_table.create_flow_table()
+        self._flow_table.update_text_table()
+        self._flow_table.update_flow_from_RSUPDINFO()
+        self._flow_table.update_flow_from_RSTRAN()
+        self._flow_table.update_flow_from_RSIOSMAP()
+        self._flow_table.update_flow_from_RSBSPOKE()
+        self._flow_table.update_flow_from_RSBOHDEST()
+        self._flow_table.update_flow_from_RSLDPSEL()
+        self._flow_table.update_flow_from_RSDCUBEMULTI()
+        self._flow_table.update_flow_from_RSRREPDIR()
         self.progressBar.setValue(max_status_bar_value)
         self.progressBar.setVisible(False)
         self.statusbar.showMessage("Db tables regenerated.",10000)
         #Populate combo box of possible starting nodes for mapping
-        for node in self._t.get_nodes(): self.map_startpoint_combo.addItem(node)
+        for node in self._flow_table.get_nodes(): self.map_startpoint_combo.addItem(node)
+
+    def generate_user_activity(self):
+        self._flow_table.create_user_activity_table()
 
     def exit(self):
         sys.exit(0)
@@ -250,4 +254,3 @@ if __name__ == '__main__':
 #TODO     This could be as simple as populating datastore names in the dropdown list box (and allowing sorting by text)
 #TODO     to allow easy identification of relevant datastores. Alternatively some sort of wider map display that is
 #TODO     not everything
-#TODO Search of the output map for a particular text string

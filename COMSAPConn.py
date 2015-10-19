@@ -4,7 +4,7 @@ import pyrfc
 from SAPLogonUI import *
 __author__ = 'U104675'
 
-class SAP_to_sqlite_table():
+class SAP_table_to_sqlite_table():
 
     def __init__(self):
         self._FM = 'RFC_READ_TABLE'
@@ -115,3 +115,94 @@ class SAP_to_sqlite_table():
         sqlite_conn.commit()
         sqlite_conn.close()
 
+class SAP_LISTCUBE_to_sqlite_table():
+    """
+    Class to perform a LISTCUBE on 0TCT_CA1
+    """
+    def __init__(self):
+        self._FM = 'RSDRI_INFOPROV_READ_RFC'
+
+    def login_to_SAP(self):
+        """
+        Login to SAP. To do this a simple UI is presented to allow user input of credentials and target system. This
+        avoids any hard coding of credentials and flexibility as to target system eg dev, QA, Prod.
+        :return: None. Sets a class connection object used by other methods.
+        """
+        """
+        :return:
+        """
+        login = SAPLogonUI()
+        self._SAP_conn = login.get_SAP_connection() #SAP Connection Object
+
+    def read_infocube(self, infoprovider, chars_req, kfs_req, restrictions):
+        """
+        Call SAP function module RSDRI_INFOPROV_READ_RFC.
+        For a full understanding of this function module it is best to look at its definition in SE37 paticularly its
+        imports and tables.
+        :param infoprovider: text , cube name
+        :param chars_req: List of characteristic names to be returned
+        :param kfs_req: List of key figure names to be returned
+        :param restrictions: Dictionary of characteristic restrictions in the form a a SAP selection variable.
+        Example
+        [{'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'XLWB'},
+                    {'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'TMPL'},
+                    {'CHANM' : '0TCTBISOTYP', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'ELEM'},
+                    {'CHANM' : '0CALDAY', 'SIGN' : 'I', 'COMPOP' : 'BT', 'LOW' : low, 'HIGH' : high}]
+        :return: The complete output tables of the SAP FM. The format of a table is a list of records. Each record is
+        represented as a dictionary with the field names of the table as its keys.
+        """
+
+        chars = [{'CHANM' : ch} for ch in chars_req]
+        kfs = [{'KYFNM': kf} for kf in kfs_req]
+
+        RFC_result = self._SAP_conn.call(self._FM, I_USE_DB_AGGREGATION = 'X', I_MAXROWS = 0, I_INFOPROV = infoprovider,
+                                        I_RESULTTYPE = 'V', I_T_SFC = chars, I_T_SFK = kfs, I_T_RANGE = restrictions)
+
+        return RFC_result
+
+    def write_sqlite(self, RFC_result, sqlite_db_name, table, db_fields, append):
+        #Create the table in local sqlite database
+        sqlite_conn = sqlite3.connect(sqlite_db_name)
+        c = sqlite_conn.cursor()
+        if not append:
+            c.execute('DROP TABLE IF EXISTS ' + table)
+            sql_stmt_field_defs = []
+            #Get field lengths from RFC listcube results. RFC_result['E_T_FIELD'] contains a list each element containing
+            #a dictionary with keys FIELDPOS, FIELDNAME, FIELDTYPE, FIELDLENGTH
+            field_lengths = {}
+            for field in RFC_result['E_T_FIELD']: field_lengths[field['FIELDNAME']] = field['FIELDLENGTH']
+            #Apply the fields we asked for and their lengths just found to sqlite database table definition
+            sql_stmt_field_defs = ['[' + field + '] CHAR (' + repr(field_lengths[field]) + ')' for field in db_fields]
+            sql_stmt = 'CREATE TABLE ' + table + ' (' + ','.join(sql_stmt_field_defs) + ')'
+            c.execute(sql_stmt)
+        #Update Data
+        field_names, field_values = [], []
+        records = []
+        i = 1
+        for data_field in RFC_result['E_T_RFCDATAV']:
+            """
+            E_T_RFCDATAV records have the format
+            {'UNIT': 'val', 'IOBJNM': 'val', ID: 'record number', 'VALUE': 'val'}
+            IOBJNM is the characteristic or key figure name
+            VALUE is its value
+            ID is the value of the record which contains this particular value ie it stays the same until we got through
+            all requested characteristics and key figures and then increments by 1.
+            """
+            if data_field['ID'] != i: #Change of record number
+                records.append((field_names, field_values)) #holds the record with its chars/kfs and char/kf values
+                i += 1
+                field_names = []
+                field_values = []
+
+            field_names.append(repr(data_field['IOBJNM']))
+            field_values.append(data_field['VALUE'].strip())
+        #process the last record
+        records.append((field_names, field_values))
+        #Having read all data input it to sqlite
+        for record in records:
+            val_qmarks = ['?' for el in record[1]]
+            sql_table_flds = ','.join(["[" + el.strip("u'").rstrip("'") + "]" for el in record[0]])
+            sql_stmt = 'INSERT INTO ' + table + ' (' + sql_table_flds + ') VALUES (' + ','.join(val_qmarks) + ')'
+            t = tuple(record[1])
+            c.execute(sql_stmt,t)
+        sqlite_conn.commit()

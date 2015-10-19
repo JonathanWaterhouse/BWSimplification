@@ -4,9 +4,10 @@ import subprocess
 import os
 import os.path
 from io import open
+from PyQt4.QtCore import QCoreApplication
 from COMSAPConn import *
 from collections import OrderedDict
-import sys
+import datetime
 
 __author__ = u'jonathan.waterhouse@gmail.com'
 import sys
@@ -32,6 +33,7 @@ class BWFlowTable(object):
     RSRREPDIR - Cubes and multiproviders and queries off them
     RSDCUBET - Cube and Multiprovider texts
     RSMDATASTATE_EXT - Record Counts
+    USER_ADDRP - User names and Id's
     """
     def __init__(self, database):
         u"""
@@ -127,13 +129,17 @@ class BWFlowTable(object):
                                       'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
                            'MAXROWS': self._max_rows, # 0 brings all records back
                            'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
-                           'RETRIEVEDATA' : ''} #Blank means retrieve data
+                           'RETRIEVEDATA' : ''}, #Blank means retrieve data
+            USER_ADDRP= {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "MANDT = '023'"}],
+                        'RETRIEVEDATA' : ''}
         )
 
     def update_table_RFC (self,statusbar, progressBar, tableNumInt):
 
         sqlite_db_name = self._database
-        SAP = SAP_to_sqlite_table()
+        SAP = SAP_table_to_sqlite_table()
         SAP.login_to_SAP()
         for tab in self.tab_spec.keys():
             print 'Reading SAP table ' + tab
@@ -158,6 +164,7 @@ class BWFlowTable(object):
                         print v
                     print 'Number of entries : ' + repr(i)
                     statusbar.showMessage('Number of entries : ' + repr(i), 0)
+                    QCoreApplication.processEvents()
                     append = False
                     first_time = False
                 else:
@@ -165,10 +172,12 @@ class BWFlowTable(object):
 
                 print 'Number of data records retrieved  from SAP : ' + repr(len(RFC_READ_TABLE_output['DATA']))
                 statusbar.showMessage('Number of data records retrieved  from SAP : ' + repr(len(RFC_READ_TABLE_output['DATA'])),0)
+                QCoreApplication.processEvents()
 
                 if self.tab_spec[tab]['RETRIEVEDATA'] == '':
                     print 'Adding ' + tab + ' records ' + repr(skip_rows+ 1) + ' to ' + repr(skip_rows + retrieved_recs) + ' to sqlite database'
                     statusbar.showMessage('Adding ' + tab + ' records ' + repr(skip_rows+ 1) + ' to ' + repr(skip_rows + retrieved_recs) + ' to sqlite database',0)
+                    QCoreApplication.processEvents()
                     SAP.update_sqlite_table(sqlite_db_name, tab, append, RFC_READ_TABLE_output)
                 if not retrieved_recs == self._max_rows: #we got the last of the records from the SAP table
                     read_more = False
@@ -678,7 +687,7 @@ class BWFlowTable(object):
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #note that in PyQt4 incoming node is QString and sqlite3 does not like that
-        c.execute(u"SELECT SOURCE FROM DATAFLOWS WHERE SOURCE =?",(str(node),))
+        c.execute(u"SELECT SOURCE FROM DATAFLOWS WHERE SOURCE =? OR TARGET=?",(str(node),str(node)))
         row = c.fetchone()
         if row is None: return False
         else: return True
@@ -721,6 +730,35 @@ class BWFlowTable(object):
         row = c.fetchone()
         if row is not None: return row[0]
         else: return u""
+
+    def create_user_activity_table(self):
+        """
+        Creaet a table "user_activity" containing a LISTCUBE from 0TCT_CA1
+        :return: Nothing
+        """
+        LC = SAP_LISTCUBE_to_sqlite_table()
+        LC.login_to_SAP()
+        infoprovider = '0TCT_CA1'
+        chars_req = ['0TCTIFPROV','0TCTBISBOBJ','0TCTBIOTYPE','0TCTBISOTYP','0TCTIFTYPE','0TCTUSERNM','0CALDAY']
+        #Since multiple months is too much data for SAP RFC to handle, break data pull into month buckets. First month
+        #is added fresh to sqlite table the other months are appended
+        high_dt = datetime.date.today()
+        low_dt = datetime.date.today() - datetime.timedelta(days=+31)
+        append = False
+        for i in range(3):
+            high = repr(high_dt.year) + repr(high_dt.month).zfill(2) + repr(high_dt.day).zfill(2) #yyyymmdd
+            low = repr(low_dt.year) + repr(low_dt.month).zfill(2) + repr(low_dt.day).zfill(2) #yyyymmdd
+            print high, low
+            kfs_req = ['0TCTQUCOUNT', '0TCTTIMEALL']
+            restrictions = [{'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'XLWB'},
+                        {'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'TMPL'},
+                        {'CHANM' : '0TCTBISOTYP', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'ELEM'},
+                        {'CHANM' : '0CALDAY', 'SIGN' : 'I', 'COMPOP' : 'BT', 'LOW' : low, 'HIGH' : high}]
+            result = LC.read_infocube(infoprovider, chars_req, kfs_req, restrictions)
+            LC.write_sqlite(result, self._database, 'USER_ACTIVITY', chars_req+kfs_req, append)
+            append = True
+            high_dt = low_dt - datetime.timedelta(days=+1)
+            low_dt = high_dt - datetime.timedelta(days=+31)
 
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
     #TODO Fix the progress bar. When have long running table loads it does not update.

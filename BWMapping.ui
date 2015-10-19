@@ -237,6 +237,7 @@
      <string>File</string>
     </property>
     <addaction name="fileRegenerate_Database"/>
+    <addaction name="fileGenerate_User_Activity"/>
     <addaction name="actionLocate_dot"/>
    </widget>
    <addaction name="menuFile"/>
@@ -244,12 +245,17 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="fileRegenerate_Database">
    <property name="text">
-    <string>Regenerate Database</string>
+    <string>Generate Flow Tables</string>
    </property>
   </action>
   <action name="actionLocate_dot">
    <property name="text">
     <string>Locate 'dot' Executable</string>
+   </property>
+  </action>
+  <action name="fileGenerate_User_Activity">
+   <property name="text">
+    <string>Generate User Activity</string>
    </property>
   </action>
  </widget>
