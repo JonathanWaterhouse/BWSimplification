@@ -238,6 +238,7 @@
     </property>
     <addaction name="fileRegenerate_Database"/>
     <addaction name="fileGenerate_User_Activity"/>
+    <addaction name="fileGenerate_Excel_Stats"/>
     <addaction name="actionLocate_dot"/>
    </widget>
    <addaction name="menuFile"/>
@@ -256,6 +257,11 @@
   <action name="fileGenerate_User_Activity">
    <property name="text">
     <string>Generate User Activity</string>
+   </property>
+  </action>
+  <action name="fileGenerate_Excel_Stats">
+   <property name="text">
+    <string>Generate Excel Stats</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,7 @@ import os
 import os.path
 from io import open
 from PyQt4.QtCore import QCoreApplication
+import xlsxwriter
 from COMSAPConn import *
 from collections import OrderedDict
 import datetime
@@ -133,10 +134,14 @@ class BWFlowTable(object):
             USER_ADDRP= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "MANDT = '023'"}],
+                        'RETRIEVEDATA' : ''},
+            RSTSODS= {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJSTAT = 'ACT'"}],
                         'RETRIEVEDATA' : ''}
         )
 
-    def update_table_RFC (self,statusbar, progressBar, tableNumInt):
+    def get_SAP_table_via_RFC (self,statusbar, progressBar, tableNumInt):
 
         sqlite_db_name = self._database
         SAP = SAP_table_to_sqlite_table()
@@ -731,7 +736,7 @@ class BWFlowTable(object):
         if row is not None: return row[0]
         else: return u""
 
-    def create_user_activity_table(self):
+    def get_user_activity_LISTCUBE_via_RFC(self):
         """
         Creaet a table "user_activity" containing a LISTCUBE from 0TCT_CA1
         :return: Nothing
@@ -759,6 +764,217 @@ class BWFlowTable(object):
             append = True
             high_dt = low_dt - datetime.timedelta(days=+1)
             low_dt = high_dt - datetime.timedelta(days=+31)
+
+    def create_BW_stats(self, workbook_name):
+        """
+        Create a workbook containing multiple sheets with various BW statistics
+        :param workbook_name: text name wor workbook to be stored in local diectory
+        :return: None
+        """
+        workbook = xlsxwriter.Workbook(workbook_name)
+        #Active Users
+        sheet_name = 'Active_Users'
+        worksheet = workbook.add_worksheet(sheet_name)
+        header_fmt = workbook.add_format({'bold' : True})
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,15)
+        worksheet.set_column(1,1,30)
+        worksheet.set_column(2,4,15)
+        worksheet.write(0,0,'USERID', header_fmt)
+        worksheet.write(0,1,'NAME', header_fmt)
+        worksheet.write(0,2,'QUERY_DAY_USAGES', header_fmt)
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        i, j = 1, 0
+        for row in c.execute("""
+            select Distinct U.[0TCTUSERNM], N.NAME_TEXT, COUNT(U.[0TCTTIMEALL])
+            from user_activity as U left outer join USER_ADDRP as N on U.[0TCTUSERNM] = N.BNAME
+            group by U.[0TCTUSERNM]
+            order by COUNT(U.[0TCTQUCOUNT])DESC"""):
+            for el in row:
+                if j in [0,1]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el)
+                j += 1
+            i += 1
+            j = 0
+        #Add chart top 20 Users
+        chart = workbook.add_chart({'type' : 'bar'})
+        chart.add_series({'categories' : '='+sheet_name+'!$B$2:$B$' + repr(i),
+                            'values' : '='+sheet_name+'!$C$2:$C$' + repr(i)})
+        chart.set_x_axis({'name': 'DAYS_USED_ON'})
+        chart.set_y_axis({'reverse' : True})
+        chart.set_size({'x_scale' : 2.0, 'y_scale' : 15.0})
+        chart.set_title({'name' : 'Users Query/Day Counts'})
+        chart.set_legend({'none' : True})
+        worksheet.insert_chart('D7', chart)
+
+        #Query Usage By Infoprovider
+        sheet_name = 'Query_Use_By_Infoprov'
+        worksheet = workbook.add_worksheet(sheet_name)
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,15)
+        worksheet.set_column(1,1,30)
+        worksheet.set_column(2,2,15)
+        worksheet.write(0,0,'INFOPROVIDER', header_fmt)
+        worksheet.write(0,1,'NAME', header_fmt)
+        worksheet.write(0,2,'QUERY_DAY_USAGES', header_fmt)
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        i, j = 1, 0
+        for row in c.execute("""
+            Select distinct u.[0TCTIFPROV],  t.txtlg, COUNT(U.[0TCTTIMEALL])
+            from user_activity as u left outer join RSDCUBET as t on u.[0TCTIFPROV] = t.INFOCUBE
+            group by [0TCTIFPROV]
+            order by COUNT(u.[0TCTTIMEALL]) desc"""):
+            for el in row:
+                if j in [0,1]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el)
+                j += 1
+            i += 1
+            j = 0
+        #Add chart Infoprovider Use
+        chart = workbook.add_chart({'type' : 'column'})
+        chart.add_series({'categories' : '='+sheet_name+'!$B$2:$B$' + repr(i),
+                            'values' : '='+sheet_name+'!$C$2:$C$' + repr(i)})
+        chart.set_x_axis({'name': 'QUERY_DAYS'})
+        chart.set_size({'x_scale' : 2.0, 'y_scale' : 2.0})
+        chart.set_title({'name' : 'Infoprovider Users Query/Day Counts'})
+        chart.set_legend({'none' : True})
+        worksheet.insert_chart('E1', chart)
+
+        #Query Usage By Infoprovider By User
+        worksheet = workbook.add_worksheet('Query_Use_By_Infoprov_User')
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,15)
+        worksheet.set_column(1,1,50)
+        worksheet.set_column(2,2,15)
+        worksheet.set_column(3,3,30)
+        worksheet.set_column(4,4,15)
+        worksheet.write(0,0,'INFOPROVIDER', header_fmt)
+        worksheet.write(0,1,'INFOPROVIDER NAME', header_fmt)
+        worksheet.write(0,2,'USERID', header_fmt)
+        worksheet.write(0,3,'USER_NAME', header_fmt)
+        worksheet.write(0,4,'QUERY_DAYS', header_fmt)
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        i, j = 1, 0
+        for row in c.execute("""
+            Select u.[0TCTIFPROV],  t.txtlg, u.[0TCTUSERNM], a.[name_text] , COUNT(u.[0TCTQUCOUNT])
+            from
+            user_activity as u left outer join RSDCUBET as t on u.[0TCTIFPROV] = t.INFOCUBE
+            left outer join USER_ADDRP AS A on u.[0TCTUSERNM] = A.[BNAME]
+            group by u.[0TCTIFPROV], u.[0TCTUSERNM]
+            """):
+            for el in row:
+                if j in [0,1,2,3]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el)
+                j += 1
+            i += 1
+            j = 0
+        worksheet.autofilter(0,0,i,4)
+
+        #ODS Table Sizes (From Transaction DB02)
+        sheet_name = 'ODS_Table_Sizes'
+        worksheet = workbook.add_worksheet(sheet_name)
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,25)
+        worksheet.set_column(1,1,20)
+        worksheet.set_column(2,2,60)
+        worksheet.set_column(3,3,15)
+        worksheet.write(0,0,'TYPE', header_fmt)
+        worksheet.write(0,1,'TABLE', header_fmt)
+        worksheet.write(0,2,'NAME', header_fmt)
+        worksheet.write(0,3,'MBytes', header_fmt)
+        format_num = workbook.add_format()
+        format_num.set_num_format('#,##0')
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        i, j = 1, 0
+        for row in c.execute("""
+            Select D.BW_OBJ_TYPE AS Type,
+            CASE WHEN SUBSTR (D.BW_OBJECT,1,4) == "/BI0" THEN "0" || SUBSTR(D.BW_OBJECT,7,length(D.BW_OBJECT) - 8)
+            ELSE SUBSTR(D.BW_OBJECT,7,length(D.BW_OBJECT) - 8) END AS Tabl,
+            t.TEXT AS Name, D.SIZE AS MBytes
+            FROM DB02  AS D LEFT OUTER JOIN TEXTS AS T ON
+            CASE WHEN SUBSTR (D.BW_OBJECT,1,4) == "/BI0" THEN "0" || SUBSTR(D.BW_OBJECT,7,length(D.BW_OBJECT) - 8)
+            ELSE SUBSTR(D.BW_OBJECT,7,length(D.BW_OBJECT) - 8) END = T.OBJECT
+            WHERE D.BW_OBJ_TYPE = "ODS" AND D.DETAILS = "Active data"
+            UNION
+            Select D.BW_OBJ_TYPE AS Type, substr(t.ODSNAME,2,length(t.ODSNAME)-4) As Tabl, N.text As Name, D.SIZE AS MBytes
+            FROM DB02  AS D LEFT OUTER JOIN RSTSODS AS T ON D.BW_OBJECT = T.ODSNAME_TECH
+            left outer join TEXTS as n on substr(t.ODSNAME,2,length(t.ODSNAME)-4) = n.OBJECT
+            WHERE D.BW_OBJ_TYPE = "Changelog" AND substr(t.ODSNAME,2,length(t.ODSNAME)-4) Not NULL
+            ORDER BY D.SIZE DESC
+            """):
+            for el in row:
+                if j in [0,1,2]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el,format_num)
+                j += 1
+            i += 1
+            j = 0
+        worksheet.autofilter(0,0,i,3)
+        #Add chart DSO Table Sizes
+        max_rows = 60
+        chart = workbook.add_chart({'type' : 'bar'})
+        chart.add_series({'categories' : '='+sheet_name+'!$C$2:$C$' + repr(max_rows),
+                            'values' : '='+sheet_name+'!$D$2:$D$' + repr(max_rows)})
+        chart.set_x_axis({'name': 'MBytes'})
+        chart.set_y_axis({'reverse' : True})
+        chart.set_size({'x_scale' : 2.0, 'y_scale' : 5.0})
+        chart.set_title({'name' : 'DSO/ChangeLog Data Volumes (Mb)'})
+        chart.set_legend({'none' : True})
+        worksheet.insert_chart('E3', chart)
+
+        #Cube Sizes (From Transaction DB02)
+        sheet_name = 'Cube_Sizes'
+        worksheet = workbook.add_worksheet(sheet_name)
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,25)
+        worksheet.set_column(1,1,60)
+        worksheet.set_column(2,2,15)
+        worksheet.write(0,0,'CUBE', header_fmt)
+        worksheet.write(0,1,'NAME', header_fmt)
+        worksheet.write(0,2,'MBytes', header_fmt)
+        format_num = workbook.add_format()
+        format_num.set_num_format('#,##0')
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        i, j = 1, 0
+        for row in c.execute("""
+                Select Distinct
+                CASE WHEN D.BW_OBJECT LIKE "/BIC/F%" OR D.BW_OBJECT LIKE "/BIC/E%" OR D.BW_OBJECT LIKE "/BI0/F%" OR D.BW_OBJECT LIKE "/BI0/E%"
+                THEN SUBSTR(D.BW_OBJECT,7)
+                ELSE SUBSTR(D.BW_OBJECT,7, LENGTH(D.BW_OBJECT)-7) end AS Cube,
+                N.text As Name, SUM(D.SIZE) AS MBytes_All_Tables
+                FROM DB02  AS D
+                left outer join TEXTS as n on
+                CASE WHEN D.BW_OBJECT LIKE "/BIC/F%" OR D.BW_OBJECT LIKE "/BIC/E%" OR D.BW_OBJECT LIKE "/BI0/F%" OR D.BW_OBJECT LIKE "/BI0/E%"
+                THEN SUBSTR(D.BW_OBJECT,7)
+                ELSE SUBSTR(D.BW_OBJECT,7, LENGTH(D.BW_OBJECT)-7) end = n.OBJECT
+                WHERE D.BW_AREA = "Cubes & related objects"
+                group by CASE WHEN D.BW_OBJECT LIKE "/BIC/F%" OR D.BW_OBJECT LIKE "/BIC/E%" OR D.BW_OBJECT LIKE "/BI0/F%" OR D.BW_OBJECT LIKE "/BI0/E%"
+                THEN SUBSTR(D.BW_OBJECT,7)
+                ELSE SUBSTR(D.BW_OBJECT,7, LENGTH(D.BW_OBJECT)-7) end
+                order by
+                SUM(D.SIZE) desc
+            """):
+            for el in row:
+                if j in [0,1]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el,format_num)
+                j += 1
+            i += 1
+            j = 0
+        #Add chart DSO Table Sizes
+        chart = workbook.add_chart({'type' : 'bar'})
+        chart.add_series({'categories' : '='+sheet_name+'!$B$2:$B$' + repr(i),
+                            'values' : '='+sheet_name+'!$C$2:$C$' + repr(i)})
+        chart.set_x_axis({'name': 'MBytes'})
+        chart.set_y_axis({'reverse' : True})
+        chart.set_size({'x_scale' : 2.0, 'y_scale' : 5.0})
+        chart.set_title({'name' : 'Cube Data Volumes (Mb)'})
+        chart.set_legend({'none' : True})
+        worksheet.insert_chart('D3', chart)
+        workbook.close()
 
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
     #TODO Fix the progress bar. When have long running table loads it does not update.

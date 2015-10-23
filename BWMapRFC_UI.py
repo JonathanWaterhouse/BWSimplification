@@ -77,6 +77,7 @@ class BWMappingUI(Ui_BWMapping):
         self.generate_pushButton.clicked.connect(self.generateMap)
         self.fileRegenerate_Database.triggered.connect(self.generate_flow_Db)
         self.fileGenerate_User_Activity.triggered.connect(self.generate_user_activity)
+        self.fileGenerate_Excel_Stats.triggered.connect(self.generate_excel_stats)
         self.actionLocate_dot.triggered.connect(self.locate_dot)
         self.exitButton.clicked.connect(self.exit)
         self.map_startpoint_combo.activated.connect(self.locate_node_by_index)
@@ -206,7 +207,7 @@ class BWMappingUI(Ui_BWMapping):
         #Update tables from SAP
         self.statusbar.showMessage("Regenerating.",0)
         try:
-            self._flow_table.update_table_RFC(self.statusbar,self.progressBar,i)
+            self._flow_table.get_SAP_table_via_RFC(self.statusbar,self.progressBar,i)
 
         except IOError:
             msg = PyQt4.QtGui.QMessageBox()
@@ -236,7 +237,13 @@ class BWMappingUI(Ui_BWMapping):
         for node in self._flow_table.get_nodes(): self.map_startpoint_combo.addItem(node)
 
     def generate_user_activity(self):
-        self._flow_table.create_user_activity_table()
+        self._flow_table.get_user_activity_LISTCUBE_via_RFC()
+
+    def generate_excel_stats(self):
+        workbook_name = 'BWStatistics.xlsx'
+        self.statusbar.showMessage("Generating Excel file.",10000)
+        self._flow_table.create_BW_stats(workbook_name)
+        self.statusbar.showMessage("Excel file " + workbook_name + " created.",10000)
 
     def exit(self):
         sys.exit(0)

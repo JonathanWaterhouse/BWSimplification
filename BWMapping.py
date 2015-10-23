@@ -101,8 +101,11 @@ class Ui_BWMapping(object):
         self.actionLocate_dot.setObjectName(_fromUtf8("actionLocate_dot"))
         self.fileGenerate_User_Activity = QtGui.QAction(BWMapping)
         self.fileGenerate_User_Activity.setObjectName(_fromUtf8("fileGenerate_User_Activity"))
+        self.fileGenerate_Excel_Stats = QtGui.QAction(BWMapping)
+        self.fileGenerate_Excel_Stats.setObjectName(_fromUtf8("fileGenerate_Excel_Stats"))
         self.menuFile.addAction(self.fileRegenerate_Database)
         self.menuFile.addAction(self.fileGenerate_User_Activity)
+        self.menuFile.addAction(self.fileGenerate_Excel_Stats)
         self.menuFile.addAction(self.actionLocate_dot)
         self.menubar.addAction(self.menuFile.menuAction())
 
@@ -127,4 +130,5 @@ class Ui_BWMapping(object):
         self.fileRegenerate_Database.setText(_translate("BWMapping", "Generate Flow Tables", None))
         self.actionLocate_dot.setText(_translate("BWMapping", "Locate \'dot\' Executable", None))
         self.fileGenerate_User_Activity.setText(_translate("BWMapping", "Generate User Activity", None))
+        self.fileGenerate_Excel_Stats.setText(_translate("BWMapping", "Generate Excel Stats", None))
 
