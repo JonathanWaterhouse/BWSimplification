@@ -138,6 +138,26 @@ class BWFlowTable(object):
             RSTSODS= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "OBJSTAT = 'ACT'"}],
+                        'RETRIEVEDATA' : ''},
+            RSUPDROUT= {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''},
+            RSTRANSTEPROUT= {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''},
+            RSAABAP= {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''},
+            RSQTOBJ= {'FIELDS' : ['INFOSET', 'TALIAS', 'TNAME', 'TTYPE'],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJVERS = 'A' AND TTYPE <> ''"}],
+                        'RETRIEVEDATA' : ''},
+            RSQISETT= {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJVERS = 'A' AND LANGU = 'E'"}],
                         'RETRIEVEDATA' : ''}
         )
 
@@ -386,6 +406,26 @@ class BWFlowTable(object):
         "" , B.TXTLG
         FROM RSDCUBEMULTI AS A LEFT OUTER JOIN RSDCUBET AS B ON A.INFOCUBE = B.INFOCUBE
         WHERE A.OBJVERS = "A" AND B.OBJVERS = "A" And B.LANGU = "E"
+        """)
+        conn.commit()
+
+    def update_flow_from_RSQTOBJ(self):
+        u"""
+        method create_flow_table must be called before this method to create table DATAFLOWS
+        This method updates that table with relevant information from table RSQTOBJ  concerning table contents of
+        infosets
+        :return: nothing
+        """
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        #Assume target already exists and we are appending records
+        c.executescript(u"""
+        INSERT INTO DATAFLOWS
+        (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
+        SELECT A.TNAME , A.INFOSET , "RSDTOBJ" , "INFOSET_COMPONENT" , "P2WCLNT023" , "" , "INFO_SET" ,
+        "" , B.TXTLG
+        FROM RSQTOBJ AS A LEFT OUTER JOIN RSQISETT AS B ON A.INFOSET = B.INFOSET
+        WHERE B.OBJVERS = "A" And B.LANGU = "E"
         """)
         conn.commit()
 
@@ -725,6 +765,11 @@ class BWFlowTable(object):
         for row in c.execute("SELECT A.MAPNAME, B.TXTLG FROM RSZELTDIR AS A INNER JOIN RSZELTTXT AS B ON A.ELTUID = B.ELTUID \
                      WHERE A.OBJVERS='A' AND B.LANGU='E'"):
             data.append((row[0],row[1],'RSZELTTXT'))
+        #Infoset
+        for row in c.execute("SELECT INFOSET, TXTLG FROM RSQISETT WHERE OBJVERS='A' AND LANGU='E'"):
+            data.append((row[0],row[1],'RSQISETT'))
+
+        #Final update of texts table
         c.executemany("INSERT INTO TEXTS (OBJECT, TEXT, SOURCE) VALUES (?,?,?)",data)
         conn.commit()
 
