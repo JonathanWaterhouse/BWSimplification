@@ -158,6 +158,15 @@ class BWFlowTable(object):
             RSQISETT= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "OBJVERS = 'A' AND LANGU = 'E'"}],
+                        'RETRIEVEDATA' : ''},
+            RSTSRULES= {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJVERS = 'A' AND (CONVROUT_G <> '' OR CONVROUT_L <> '' "},
+                                       {'TEXT': "OR FORMULA_ID <> '')"}],
+                        'RETRIEVEDATA' : ''},
+            RSTRANFIELD= {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
                         'RETRIEVEDATA' : ''}
         )
 
@@ -953,6 +962,7 @@ class BWFlowTable(object):
             """):
             for el in row:
                 if j in [0,1,2]: worksheet.write(i,j,el)
+#                else: worksheet.write(i,j,el)
                 else: worksheet.write_number(i,j,el,format_num)
                 j += 1
             i += 1

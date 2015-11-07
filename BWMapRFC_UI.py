@@ -1,3 +1,5 @@
+from PyQt4.QtCore import QCoreApplication
+
 __author__ = 'jonathan.waterhouse@gmail.com'
 from sqlite3 import OperationalError
 import PyQt4.QtGui
@@ -224,20 +226,28 @@ class BWMappingUI(Ui_BWMapping):
         self._flow_table.update_text_table()
         self._flow_table.update_flow_from_RSUPDINFO()
         self.statusbar.showMessage(".....from RSTRAN",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSTRAN()
         self.statusbar.showMessage(".....from RSIOSMAP",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSIOSMAP()
         self.statusbar.showMessage(".....from RSBSPOKE",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSBSPOKE()
         self.statusbar.showMessage(".....from RSBOHDEST",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSBOHDEST()
         self.statusbar.showMessage(".....from RSLDPSEL",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSLDPSEL()
         self.statusbar.showMessage(".....from RSDCUBEMULTI",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSDCUBEMULTI()
         self.statusbar.showMessage(".....from RSRREPDIR",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSRREPDIR()
         self.statusbar.showMessage(".....from RSQTOBJ",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSQTOBJ()
         self.progressBar.setValue(max_status_bar_value)
         self.progressBar.setVisible(False)
@@ -270,3 +280,8 @@ if __name__ == '__main__':
 #TODO     This could be as simple as populating datastore names in the dropdown list box (and allowing sorting by text)
 #TODO     to allow easy identification of relevant datastores. Alternatively some sort of wider map display that is
 #TODO     not everything
+#TODO Links via lookup display
+#TODO Python distribution (not cx_freeze)
+#TODO Automated way to get object sizes rather than manual run of DB02
+#TODO Status bar to do a better job of subdividing the lengthy tasks
+#TODO Object links due to ABAP lookup.
