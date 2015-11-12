@@ -16,6 +16,7 @@ class BWMappingUI(Ui_BWMapping):
         #Setup some internally required file locations
         dataDir = self.getDataDir() + os.sep
         self._iniFile = dataDir + "BWMapping.ini"
+        self._excel_stats_file = 'BWStatistics.xlsx'
         self._files= {}
         # Read the ini file containing the graphviz executable location
         try:
@@ -256,13 +257,12 @@ class BWMappingUI(Ui_BWMapping):
         for node in self._flow_table.get_nodes(): self.map_startpoint_combo.addItem(node)
 
     def generate_user_activity(self):
-        self._flow_table.get_user_activity_LISTCUBE_via_RFC()
+        self._flow_table.get_user_activity_LISTCUBE_via_RFC(self.statusbar)
 
     def generate_excel_stats(self):
-        workbook_name = 'BWStatistics.xlsx'
         self.statusbar.showMessage("Generating Excel file.",10000)
-        self._flow_table.create_BW_stats(workbook_name)
-        self.statusbar.showMessage("Excel file " + workbook_name + " created.",10000)
+        self._flow_table.create_BW_stats(self._excel_stats_file)
+        self.statusbar.showMessage("Excel file " + self._excel_stats_file + " created.",10000)
 
     def exit(self):
         sys.exit(0)

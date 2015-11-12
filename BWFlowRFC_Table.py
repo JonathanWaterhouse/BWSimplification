@@ -790,11 +790,12 @@ class BWFlowTable(object):
         if row is not None: return row[0]
         else: return u""
 
-    def get_user_activity_LISTCUBE_via_RFC(self):
+    def get_user_activity_LISTCUBE_via_RFC(self, statusbar):
         """
-        Creaet a table "user_activity" containing a LISTCUBE from 0TCT_CA1
+        Create a table "user_activity" containing a LISTCUBE from 0TCT_CA1
         :return: Nothing
         """
+        months_to_return = 6
         LC = SAP_LISTCUBE_to_sqlite_table()
         LC.login_to_SAP()
         infoprovider = '0TCT_CA1'
@@ -804,7 +805,9 @@ class BWFlowTable(object):
         high_dt = datetime.date.today()
         low_dt = datetime.date.today() - datetime.timedelta(days=+31)
         append = False
-        for i in range(3):
+        for i in range(months_to_return):
+            statusbar.showMessage('Generating month ' + repr(i+1) + ' of ' + repr(months_to_return) + ' months data')
+            QCoreApplication.processEvents()
             high = repr(high_dt.year) + repr(high_dt.month).zfill(2) + repr(high_dt.day).zfill(2) #yyyymmdd
             low = repr(low_dt.year) + repr(low_dt.month).zfill(2) + repr(low_dt.day).zfill(2) #yyyymmdd
             print high, low
@@ -818,6 +821,8 @@ class BWFlowTable(object):
             append = True
             high_dt = low_dt - datetime.timedelta(days=+1)
             low_dt = high_dt - datetime.timedelta(days=+31)
+        statusbar.showMessage('User activity statistics generated')
+        QCoreApplication.processEvents()
 
     def create_BW_stats(self, workbook_name):
         """
@@ -918,6 +923,37 @@ class BWFlowTable(object):
             user_activity as u left outer join RSDCUBET as t on u.[0TCTIFPROV] = t.INFOCUBE
             left outer join USER_ADDRP AS A on u.[0TCTUSERNM] = A.[BNAME]
             group by u.[0TCTIFPROV], u.[0TCTUSERNM]
+            """):
+            for el in row:
+                if j in [0,1,2,3]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el)
+                j += 1
+            i += 1
+            j = 0
+        worksheet.autofilter(0,0,i,4)
+
+        #Reports and users
+        worksheet = workbook.add_worksheet('Query_Use_By_User')
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,30)
+        worksheet.set_column(1,1,50)
+        worksheet.set_column(2,2,15)
+        worksheet.set_column(3,3,30)
+        worksheet.set_column(4,4,15)
+        worksheet.write(0,0,'QUERY', header_fmt)
+        worksheet.write(0,1,'QUERY NAME', header_fmt)
+        worksheet.write(0,2,'USERID', header_fmt)
+        worksheet.write(0,3,'USER_NAME', header_fmt)
+        worksheet.write(0,4,'QUERY_DAYS', header_fmt)
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        i, j = 1, 0
+        for row in c.execute("""
+            SELECT DISTINCT A.[0TCTBISBOBJ], T.text,  A.[0TCTUSERNM], U.NAME_TEXT, count(A.[0TCTQUCOUNT]) as usage
+            FROM USER_ACTIVITY As A left outer join user_Addrp as U ON A."0TCTUSERNM" = U.BNAME
+            left outer join texts as t ON A."0TCTBISBOBJ" = t.OBJECT
+            group by A.[0TCTBISBOBJ], A.[0TCTUSERNM]
+            order by usage desc
             """):
             for el in row:
                 if j in [0,1,2,3]: worksheet.write(i,j,el)
