@@ -4,15 +4,17 @@ import subprocess
 import os
 import os.path
 from io import open
+from collections import OrderedDict
 from PyQt4.QtCore import QCoreApplication
 import xlsxwriter
 from COMSAPConn import *
-from collections import OrderedDict
+import sys
+import sqlite3
+import ftplib
 import datetime
 
 __author__ = u'jonathan.waterhouse@gmail.com'
-import sys
-import sqlite3
+
 
 sys.path.append(os.path.dirname(os.getcwdu()))
 
@@ -43,7 +45,7 @@ class BWFlowTable(object):
         """
         self._database = database
         self._max_rows = 75000 #Maximum rows we will attempt to pull from a table in one RFC call.
-        #Next section defines the tables we want, the fields, any sql "WHERE" criteria and whetherw we want data or just
+        #Next section defines the tables we want, the fields, any sql "WHERE" criteria and whether we want data or just
         #a table spec.
         self.tab_spec = OrderedDict(
             RSBOHDEST= {'FIELDS' :[],
@@ -126,11 +128,11 @@ class BWFlowTable(object):
                         'MAXROWS': self._max_rows,
                         'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
                         'RETRIEVEDATA' : ''},
-            RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
-                                      'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
-                           'MAXROWS': self._max_rows, # 0 brings all records back
-                           'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
-                           'RETRIEVEDATA' : ''}, #Blank means retrieve data
+            #RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
+            #                          'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
+            #               'MAXROWS': self._max_rows, # 0 brings all records back
+            #               'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
+            #               'RETRIEVEDATA' : ''}, #Blank means retrieve data
             USER_ADDRP= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "MANDT = '023'"}],
@@ -147,10 +149,10 @@ class BWFlowTable(object):
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
                         'RETRIEVEDATA' : ''},
-            RSAABAP= {'FIELDS' : [],
-                        'MAXROWS' : self._max_rows,
-                        'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
-                        'RETRIEVEDATA' : ''},
+            #RSAABAP= {'FIELDS' : [],
+            #            'MAXROWS' : self._max_rows,
+            #           'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
+            #            'RETRIEVEDATA' : ''},
             RSQTOBJ= {'FIELDS' : ['INFOSET', 'TALIAS', 'TNAME', 'TTYPE'],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "OBJVERS = 'A' AND TTYPE <> ''"}],
@@ -169,6 +171,26 @@ class BWFlowTable(object):
                         'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
                         'RETRIEVEDATA' : ''}
         )
+        self.tab_spec['/BIC/PZDESTCNTY'] = {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA' : ''}
+        self.tab_spec['/BIC/TZFICLUST'] = {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "LANGU = 'EN'"}],
+                        'RETRIEVEDATA' : ''}
+        self.tab_spec['/BIC/TZFISCLUST'] = {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "LANGU = 'EN'"}],
+                        'RETRIEVEDATA' : ''}
+        self.tab_spec['/BIC/TZDESTREG'] = {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "LANGU = 'EN'"}],
+                        'RETRIEVEDATA' : ''}
+        self.tab_spec['/BIC/TZDESTSREG'] = {'FIELDS' : [],
+                        'MAXROWS' : self._max_rows,
+                        'SELECTION' : [{'TEXT': "LANGU = 'EN'"}],
+                        'RETRIEVEDATA' : ''}
 
     def get_SAP_table_via_RFC (self,statusbar, progressBar, tableNumInt):
 
@@ -824,6 +846,67 @@ class BWFlowTable(object):
         statusbar.showMessage('User activity statistics generated')
         QCoreApplication.processEvents()
 
+    def get_EKDIR_data(self, ftp_server, directory, data_cols_file_name, data_body_file_name):
+        """
+        The method reads a local ftp server for a prepared extract from EKDIR. The only reason this method was chosen
+        rather than using the pyad module and querying the active directory direct is that it seems you only have access
+        to name within your own domain with default security. The alternative method used here has access to all employees
+        and appears to be updated daily
+        :param ftp_server: ftp server address
+        :param directory: folder containing files to access
+        :param data_cols_file_name: file to retrieve which contains the column definitions for the body file
+        :param data_body_file_name: file to retrieve to get the body records
+        :return:
+        """
+        ftp = ftplib.FTP(ftp_server)
+        ftp.login()
+        ftp.cwd(directory)
+        temp_file_hdr = 'ftpout_hdr.txt' #Temp storage, deleted after use
+        temp_file_body = 'ftpout_body.txt'#Temp storage, deleted after use
+        #Read header from ftp server
+        f = open (temp_file_hdr,'wb')
+        command = 'RETR ' + data_cols_file_name
+        ftp.retrbinary(command, lambda data: f.write(data))
+        f.close()
+        #Read body from ftp server
+        f = open (temp_file_body,'wb')
+        command = 'RETR ' + data_body_file_name
+        ftp.retrbinary(command, lambda data: f.write(data))
+        f.close()
+        #read header file to temp storage
+        f = open(temp_file_hdr,'r')
+        for line in f: col_names = line.split('|')
+        f.close()
+        #Read body file to temp storage
+        entries = []
+        f = open (temp_file_body,'r')
+        for line in f:
+            j = 0
+            entry = {}
+            for el in line.rstrip('\n').strip('|').split('|'):
+                entry[col_names[j]] = el
+                j += 1
+            entries.append(entry)
+        f.close()
+        os.remove(temp_file_hdr)
+        os.remove(temp_file_body)
+        #Update to sqlite database
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        #Delete table if already exists
+        c.execute(u'DROP TABLE IF EXISTS ' + u'EKDIR')
+        c.execute(u'''CREATE TABLE EKDIR (EMPNO TEXT, GIVENNAME text, SN text,
+                EXT_MAIL TEXT, OU TEXT, COUNTRY TEXT, EMP_TYPE TEXT)
+        ''')
+        data = []
+        #create a list of tuples for efficient add to database
+        for entry in entries: data.append((entry['employeeNumber'], entry['givenName'], entry['sn'],
+                                             entry['ExternalMail'],entry['ou'], entry['kodakCountry'],
+                                            entry['employeeType']))
+        c.executemany("INSERT INTO EKDIR (EMPNO, GIVENNAME, SN, EXT_MAIL, OU, COUNTRY, EMP_TYPE) VALUES (?,?,?,?,?,?,?)",data)
+        conn.commit()
+
+
     def create_BW_stats(self, workbook_name):
         """
         Create a workbook containing multiple sheets with various BW statistics
@@ -831,6 +914,8 @@ class BWFlowTable(object):
         :return: None
         """
         workbook = xlsxwriter.Workbook(workbook_name)
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
         #Active Users
         sheet_name = 'Active_Users'
         worksheet = workbook.add_worksheet(sheet_name)
@@ -842,8 +927,6 @@ class BWFlowTable(object):
         worksheet.write(0,0,'USERID', header_fmt)
         worksheet.write(0,1,'NAME', header_fmt)
         worksheet.write(0,2,'QUERY_DAY_USAGES', header_fmt)
-        conn = sqlite3.connect(self._database)
-        c = conn.cursor()
         i, j = 1, 0
         for row in c.execute("""
             select Distinct U.[0TCTUSERNM], N.NAME_TEXT, COUNT(U.[0TCTTIMEALL])
@@ -856,7 +939,7 @@ class BWFlowTable(object):
                 j += 1
             i += 1
             j = 0
-        #Add chart top 20 Users
+        #Add chart Users by intensity of usage
         chart = workbook.add_chart({'type' : 'bar'})
         chart.add_series({'categories' : '='+sheet_name+'!$B$2:$B$' + repr(i),
                             'values' : '='+sheet_name+'!$C$2:$C$' + repr(i)})
@@ -866,6 +949,39 @@ class BWFlowTable(object):
         chart.set_title({'name' : 'Users Query/Day Counts'})
         chart.set_legend({'none' : True})
         worksheet.insert_chart('D7', chart)
+
+        # ACTIVE Users by region
+        sheet_name = 'Active_Users_By_Region'
+        worksheet = workbook.add_worksheet(sheet_name)
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,15)
+        worksheet.set_column(1,1,15)
+        worksheet.write(0,0,'REGION', header_fmt)
+        worksheet.write(0,1,'QUERY_DAY_USAGES', header_fmt)
+        i, j = 1, 0
+        for row in c.execute("""
+            select Distinct s.TXTMD,  COUNT(U.[0TCTQUCOUNT])
+            from user_activity as U left outer join  EKDIR as E on U.[0TCTUSERNM] = E.empno
+            left outer join [/BIC/PZDESTCNTY] As D on D.[/BIC/ZDESTCNTY] = E.COUNTRY
+            left outer join [/BIC/TZDESTSREG] as S on D.[/BIC/ZDESTSREG] = S.[/BIC/ZDESTSREG]
+            left outer join TEXTS as T on T.OBJECT = U.[0TCTIFPROV]
+            group by s.txtmd
+            order by s.txtmd"""):
+            for el in row:
+                if j in [0]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el)
+                j += 1
+            i += 1
+            j = 0
+        #Add chart Active Users by Region
+        chart = workbook.add_chart({'type' : 'pie'})
+        chart.add_series({'categories' : '='+sheet_name+'!$A$2:$A$' + repr(i),
+                            'values' : '='+sheet_name+'!$B$2:$B$' + repr(i)})
+        chart.set_x_axis({'name': 'QUERY_DAYS'})
+        chart.set_size({'x_scale' : 2.0, 'y_scale' : 2.0})
+        chart.set_title({'name' : 'Infoprovider Users Query/Day Counts'})
+        chart.set_legend({'none' : False})
+        worksheet.insert_chart('D3', chart)
 
         #Query Usage By Infoprovider
         sheet_name = 'Query_Use_By_Infoprov'
@@ -877,8 +993,6 @@ class BWFlowTable(object):
         worksheet.write(0,0,'INFOPROVIDER', header_fmt)
         worksheet.write(0,1,'NAME', header_fmt)
         worksheet.write(0,2,'QUERY_DAY_USAGES', header_fmt)
-        conn = sqlite3.connect(self._database)
-        c = conn.cursor()
         i, j = 1, 0
         for row in c.execute("""
             Select distinct u.[0TCTIFPROV],  t.txtlg, COUNT(U.[0TCTTIMEALL])
@@ -901,6 +1015,69 @@ class BWFlowTable(object):
         chart.set_legend({'none' : True})
         worksheet.insert_chart('E1', chart)
 
+        # Infoprovider usage by region
+        sheet_name = 'Infoprovider_Use_By_Region'
+        worksheet = workbook.add_worksheet(sheet_name)
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,15)
+        worksheet.set_column(1,1,40)
+        worksheet.set_column(2,8,15)
+        worksheet.write(0,0,'INFOPROVIDER', header_fmt)
+        worksheet.write(0,1,'NAME', header_fmt)
+        worksheet.write(0,2,'US&C', header_fmt)
+        worksheet.write(0,3,'EAMER', header_fmt)
+        worksheet.write(0,4,'APR', header_fmt)
+        worksheet.write(0,5,'LAR', header_fmt)
+        worksheet.write(0,6,'No User rec', header_fmt)
+        worksheet.write(0,7,'TOT All Region', header_fmt)
+        i, j = 1, 0
+        for row in c.execute("""
+                select Infoprovider, Name,
+                sum(case when Region = "US&C" THEN Intensity END) as USC,
+                sum(case when Region = "EAMER" THEN Intensity END) as EAMER,
+                SUM(case when Region = "APR" THEN Intensity END) as APR,
+                Sum(case when Region = "LAR" THEN Intensity END) as LAR,
+                Sum(case when region is Null THEN Intensity end) as NoUserRec,
+                Sum(Intensity) as Total
+                From
+                (select Distinct  s.TXTMD as Region, U.[0TCTIFPROV] as Infoprovider, T.TEXT as Name, COUNT(U.[0TCTQUCOUNT]) as Intensity
+                            from user_activity as U left outer join USER_ADDRP as N on U.[0TCTUSERNM] = N.BNAME
+                            left outer join EKDIR as E on U.[0TCTUSERNM] = E.empno
+                            left outer join [/BIC/PZDESTCNTY] As D on D.[/BIC/ZDESTCNTY] = E.COUNTRY
+                            left outer join [/BIC/TZDESTSREG] as S on D.[/BIC/ZDESTSREG] = S.[/BIC/ZDESTSREG]
+                            left outer join TEXTS as T on T.OBJECT = U.[0TCTIFPROV]
+                            group by s.txtmd, U.[0TCTIFPROV]
+                            order by TXTMD, COUNT(U.[0TCTQUCOUNT]) DESC)
+                group By Infoprovider
+                Order by USC Desc
+            """):
+            for el in row:
+                if j in [0,1, 2, 3, 4, 5, 6]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el)
+                j += 1
+            i += 1
+            j = 0
+        Num_to_chart = 16
+        #Add chart Infoprovider Use by region
+        chart = workbook.add_chart({'type' : 'column'})
+        chart.add_series({'name':'US&C',
+                          'categories' : '='+sheet_name+'!$B$2:$B$' + repr(Num_to_chart),
+                            'values' : '='+sheet_name+'!$C$2:$C$' + repr(Num_to_chart)})
+        chart.add_series({'name': 'EAMER',
+                          'categories': '='+sheet_name+'!$B$2:$B$' + repr(Num_to_chart),
+                        'values': '='+sheet_name+'!$D$2:$D$' + repr(Num_to_chart)})
+        chart.add_series({'name': 'APR',
+                          'categories': '='+sheet_name+'!$B$2:$B$' + repr(Num_to_chart),
+                        'values': '='+sheet_name+'!$E$2:$E$' + repr(Num_to_chart)})
+        chart.add_series({'name': 'LAR',
+                          'categories': '='+sheet_name+'!$B$2:$B$' + repr(Num_to_chart),
+                        'values': '='+sheet_name+'!$F$2:$F$' + repr(Num_to_chart)})
+        chart.set_x_axis({'name': 'QUERY_DAYS'})
+        chart.set_size({'x_scale' : 2.0, 'y_scale' : 2.0})
+        chart.set_title({'name' : 'Infoprovider Use By Region'})
+        chart.set_legend({'none' : False})
+        worksheet.insert_chart('G2', chart)
+
         #Query Usage By Infoprovider By User
         worksheet = workbook.add_worksheet('Query_Use_By_Infoprov_User')
         worksheet.set_zoom(70)
@@ -914,8 +1091,6 @@ class BWFlowTable(object):
         worksheet.write(0,2,'USERID', header_fmt)
         worksheet.write(0,3,'USER_NAME', header_fmt)
         worksheet.write(0,4,'QUERY_DAYS', header_fmt)
-        conn = sqlite3.connect(self._database)
-        c = conn.cursor()
         i, j = 1, 0
         for row in c.execute("""
             Select u.[0TCTIFPROV],  t.txtlg, u.[0TCTUSERNM], a.[name_text] , COUNT(u.[0TCTQUCOUNT])
@@ -945,8 +1120,6 @@ class BWFlowTable(object):
         worksheet.write(0,2,'USERID', header_fmt)
         worksheet.write(0,3,'USER_NAME', header_fmt)
         worksheet.write(0,4,'QUERY_DAYS', header_fmt)
-        conn = sqlite3.connect(self._database)
-        c = conn.cursor()
         i, j = 1, 0
         for row in c.execute("""
             SELECT DISTINCT A.[0TCTBISBOBJ], T.text,  A.[0TCTUSERNM], U.NAME_TEXT, count(A.[0TCTQUCOUNT]) as usage
@@ -977,8 +1150,6 @@ class BWFlowTable(object):
         worksheet.write(0,3,'MBytes', header_fmt)
         format_num = workbook.add_format()
         format_num.set_num_format('#,##0')
-        conn = sqlite3.connect(self._database)
-        c = conn.cursor()
         i, j = 1, 0
         for row in c.execute("""
             Select D.BW_OBJ_TYPE AS Type,
@@ -1028,8 +1199,6 @@ class BWFlowTable(object):
         worksheet.write(0,2,'MBytes', header_fmt)
         format_num = workbook.add_format()
         format_num.set_num_format('#,##0')
-        conn = sqlite3.connect(self._database)
-        c = conn.cursor()
         i, j = 1, 0
         for row in c.execute("""
                 Select Distinct
@@ -1066,6 +1235,8 @@ class BWFlowTable(object):
         chart.set_legend({'none' : True})
         worksheet.insert_chart('D3', chart)
         workbook.close()
+
+        conn.close()
 
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
     #TODO Fix the progress bar. When have long running table loads it does not update.

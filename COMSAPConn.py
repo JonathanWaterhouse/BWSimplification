@@ -20,6 +20,7 @@ class SAP_table_to_sqlite_table():
         """
         login = SAPLogonUI()
         self._SAP_conn = login.get_SAP_connection() #SAP Connection Object
+        #TODO SAP login error handling - its certain that sometimes a mistype will happen
 
     def close_SAP_connection(self):
         self._SAP_conn.close()
@@ -77,13 +78,15 @@ class SAP_table_to_sqlite_table():
         #Create the table in local sqlite database
         sqlite_conn = sqlite3.connect(sqlite_db_name)
         c = sqlite_conn.cursor()
+        table = '[' + table + ']' #A valid sqlite table name
         #Delete table if already exists
         if not append:
             c.execute('DROP TABLE IF EXISTS ' + table)
             #Define table structure from the SAP "FIELDS" Information
             sql_stmt_field_defs = []
             for field in RFC_out['FIELDS']:
-                sql_stmt_field_defs.append(field['FIELDNAME'] + ' CHAR(' + field['LENGTH'].lstrip('0') + ')')
+                fld = '[' + field['FIELDNAME'] + ']' #A valid sqlite field name
+                sql_stmt_field_defs.append(fld + ' CHAR(' + field['LENGTH'].lstrip('0') + ')')
             sql_stmt = 'CREATE TABLE ' + table + ' (' + ','.join(sql_stmt_field_defs) + ')'
             c.execute(sql_stmt)
 
@@ -105,7 +108,7 @@ class SAP_table_to_sqlite_table():
         #Build sql to post to the sqlite database table
         sql_stmt_field_defs = []
         for field in RFC_out['FIELDS']:
-            sql_stmt_field_defs.append(field['FIELDNAME'])
+            sql_stmt_field_defs.append('[' + field['FIELDNAME'] + ']')
         val_qmarks = ['?' for el in sql_stmt_field_defs]
         sql_stmt = 'INSERT INTO ' + table + ' (' + ','.join(sql_stmt_field_defs) + ') VALUES (' + ','.join(val_qmarks) + ')'
 

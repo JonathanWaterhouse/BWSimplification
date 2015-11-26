@@ -17,6 +17,10 @@ class BWMappingUI(Ui_BWMapping):
         dataDir = self.getDataDir() + os.sep
         self._iniFile = dataDir + "BWMapping.ini"
         self._excel_stats_file = 'BWStatistics.xlsx'
+        self._ftp_server = 'directoryko.kodak.com'
+        self._ftp_dir = 'pub'
+        self._ftp_file_cols = 'gd2000-header.txt'
+        self._ftp_file_body = 'gd2000.extract'
         self._files= {}
         # Read the ini file containing the graphviz executable location
         try:
@@ -225,6 +229,8 @@ class BWMappingUI(Ui_BWMapping):
         self.statusbar.showMessage("Regenerating DATAFLOW table",0)
         self._flow_table.create_flow_table()
         self._flow_table.update_text_table()
+        self.statusbar.showMessage(".....from RSUPDINFO",0)
+        QCoreApplication.processEvents()
         self._flow_table.update_flow_from_RSUPDINFO()
         self.statusbar.showMessage(".....from RSTRAN",0)
         QCoreApplication.processEvents()
@@ -258,9 +264,10 @@ class BWMappingUI(Ui_BWMapping):
 
     def generate_user_activity(self):
         self._flow_table.get_user_activity_LISTCUBE_via_RFC(self.statusbar)
+        self._flow_table.get_EKDIR_data(self._ftp_server, self._ftp_dir,self._ftp_file_cols,self._ftp_file_body)
 
     def generate_excel_stats(self):
-        self.statusbar.showMessage("Generating Excel file.",10000)
+        self.statusbar.showMessage("Generating Excel file.",0)
         self._flow_table.create_BW_stats(self._excel_stats_file)
         self.statusbar.showMessage("Excel file " + self._excel_stats_file + " created.",10000)
 
