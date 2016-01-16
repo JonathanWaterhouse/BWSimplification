@@ -1,3 +1,4 @@
+import time
 from PyQt4.QtCore import QCoreApplication
 
 __author__ = 'jonathan.waterhouse@gmail.com'
@@ -8,6 +9,7 @@ from BWFlowRFC_Table import BWFlowTable
 from SVGDisplay import *
 import os
 import pickle
+import BWThread
 
 class BWMappingUI(Ui_BWMapping):
     def __init__(self,MainWindow):
@@ -16,7 +18,8 @@ class BWMappingUI(Ui_BWMapping):
         #Setup some internally required file locations
         dataDir = self.getDataDir() + os.sep
         self._iniFile = dataDir + "BWMapping.ini"
-        self._excel_stats_file = 'BWStatistics.xlsx'
+        dt = time.strftime("%Y%m%d") + time.strftime("%H%M%S")
+        self._excel_stats_file = 'BWStatistics' + dt + '.xlsx'
         self._ftp_server = 'directoryko.kodak.com'
         self._ftp_dir = 'pub'
         self._ftp_file_cols = 'gd2000-header.txt'
@@ -73,7 +76,6 @@ class BWMappingUI(Ui_BWMapping):
         f = open(self._iniFile,'wb')
         pickle.dump(self._files,f)
         return dotLoc
-        return
 
     def _otherGuiSetup(self):
         """ Do other setup things required to get the static GUI components set up, and
@@ -215,6 +217,8 @@ class BWMappingUI(Ui_BWMapping):
         self.statusbar.showMessage("Regenerating.",0)
         try:
             self._flow_table.get_SAP_table_via_RFC(self.statusbar,self.progressBar,i)
+            #db_thread = BWThread.BWThread(self._flow_table, self.statusbar,self.progressBar,i)
+            #db_thread.start()
 
         except IOError:
             msg = PyQt4.QtGui.QMessageBox()

@@ -128,11 +128,11 @@ class BWFlowTable(object):
                         'MAXROWS': self._max_rows,
                         'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
                         'RETRIEVEDATA' : ''},
-            #RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
-            #                          'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
-            #               'MAXROWS': self._max_rows, # 0 brings all records back
-            #               'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
-            #               'RETRIEVEDATA' : ''}, #Blank means retrieve data
+            RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
+                                      'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
+                           'MAXROWS': self._max_rows, # 0 brings all records back
+                           'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
+                           'RETRIEVEDATA' : ''}, #Blank means retrieve data
             USER_ADDRP= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "MANDT = '023'"}],
@@ -238,7 +238,7 @@ class BWFlowTable(object):
                 if not retrieved_recs == self._max_rows: #we got the last of the records from the SAP table
                     read_more = False
                 else:
-                    skip_rows = skip_rows + self._max_rows
+                    skip_rows += self._max_rows
                     read_more = True
 
         #Close SAP Connection
@@ -817,7 +817,7 @@ class BWFlowTable(object):
         Create a table "user_activity" containing a LISTCUBE from 0TCT_CA1
         :return: Nothing
         """
-        months_to_return = 6
+        months_to_return = 3
         LC = SAP_LISTCUBE_to_sqlite_table()
         LC.login_to_SAP()
         infoprovider = '0TCT_CA1'
@@ -1078,34 +1078,31 @@ class BWFlowTable(object):
         chart.set_legend({'none' : False})
         worksheet.insert_chart('G2', chart)
 
-        #Query Usage By Infoprovider By User
-        worksheet = workbook.add_worksheet('Query_Use_By_Infoprov_User')
+        #Usage By Application Area
+        worksheet = workbook.add_worksheet('App_Area_Usage')
         worksheet.set_zoom(70)
         worksheet.set_column(0,0,15)
-        worksheet.set_column(1,1,50)
-        worksheet.set_column(2,2,15)
-        worksheet.set_column(3,3,30)
-        worksheet.set_column(4,4,15)
-        worksheet.write(0,0,'INFOPROVIDER', header_fmt)
-        worksheet.write(0,1,'INFOPROVIDER NAME', header_fmt)
-        worksheet.write(0,2,'USERID', header_fmt)
-        worksheet.write(0,3,'USER_NAME', header_fmt)
-        worksheet.write(0,4,'QUERY_DAYS', header_fmt)
+        worksheet.set_column(1,1,15)
+        worksheet.write(0,0,'APP', header_fmt)
+        worksheet.write(0,1,'Intensity', header_fmt)
         i, j = 1, 0
         for row in c.execute("""
-            Select u.[0TCTIFPROV],  t.txtlg, u.[0TCTUSERNM], a.[name_text] , COUNT(u.[0TCTQUCOUNT])
+            select appln, count(day)
             from
-            user_activity as u left outer join RSDCUBET as t on u.[0TCTIFPROV] = t.INFOCUBE
-            left outer join USER_ADDRP AS A on u.[0TCTUSERNM] = A.[BNAME]
-            group by u.[0TCTIFPROV], u.[0TCTUSERNM]
+            (select distinct A.App as appln, u.[0CALDAY] as day
+            From USER_ACTIVITY as U
+            left outer join [Manual_application] as A on A.infoprovider = u.[0tctifprov]
+            order by u.[0calday])
+            group by appln
+            order by count(day) desc
             """):
             for el in row:
-                if j in [0,1,2,3]: worksheet.write(i,j,el)
+                if j in [0]: worksheet.write(i,j,el)
                 else: worksheet.write_number(i,j,el)
                 j += 1
             i += 1
             j = 0
-        worksheet.autofilter(0,0,i,4)
+        worksheet.autofilter(0,0,i,2)
 
         #Reports and users
         worksheet = workbook.add_worksheet('Query_Use_By_User')
@@ -1135,6 +1132,41 @@ class BWFlowTable(object):
             i += 1
             j = 0
         worksheet.autofilter(0,0,i,4)
+
+        # Application areas and their users with emails.
+        worksheet = workbook.add_worksheet('App_Area_User_Emails')
+        worksheet.set_zoom(70)
+        worksheet.set_column(0,0,30)
+        worksheet.set_column(1,1,20)
+        worksheet.set_column(2,2,30)
+        worksheet.set_column(3,3,20)
+        worksheet.set_column(4,4,10)
+        worksheet.set_column(5,5,40)
+        worksheet.write(0,0,'APP', header_fmt)
+        worksheet.write(0,1,'INFOPROVIDER', header_fmt)
+        worksheet.write(0,2,'INFOPROV_NAME', header_fmt)
+        worksheet.write(0,3,'USERID', header_fmt)
+        worksheet.write(0,4,'Intensity', header_fmt)
+        worksheet.write(0,5,'Email', header_fmt)
+        i, j = 1, 0
+        for row in c.execute("""
+            select A.app, infoprov, T.text, userid, count(day), EKDIR.EXT_MAIL
+            from
+            (select distinct u.[0TCTIFPROV] as infoprov, u.[0TCTUSERNM] as userid, u.[0CALDAY] as day
+            From USER_ACTIVITY as U
+            order by u.[0calday])
+            left outer join EKDIR on EKDIR.EMPNO = userid
+            left outer join [Manual_application] as A on A.infoprovider = infoprov
+            left outer join texts as T on T.object = infoprov
+            group by infoprov, userid
+            """):
+            for el in row:
+                if j in [0,1,2,3, 5]: worksheet.write(i,j,el)
+                else: worksheet.write_number(i,j,el)
+                j += 1
+            i += 1
+            j = 0
+        worksheet.autofilter(0,0,i,5)
 
         #ODS Table Sizes (From Transaction DB02)
         sheet_name = 'ODS_Table_Sizes'
