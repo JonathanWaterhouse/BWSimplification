@@ -8,20 +8,26 @@ __author__ = 'U104675'
 
 
 class SAPLogonUI(Ui_Dialog):
-    def __init__(self):
+    def __init__(self,parent):
         """
         Create a GUI to allow supply of SAP login credentials
         :return: None
         """
         self._dlg = PyQt4.QtGui.QDialog()
         self.setupUi(self._dlg)
+        self._parent = parent
         self.cancel_pushButton.clicked.connect(self._exit)
         self.OK_pushButton.clicked.connect(self._login)
         self._dlg.setVisible(True)
         self._dlg.exec_()
 
     def _exit(self):
-        sys.exit(0)
+        """
+        Close the dialog without having logged in so call the parent method and pass a "None" connection object.
+        :return: Nothing
+        """
+        self._parent.set_SAP_connection(None)
+        self._dlg.close()
 
     def _login(self):
         client = str(self.client_lineEdit.text())
@@ -33,8 +39,19 @@ class SAPLogonUI(Ui_Dialog):
         group = str(self.group_lineEdit.text())
         params = {'client' : client, 'user' : user, 'passwd' : passwd , 'lang' : lang,
                   'mshost' : mshost, 'sysid' : sysid, 'group' : group}
-        self._SAPConn = pyrfc.Connection(**params)
-        self._dlg.close()
+        try:
+            self._SAPConn = pyrfc.Connection(**params)
+            self._parent.set_SAP_connection(self._SAPConn)  # Pass connection back to parent
+            self._dlg.close()
+            return
+        except Exception, message:
+            msg = PyQt4.QtGui.QMessageBox()
+            msg.setWindowTitle("Error")
+            msg.setIcon(PyQt4.QtGui.QMessageBox.Critical)
+            msg.setInformativeText("RFC Error : " + repr(message))
+            msg.exec_()
+            self._parent.set_SAP_connection(None)
+            return
 
     def get_SAP_connection(self):
         return self._SAPConn

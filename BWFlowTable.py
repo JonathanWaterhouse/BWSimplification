@@ -5,7 +5,7 @@ import os
 import os.path
 from io import open
 from collections import OrderedDict
-from PyQt4.QtCore import QCoreApplication
+from PyQt4.QtCore import *
 import xlsxwriter
 from COMSAPConn import *
 import sys
@@ -18,7 +18,7 @@ __author__ = u'jonathan.waterhouse@gmail.com'
 
 sys.path.append(os.path.dirname(os.getcwdu()))
 
-class BWFlowTable(object):
+class BWFlowTable(QObject):
     u"""
     This class is used to create a database of SAP tables, using pyRFC module from SAP to call FM
     RFC_READ_TABLE. The data is stored in a local sqlite3 database for local querying.
@@ -47,6 +47,7 @@ class BWFlowTable(object):
         self._max_rows = 75000 #Maximum rows we will attempt to pull from a table in one RFC call.
         #Next section defines the tables we want, the fields, any sql "WHERE" criteria and whether we want data or just
         #a table spec.
+        super(BWFlowTable,self).__init__()
         self.tab_spec = OrderedDict(
             RSBOHDEST= {'FIELDS' :[],
                         'MAXROWS': self._max_rows,
@@ -128,11 +129,11 @@ class BWFlowTable(object):
                         'MAXROWS': self._max_rows,
                         'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
                         'RETRIEVEDATA' : ''},
-            RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
-                                      'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
-                           'MAXROWS': self._max_rows, # 0 brings all records back
-                           'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
-                           'RETRIEVEDATA' : ''}, #Blank means retrieve data
+            #RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
+            #                          'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
+            #               'MAXROWS': self._max_rows, # 0 brings all records back
+            #               'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
+            #               'RETRIEVEDATA' : ''}, #Blank means retrieve data
             USER_ADDRP= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "MANDT = '023'"}],
@@ -192,47 +193,42 @@ class BWFlowTable(object):
                         'SELECTION' : [{'TEXT': "LANGU = 'EN'"}],
                         'RETRIEVEDATA' : ''}
 
-    def get_SAP_table_via_RFC (self,statusbar, progressBar, tableNumInt):
+    def get_SAP_table_via_RFC (self, SAP_conn, tableNumInt):
 
         sqlite_db_name = self._database
-        SAP = SAP_table_to_sqlite_table()
-        SAP.login_to_SAP()
+        SAP = SAP_table_to_sqlite_table(SAP_conn)
         for tab in self.tab_spec.keys():
-            print 'Reading SAP table ' + tab
-            statusbar.showMessage('Reading SAP table ' + tab, 0)
+            self.emit(SIGNAL('show_msg'), 'Reading SAP table ' + tab)
             tableNumInt += 1
-            progressBar.setValue(tableNumInt)
-            #Retrieve data limited (set by self._max_rows) records at a time to conserve resources
+            self.emit(SIGNAL('update_progress_bar'), tableNumInt)
             skip_rows = 0
             read_more = True
             first_time = True
             while read_more:
-                print 'Retrieving ' + tab + ' records from SAP via RFC call'
-                statusbar.showMessage('Retrieving ' + tab + ' records from SAP via RFC call', 0)
+                msg = 'Retrieving ' + tab + ' records from SAP via RFC call'
+                self.emit(SIGNAL('show_msg'), msg )
                 RFC_READ_TABLE_output = SAP.read_SAP_table(tab, self.tab_spec[tab]['MAXROWS'], skip_rows, self.tab_spec[tab]['SELECTION'],
                                                            self.tab_spec[tab]['FIELDS'], self.tab_spec[tab]['RETRIEVEDATA'])
                 retrieved_recs = len(RFC_READ_TABLE_output['DATA'])
                 if first_time:
-                    print RFC_READ_TABLE_output['OPTIONS']
                     i = 0
                     for v in RFC_READ_TABLE_output['FIELDS']:
                         i += 1
                         print v
-                    print 'Number of entries : ' + repr(i)
-                    statusbar.showMessage('Number of entries : ' + repr(i), 0)
+                    msg = 'Number of entries : ' + repr(i)
+                    self.emit(SIGNAL('show_msg'), msg)
                     QCoreApplication.processEvents()
                     append = False
                     first_time = False
                 else:
                     append = True
 
-                print 'Number of data records retrieved  from SAP : ' + repr(len(RFC_READ_TABLE_output['DATA']))
-                statusbar.showMessage('Number of data records retrieved  from SAP : ' + repr(len(RFC_READ_TABLE_output['DATA'])),0)
+                msg = 'Number of data records retrieved  from SAP : ' + repr(len(RFC_READ_TABLE_output['DATA']))
+                self.emit(SIGNAL('show_msg'), msg)
                 QCoreApplication.processEvents()
-
                 if self.tab_spec[tab]['RETRIEVEDATA'] == '':
-                    print 'Adding ' + tab + ' records ' + repr(skip_rows+ 1) + ' to ' + repr(skip_rows + retrieved_recs) + ' to sqlite database'
-                    statusbar.showMessage('Adding ' + tab + ' records ' + repr(skip_rows+ 1) + ' to ' + repr(skip_rows + retrieved_recs) + ' to sqlite database',0)
+                    msg = 'Adding ' + tab + ' records ' + repr(skip_rows+ 1) + ' to ' + repr(skip_rows + retrieved_recs) + ' to sqlite database'
+                    self.emit(SIGNAL('show_msg'), msg)
                     QCoreApplication.processEvents()
                     SAP.update_sqlite_table(sqlite_db_name, tab, append, RFC_READ_TABLE_output)
                 if not retrieved_recs == self._max_rows: #we got the last of the records from the SAP table
@@ -243,6 +239,7 @@ class BWFlowTable(object):
 
         #Close SAP Connection
         SAP.close_SAP_connection()
+#TODO Disallow skipped records option (particularly on table RSSTATMANPART) since results are incorrect in RFC_READ_TABLE
 
     def create_flow_table(self):
         u"""
@@ -250,6 +247,7 @@ class BWFlowTable(object):
         TARGET
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), "Regenerating DATAFLOW table")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Delete table if already exists
@@ -265,6 +263,7 @@ class BWFlowTable(object):
         This method updates that table with relevant information from table RSUPDINFO concerning BW3.5 update rules
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSUPDINFO")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
@@ -286,6 +285,7 @@ class BWFlowTable(object):
         This method updates that table with relevant information from table RSTRAN concerning BI7 transformations
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSTRAN")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         result_set = []
@@ -325,6 +325,7 @@ class BWFlowTable(object):
         infosources
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSIOSMAP")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
@@ -356,6 +357,7 @@ class BWFlowTable(object):
         infospokes
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSBSPOKE")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
@@ -376,6 +378,7 @@ class BWFlowTable(object):
         open hub destinations
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSBOHDEST")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
@@ -397,6 +400,7 @@ class BWFlowTable(object):
         on flat file loads in infopackages.
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSLDPSEL")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
@@ -427,6 +431,7 @@ class BWFlowTable(object):
         multiproviders
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSDCUBEMULTI")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
@@ -447,6 +452,7 @@ class BWFlowTable(object):
         infosets
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSQTOBJ")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
@@ -467,6 +473,7 @@ class BWFlowTable(object):
         connections to cubes and multiproviders.
         :return: nothing
         """
+        self.emit(SIGNAL('show_msg'), ".....from RSRREPDIR")
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Assume target already exists and we are appending records
@@ -812,14 +819,15 @@ class BWFlowTable(object):
         if row is not None: return row[0]
         else: return u""
 
-    def get_user_activity_LISTCUBE_via_RFC(self, statusbar):
+    def get_user_activity_LISTCUBE_via_RFC(self, SAP_conn):
         """
         Create a table "user_activity" containing a LISTCUBE from 0TCT_CA1
         :return: Nothing
         """
         months_to_return = 3
-        LC = SAP_LISTCUBE_to_sqlite_table()
-        LC.login_to_SAP()
+        LC = SAP_LISTCUBE_to_sqlite_table(SAP_conn)
+        #LC = SAP_LISTCUBE_to_sqlite_table()
+        #LC.login_to_SAP()
         infoprovider = '0TCT_CA1'
         chars_req = ['0TCTIFPROV','0TCTBISBOBJ','0TCTBIOTYPE','0TCTBISOTYP','0TCTIFTYPE','0TCTUSERNM','0CALDAY']
         #Since multiple months is too much data for SAP RFC to handle, break data pull into month buckets. First month
@@ -828,11 +836,12 @@ class BWFlowTable(object):
         low_dt = datetime.date.today() - datetime.timedelta(days=+31)
         append = False
         for i in range(months_to_return):
-            statusbar.showMessage('Generating month ' + repr(i+1) + ' of ' + repr(months_to_return) + ' months data')
-            QCoreApplication.processEvents()
             high = repr(high_dt.year) + repr(high_dt.month).zfill(2) + repr(high_dt.day).zfill(2) #yyyymmdd
             low = repr(low_dt.year) + repr(low_dt.month).zfill(2) + repr(low_dt.day).zfill(2) #yyyymmdd
-            print high, low
+            msg = 'Generating month ' + repr(i+1) + ' of ' + repr(months_to_return) + ' months data (' + \
+                low + ' to ' + high + ')'
+            self.emit(SIGNAL('show_msg'), msg)
+            QCoreApplication.processEvents()
             kfs_req = ['0TCTQUCOUNT', '0TCTTIMEALL']
             restrictions = [{'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'XLWB'},
                         {'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'TMPL'},
@@ -843,7 +852,8 @@ class BWFlowTable(object):
             append = True
             high_dt = low_dt - datetime.timedelta(days=+1)
             low_dt = high_dt - datetime.timedelta(days=+31)
-        statusbar.showMessage('User activity statistics generated')
+        msg = 'User activity statistics generated'
+        self.emit(SIGNAL('show_msg'), msg)
         QCoreApplication.processEvents()
 
     def get_EKDIR_data(self, ftp_server, directory, data_cols_file_name, data_body_file_name):
@@ -917,6 +927,9 @@ class BWFlowTable(object):
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Active Users
+        worksheet_count = 1
+        self.emit(SIGNAL('show_msg'), "Creating 'Active Users' statistics.")
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
         sheet_name = 'Active_Users'
         worksheet = workbook.add_worksheet(sheet_name)
         header_fmt = workbook.add_format({'bold' : True})
@@ -951,6 +964,9 @@ class BWFlowTable(object):
         worksheet.insert_chart('D7', chart)
 
         # ACTIVE Users by region
+        worksheet_count += 1
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'Active Users By Region' statistics.")
         sheet_name = 'Active_Users_By_Region'
         worksheet = workbook.add_worksheet(sheet_name)
         worksheet.set_zoom(70)
@@ -984,6 +1000,9 @@ class BWFlowTable(object):
         worksheet.insert_chart('D3', chart)
 
         #Query Usage By Infoprovider
+        worksheet_count += 1
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'Query usage by Infoprovider' statistics.")
         sheet_name = 'Query_Use_By_Infoprov'
         worksheet = workbook.add_worksheet(sheet_name)
         worksheet.set_zoom(70)
@@ -1016,6 +1035,9 @@ class BWFlowTable(object):
         worksheet.insert_chart('E1', chart)
 
         # Infoprovider usage by region
+        worksheet_count += 1
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'Infoprovider_Use_By_Region' statistics.")
         sheet_name = 'Infoprovider_Use_By_Region'
         worksheet = workbook.add_worksheet(sheet_name)
         worksheet.set_zoom(70)
@@ -1079,6 +1101,9 @@ class BWFlowTable(object):
         worksheet.insert_chart('G2', chart)
 
         #Usage By Application Area
+        worksheet_count += 1
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'Usage By Application Area' statistics.")
         worksheet = workbook.add_worksheet('App_Area_Usage')
         worksheet.set_zoom(70)
         worksheet.set_column(0,0,15)
@@ -1134,6 +1159,9 @@ class BWFlowTable(object):
         worksheet.autofilter(0,0,i,4)
 
         # Application areas and their users with emails.
+        worksheet_count += 1
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'Application areas and their users with emails' statistics.")
         worksheet = workbook.add_worksheet('App_Area_User_Emails')
         worksheet.set_zoom(70)
         worksheet.set_column(0,0,30)
@@ -1169,6 +1197,9 @@ class BWFlowTable(object):
         worksheet.autofilter(0,0,i,5)
 
         #ODS Table Sizes (From Transaction DB02)
+        worksheet_count += 1
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'ODS_Table_Sizes' statistics.")
         sheet_name = 'ODS_Table_Sizes'
         worksheet = workbook.add_worksheet(sheet_name)
         worksheet.set_zoom(70)
@@ -1220,6 +1251,9 @@ class BWFlowTable(object):
         worksheet.insert_chart('E3', chart)
 
         #Cube Sizes (From Transaction DB02)
+        worksheet_count += 1
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'Cube_Sizes' statistics.")
         sheet_name = 'Cube_Sizes'
         worksheet = workbook.add_worksheet(sheet_name)
         worksheet.set_zoom(70)
@@ -1269,9 +1303,9 @@ class BWFlowTable(object):
         workbook.close()
 
         conn.close()
+        return
 
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
-    #TODO Fix the progress bar. When have long running table loads it does not update.
     #TODO reduce the ime to download RSSTATMANPART table from SAP and, more importantly, to load it to sqlite db
 
 

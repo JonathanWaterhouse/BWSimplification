@@ -43,16 +43,21 @@ class SVGDisplay(Ui_Dialog):
             if key != '': name = self._db.get_node_text(key)
             else: name = ''
         except KeyError: return
-        label = PyQt4.QtGui.QLabel(name)
+        self.label = PyQt4.QtGui.QLabel(name)
         #label.setTextFormat(PyQt4.Qt.QtCore.RichText)
         #label.alignment = PyQt4.Qt.AlignLeft
-        label.move(PyQt4.QtGui.QCursor.pos().x()-40,PyQt4.QtGui.QCursor.pos().y()+20)
-        label.setWindowFlags(PyQt4.QtCore.Qt.SplashScreen)
-        label.show()
+        self.label.move(PyQt4.QtGui.QCursor.pos().x()-40,PyQt4.QtGui.QCursor.pos().y()+20)
+        self.label.setWindowFlags(PyQt4.QtCore.Qt.SplashScreen)
+        self.label.show()
         timer = PyQt4.QtCore.QTimer()
         timer.setSingleShot(True)
-        timer.connect(label,timer.timeout(),label.destroy(True))
-        timer.start(1000)
+        timer.setInterval(10)
+        timer.timeout.connect(self.destroy_label)
+        timer.start()
+
+    def destroy_label(self):
+        self.label.destroy(True)
+        return
 
     def find(self):
         text = self.search_lineEdit.text()

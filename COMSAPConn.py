@@ -6,21 +6,9 @@ __author__ = 'U104675'
 
 class SAP_table_to_sqlite_table():
 
-    def __init__(self):
+    def __init__(self, SAP_conn):
         self._FM = 'RFC_READ_TABLE'
-
-    def login_to_SAP(self):
-        """
-        Login to SAP. To do this a simple UI is presented to allow user input of credentials and target system. This
-        avoids any hard coding of credentials and flexibility as to target system eg dev, QA, Prod.
-        :return: None. Sets a class connection object used by other methods.
-        """
-        """
-        :return:
-        """
-        login = SAPLogonUI()
-        self._SAP_conn = login.get_SAP_connection() #SAP Connection Object
-        #TODO SAP login error handling - its certain that sometimes a mistype will happen
+        self._SAP_conn = SAP_conn
 
     def close_SAP_connection(self):
         self._SAP_conn.close()
@@ -122,10 +110,11 @@ class SAP_LISTCUBE_to_sqlite_table():
     """
     Class to perform a LISTCUBE on 0TCT_CA1
     """
-    def __init__(self):
+    def __init__(self, SAP_conn):
         self._FM = 'RSDRI_INFOPROV_READ_RFC'
+        self._SAP_conn = SAP_conn
 
-    def login_to_SAP(self):
+    #def login_to_SAP(self):
         """
         Login to SAP. To do this a simple UI is presented to allow user input of credentials and target system. This
         avoids any hard coding of credentials and flexibility as to target system eg dev, QA, Prod.
@@ -134,8 +123,8 @@ class SAP_LISTCUBE_to_sqlite_table():
         """
         :return:
         """
-        login = SAPLogonUI()
-        self._SAP_conn = login.get_SAP_connection() #SAP Connection Object
+    #    login = SAPLogonUI()
+    ##   self._SAP_conn = login.get_SAP_connection() #SAP Connection Object
 
     def read_infocube(self, infoprovider, chars_req, kfs_req, restrictions):
         """
