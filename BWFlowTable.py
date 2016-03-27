@@ -129,11 +129,11 @@ class BWFlowTable(QObject):
                         'MAXROWS': self._max_rows,
                         'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
                         'RETRIEVEDATA' : ''},
-            #RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
-            #                          'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
-            #               'MAXROWS': self._max_rows, # 0 brings all records back
-            #               'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
-            #               'RETRIEVEDATA' : ''}, #Blank means retrieve data
+            RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
+                                      'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
+                           'MAXROWS': self._max_rows, # 0 brings all records back
+                           'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
+                           'RETRIEVEDATA' : ''}, #Blank means retrieve data
             USER_ADDRP= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "MANDT = '023'"}],
