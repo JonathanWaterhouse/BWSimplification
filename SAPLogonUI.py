@@ -55,4 +55,3 @@ class SAPLogonUI(Ui_Dialog):
 
     def get_SAP_connection(self):
         return self._SAPConn
-    #TODO Cancel has to stop the whole app. Figure out how to get back to main window.

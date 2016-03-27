@@ -211,13 +211,6 @@ class BWFlowTable(QObject):
                                                            self.tab_spec[tab]['FIELDS'], self.tab_spec[tab]['RETRIEVEDATA'])
                 retrieved_recs = len(RFC_READ_TABLE_output['DATA'])
                 if first_time:
-                    i = 0
-                    for v in RFC_READ_TABLE_output['FIELDS']:
-                        i += 1
-                        print v
-                    msg = 'Number of entries : ' + repr(i)
-                    self.emit(SIGNAL('show_msg'), msg)
-                    QCoreApplication.processEvents()
                     append = False
                     first_time = False
                 else:
@@ -225,11 +218,9 @@ class BWFlowTable(QObject):
 
                 msg = 'Number of data records retrieved  from SAP : ' + repr(len(RFC_READ_TABLE_output['DATA']))
                 self.emit(SIGNAL('show_msg'), msg)
-                QCoreApplication.processEvents()
                 if self.tab_spec[tab]['RETRIEVEDATA'] == '':
                     msg = 'Adding ' + tab + ' records ' + repr(skip_rows+ 1) + ' to ' + repr(skip_rows + retrieved_recs) + ' to sqlite database'
                     self.emit(SIGNAL('show_msg'), msg)
-                    QCoreApplication.processEvents()
                     SAP.update_sqlite_table(sqlite_db_name, tab, append, RFC_READ_TABLE_output)
                 if not retrieved_recs == self._max_rows: #we got the last of the records from the SAP table
                     read_more = False
@@ -841,7 +832,7 @@ class BWFlowTable(QObject):
             msg = 'Generating month ' + repr(i+1) + ' of ' + repr(months_to_return) + ' months data (' + \
                 low + ' to ' + high + ')'
             self.emit(SIGNAL('show_msg'), msg)
-            QCoreApplication.processEvents()
+            #QCoreApplication.processEvents()
             kfs_req = ['0TCTQUCOUNT', '0TCTTIMEALL']
             restrictions = [{'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'XLWB'},
                         {'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'TMPL'},
@@ -854,7 +845,7 @@ class BWFlowTable(QObject):
             low_dt = high_dt - datetime.timedelta(days=+31)
         msg = 'User activity statistics generated'
         self.emit(SIGNAL('show_msg'), msg)
-        QCoreApplication.processEvents()
+        #QCoreApplication.processEvents()
 
     def get_EKDIR_data(self, ftp_server, directory, data_cols_file_name, data_body_file_name):
         """
@@ -1111,25 +1102,33 @@ class BWFlowTable(QObject):
         worksheet.write(0,0,'APP', header_fmt)
         worksheet.write(0,1,'Intensity', header_fmt)
         i, j = 1, 0
-        for row in c.execute("""
-            select appln, count(day)
-            from
-            (select distinct A.App as appln, u.[0CALDAY] as day
-            From USER_ACTIVITY as U
-            left outer join [Manual_application] as A on A.infoprovider = u.[0tctifprov]
-            order by u.[0calday])
-            group by appln
-            order by count(day) desc
-            """):
-            for el in row:
-                if j in [0]: worksheet.write(i,j,el)
-                else: worksheet.write_number(i,j,el)
-                j += 1
-            i += 1
-            j = 0
-        worksheet.autofilter(0,0,i,2)
+        #We do a try/except here because a manual created table is read and it may not be in place
+        try:
+            for row in c.execute("""
+                select appln, count(day)
+                from
+                (select distinct A.App as appln, u.[0CALDAY] as day
+                From USER_ACTIVITY as U
+                left outer join [Manual_application] as A on A.infoprovider = u.[0tctifprov]
+                order by u.[0calday])
+                group by appln
+                order by count(day) desc
+                """):
+                for el in row:
+                    if j in [0]: worksheet.write(i,j,el)
+                    else: worksheet.write_number(i,j,el)
+                    j += 1
+                i += 1
+                j = 0
+            worksheet.autofilter(0,0,i,2)
+        except sqlite3.Error as e:
+            self.emit(self.emit(SIGNAL('show_msg'), "ERROR creating 'Usage By Application Area' statistics."))
+            workbook.close()
+            conn.close()
 
         #Reports and users
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'Query_Use_By_User' statistics.")
         worksheet = workbook.add_worksheet('Query_Use_By_User')
         worksheet.set_zoom(70)
         worksheet.set_column(0,0,30)
@@ -1177,24 +1176,30 @@ class BWFlowTable(QObject):
         worksheet.write(0,4,'Intensity', header_fmt)
         worksheet.write(0,5,'Email', header_fmt)
         i, j = 1, 0
-        for row in c.execute("""
-            select A.app, infoprov, T.text, userid, count(day), EKDIR.EXT_MAIL
-            from
-            (select distinct u.[0TCTIFPROV] as infoprov, u.[0TCTUSERNM] as userid, u.[0CALDAY] as day
-            From USER_ACTIVITY as U
-            order by u.[0calday])
-            left outer join EKDIR on EKDIR.EMPNO = userid
-            left outer join [Manual_application] as A on A.infoprovider = infoprov
-            left outer join texts as T on T.object = infoprov
-            group by infoprov, userid
-            """):
-            for el in row:
-                if j in [0,1,2,3, 5]: worksheet.write(i,j,el)
-                else: worksheet.write_number(i,j,el)
-                j += 1
-            i += 1
-            j = 0
-        worksheet.autofilter(0,0,i,5)
+        #We do a try/except here because a manual created table is read and it may not be in place
+        try:
+            for row in c.execute("""
+                select A.app, infoprov, T.text, userid, count(day), EKDIR.EXT_MAIL
+                from
+                (select distinct u.[0TCTIFPROV] as infoprov, u.[0TCTUSERNM] as userid, u.[0CALDAY] as day
+                From USER_ACTIVITY as U
+                order by u.[0calday])
+                left outer join EKDIR on EKDIR.EMPNO = userid
+                left outer join [Manual_application] as A on A.infoprovider = infoprov
+                left outer join texts as T on T.object = infoprov
+                group by infoprov, userid
+                """):
+                for el in row:
+                    if j in [0,1,2,3, 5]: worksheet.write(i,j,el)
+                    else: worksheet.write_number(i,j,el)
+                    j += 1
+                i += 1
+                j = 0
+            worksheet.autofilter(0,0,i,5)
+        except sqlite3.Error as e:
+            self.emit(self.emit(SIGNAL('show_msg'), "ERROR creating 'Application areas and their users with emails' statistics."))
+            workbook.close()
+            conn.close()
 
         #ODS Table Sizes (From Transaction DB02)
         worksheet_count += 1
@@ -1307,5 +1312,6 @@ class BWFlowTable(QObject):
 
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
     #TODO reduce the ime to download RSSTATMANPART table from SAP and, more importantly, to load it to sqlite db
+    #TODO error handling for excel file sql (eg in case a manually created table does not exist).
 
 

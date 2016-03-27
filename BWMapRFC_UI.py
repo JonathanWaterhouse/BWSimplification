@@ -377,13 +377,10 @@ if __name__ == '__main__':
     MainWindow.show()
     sys.exit(app.exec_())
     # TODO Option to display inactive (why does ZOHCRM003 show which has inactive update rule).
-    # TODO GUI does not update during heavy processing (use threads?)
     # TODO Some mechanism to identify a flow associated with a process area eg CMIS which has many disconnected flows
     # TODO     This could be as simple as populating datastore names in the dropdown list box (and allowing sorting by text)
     # TODO     to allow easy identification of relevant datastores. Alternatively some sort of wider map display that is
     # TODO     not everything
-    # TODO Links via lookup display
-    # TODO Python distribution (not cx_freeze)
     # TODO Automated way to get object sizes rather than manual run of DB02
     # TODO Status bar to do a better job of subdividing the lengthy tasks
     # TODO Object links due to ABAP lookup.
