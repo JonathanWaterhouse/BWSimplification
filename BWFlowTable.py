@@ -1313,5 +1313,6 @@ class BWFlowTable(QObject):
     #TODO Fix RSBSPOKE assignment of TARGET_TYPE (should be "INFOSPOKE, seems to be OHSOURCE)
     #TODO reduce the ime to download RSSTATMANPART table from SAP and, more importantly, to load it to sqlite db
     #TODO error handling for excel file sql (eg in case a manually created table does not exist).
+    #TODO Manual application file population. Need to automate.
 
 
