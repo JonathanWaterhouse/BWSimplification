@@ -26,6 +26,7 @@ class BWMappingUI(Ui_BWMapping):
         self._ftp_file_body = 'gd2000.extract' # ftp file containing EKDIR statistics data rows
         self._files = {}
         self._logged_in = False
+        self._start_nodes = [] #The starting nodes from which a graph will be constructed.
         # Read the ini file containing the graphviz executable location
         try:
             f = open(self._iniFile, 'rb')
@@ -89,9 +90,8 @@ class BWMappingUI(Ui_BWMapping):
         self._flow_table = BWFlowTable(database)
         self._graph_file = "BWGraph.svg"
         self._mini_graph_file = "BWMiniGraph.svg"
-
         # Actions
-        self.generate_pushButton.clicked.connect(self.generateMap)
+        self.generate_pushButton.clicked.connect(self.update_start_nodes)
         self.fileRegenerate_Database.triggered.connect(self.generate_flow_Db)
         self.fileGenerate_User_Activity.triggered.connect(self.generate_user_activity)
         self.fileGenerate_Excel_Stats.triggered.connect(self.generate_excel_stats)
@@ -127,8 +127,27 @@ class BWMappingUI(Ui_BWMapping):
             else:
                 self.statusbar.showMessage(node + " does not exist in BW Map.", 0)
 
-    def generateMap(self):
-        svg_file = ''
+    def update_start_nodes(self):
+        """
+        This method is started by pushing the form generate map button. It identifies
+        the selected start nodeOnce having got these
+        nodes the method calls the generate map method.
+        """
+        self._start_nodes = []
+        self._start_nodes.append(str(self.map_startpoint_combo.currentText()))
+        self.generateMap(self._start_nodes)
+        return
+
+    def generateMap(self, parm):
+        """
+        This is the main method of this class in that it actually calculates the
+        graph of BW connections and hands off to SVGView to draw it for the user.
+
+        :param parm one or more nodes in a list with which to start map of BW connections
+        """
+        if isinstance(parm, bool): nodes = []
+        else: nodes = parm
+
         extras = []
         if self.BI7_checkBox.isChecked(): extras.append('BI7 Converted')
         if self.flowVol_checkBox.isChecked(): extras.append('Flow Volumes last Run')
@@ -149,35 +168,37 @@ class BWMappingUI(Ui_BWMapping):
             else:  # Generate partial map
 
                 svg_file = self._mini_graph_file
-                start_node = str(self.map_startpoint_combo.currentText())
+                #start_node = str(self.map_startpoint_combo.currentText())
                 direction = str(self.map_connectivity_combo.currentText())
 
                 # Check start node exists
-                if not self._flow_table.get_node(start_node):
-                    self.statusbar.showMessage(start_node + " does not exist in BW Map.", 0)
-                    return
-                else:
-                    self.statusbar.showMessage("", 0)
+                for node in nodes:
+                    if not self._flow_table.get_node(node):
+                        self.statusbar.showMessage(node + " does not exist in BW Map.", 0)
+                        return
+                    else:
+                        self.statusbar.showMessage("", 0)
 
                 self.statusbar.showMessage("Creating graph in " + svg_file, 10000)
-                # Get correct graph connection mode
-                if direction == 'Forward':
+                # Get correct graph connection modes
+                gv_it_list = []
+                if direction == 'Forward' or direction == 'Forward & Backward':
                     forward = True
-                    graphviz_iterable = self._flow_table.create_mini_graph_2(start_node, forward, show_queries)
-                elif direction == 'Backward':
+                    if len(nodes) > 0:
+                        for node in nodes:
+                            gv_it_list.append(self._flow_table.create_mini_graph_2(node, forward, show_queries))
+                if direction == 'Backward' or direction == 'Forward & Backward':
                     forward = False
-                    graphviz_iterable = self._flow_table.create_mini_graph_2(start_node, forward, show_queries)
-                elif direction == 'Forward & Backward':
-                    forward = True
-                    graphviz_iterable_1 = self._flow_table.create_mini_graph_2(start_node, forward, show_queries)
-                    forward = False
-                    graphviz_iterable_2 = self._flow_table.create_mini_graph_2(start_node, forward, show_queries)
-                    graphviz_iterable = self._flow_table.add_graphviz_iterables(graphviz_iterable_1,
-                                                                                graphviz_iterable_2)
-                elif direction == 'All Connections':
-                    graphviz_iterable = self._flow_table.create_mini_graph_connections(start_node, show_queries)
-                else:
-                    print ('Invalid mapping direction supplied')
+                    if len(nodes) > 0:
+                        for node in nodes:
+                            gv_it_list.append(self._flow_table.create_mini_graph_2(node, forward, show_queries))
+                if direction == 'All Connections':
+                    if len(nodes) > 0:
+                        for node in nodes:
+                            gv_it_list.append(self._flow_table.create_mini_graph_connections(node, show_queries))
+
+                graphviz_iterable = self._flow_table.add_graphviz_iterables_new(gv_it_list)
+
         except (OperationalError):
             msg = PyQt4.QtGui.QMessageBox()
             msg.setText("ERROR")
@@ -187,6 +208,7 @@ class BWMappingUI(Ui_BWMapping):
             self.statusbar.showMessage("There is no database configured. Please use command - File\Regenerate Db")
             return
         # Add decorations
+        graphviz_iterable = self._flow_table.decorate_graph_highlight_selected_nodes(graphviz_iterable,nodes)
         if 'BI7 Converted' in extras:
             graphviz_iterable = self._flow_table.decorate_graph_BI7Flow(graphviz_iterable)
             self.statusbar.showMessage("Generating BI7 conversion information", 10000)
@@ -213,7 +235,23 @@ class BWMappingUI(Ui_BWMapping):
         self.statusbar.showMessage("Graph created in " + svg_file, 10000)
 
         dataDir = os.getcwd() + os.sep
-        SVGDisplay(self, dataDir + svg_file, self._flow_table)
+        self._svg_display = SVGDisplay(self, dataDir + svg_file, self._flow_table)
+        return
+
+    def add_node(self, nodeid):
+        """
+        This is called by the SVGDisplay dialog class in response to a signal "update_node"
+        which is a request to expand a new node in the connectivity graph.
+        """
+        msg = PyQt4.QtGui.QMessageBox()
+        msg.setText(str(nodeid))
+        msg.setInformativeText("Node " + str(nodeid) + " is ready to be added to the graph")
+        msg.setIcon(PyQt4.QtGui.QMessageBox.Information)
+        msg.exec_()
+
+        if nodeid != '':
+            self._start_nodes.append(str(nodeid))
+            self.generateMap(self._start_nodes)
         return
 
     def generate_flow_Db(self):

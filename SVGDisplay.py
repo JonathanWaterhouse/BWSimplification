@@ -1,15 +1,13 @@
 import PyQt4.QtGui
 import PyQt4.QtCore
 import PyQt4.Qt
-#import PyQt4.QtGui.QTimer, PyQt4.QtGui.QString, PyQt4.QtGui.Qt
-#import PyQt4.QtGui.QCursor, PyQt4.QtGui.QDialog, PyQt4.QtGui.QLabel, PyQt4.QtGui.QTextFormat
+from PyQt4.QtGui import QDialog
 from SVGView import Ui_Dialog
-#from PyQt4.QtNetwork import *
-#from PyQt4.QtWebKit import *
-#from PyQt4.QtPrintSupport import *
+from BWMapRFC_UI import BWMappingUI
+
 __author__ = 'jonathan.waterhouse@gmail.com'
 
-class SVGDisplay(Ui_Dialog):
+class SVGDisplay(QDialog,Ui_Dialog):
     """
     Create a small webkit based box to display schedule diagrams
     A test comment to test git branching
@@ -19,8 +17,11 @@ class SVGDisplay(Ui_Dialog):
         Create the display box based on input parent widget and populated with
         """
         self._db = database
-        dlg = PyQt4.QtGui.QDialog()
-        self.setupUi(dlg)
+        #dlg = PyQt4.QtGui.QDialog()
+        QDialog.__init__(self)
+        #self.setupUi(dlg)
+        self._parent = parent
+        self.setupUi(self)
         self.imageUrl = PyQt4.QtCore.QUrl.fromLocalFile(svgFile) # Fully qualified filename
         self.webView.load(self.imageUrl)
         self.webView.setZoomFactor(0.5)
@@ -31,8 +32,11 @@ class SVGDisplay(Ui_Dialog):
         self.horizontalSlider.valueChanged.connect(self.magnification)
         self.webView.selectionChanged.connect(self.showDetails)
         self.search_lineEdit.returnPressed.connect(self.find)
-        dlg.setVisible(True)
-        dlg.exec_()
+        self.addNode_pushButton.clicked.connect(self.update_diagram)
+        #dlg.setVisible(True)
+        #dlg.exec_()
+        self.setVisible(True)
+        self.exec_()
 
     def magnification(self):
         self.webView.setZoomFactor(self.horizontalSlider.sliderPosition()/100.0)
@@ -40,12 +44,11 @@ class SVGDisplay(Ui_Dialog):
     def showDetails(self):
         try:
             key = str(self.webView.selectedText())
+            self.addNodeName_label.setText(key)
             if key != '': name = self._db.get_node_text(key)
             else: name = ''
         except KeyError: return
         self.label = PyQt4.QtGui.QLabel(name)
-        #label.setTextFormat(PyQt4.Qt.QtCore.RichText)
-        #label.alignment = PyQt4.Qt.AlignLeft
         self.label.move(PyQt4.QtGui.QCursor.pos().x()-40,PyQt4.QtGui.QCursor.pos().y()+20)
         self.label.setWindowFlags(PyQt4.QtCore.Qt.SplashScreen)
         self.label.show()
@@ -62,4 +65,14 @@ class SVGDisplay(Ui_Dialog):
     def find(self):
         text = self.search_lineEdit.text()
         self.webView.findText(text,PyQt4.QtWebKit.QWebPage.FindWrapsAroundDocument)
+        return
+
+    def update_diagram(self):
+        """
+        The intention of this method is to create an even which may be picked up in the main
+        GUI program and used to extend the currently displayed map with the dependencies of other
+        nodes
+        """
+        PyQt4.QtCore.QObject.connect(self, PyQt4.QtCore.SIGNAL("update_node"), self._parent.add_node)
+        self.emit(PyQt4.QtCore.SIGNAL('update_node'), self.addNodeName_label.text())
         return

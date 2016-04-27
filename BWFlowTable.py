@@ -526,15 +526,34 @@ class BWFlowTable(QObject):
         result_graph.append(u'}')
         return result_graph
 
-    def add_graphviz_iterables(self,list1, list2):
-        list1.pop(0) #Remove first element u'digraph {ranksep=2\n'
-        list1.pop()  # Remove last element u'}'
-        list2.pop(0)
-        list2.pop()
-        list1.extend(list2) #Join the lists
-        list1.insert(0,u'digraph {ranksep=2\n')
-        list1.append(u'}')
-        return list1
+    def add_graphviz_iterables_new(self, gv_it_list):
+        """
+        Accepts a list of lists. Each component list is a graphviz iterable
+        Joins them whilst removing duplicates.
+        """
+        out = []
+        if len(gv_it_list) == 0:
+            out.insert(0, u'digraph {ranksep=2\n')
+            out.append(u'}')
+            return out
+        elif len(gv_it_list) == 1:
+            return gv_it_list[0]
+        else:
+            i = 1
+            while i < len(gv_it_list):
+                if len(gv_it_list[i - 1]) != 0: gv_it_list[i-1].pop(0)  # Remove first element u'digraph {ranksep=2\n'
+                if len(gv_it_list[i - 1]) != 0: gv_it_list[i-1].pop()  # Remove last element u'}'
+                if len(gv_it_list[i]) != 0: gv_it_list[i].pop(0)  # Remove first element u'digraph {ranksep=2\n'
+                if len(gv_it_list[i]) != 0: gv_it_list[i].pop()  # Remove last element u'}'
+                out.extend(gv_it_list[i-1])
+                out.extend(gv_it_list[i])
+                i += 1
+            #Remove duplicates
+            out_set = set(out)
+            out = [el for el in out_set]
+            out.insert(0, u'digraph {ranksep=2\n')
+            out.append(u'}')
+            return out
 
     def create_mini_graph_connections(self,start_node, show_queries):
         u"""
@@ -591,6 +610,18 @@ class BWFlowTable(QObject):
         for line in out: out_graph.append(line)
         out_graph.append(u'}')
         return out_graph
+
+    def decorate_graph_highlight_selected_nodes(self, graph_to_decorate, nodes):
+        """
+        Take input of a file ready to be graphed by dot and add a highlight on those nodes
+        which were chosen to start the graph
+        """
+        fmt_string = u'[color=white, fillcolor="yellow", style="rounded,filled", shape=box]'
+        del graph_to_decorate[-1]  # remove delimiting "}"
+        for node in nodes:
+            graph_to_decorate.append(u'"' + node + u'" ' + fmt_string + u'\n')
+        graph_to_decorate.append(u'}')  # Add back delimiter
+        return graph_to_decorate
 
     def decorate_graph_sizes(self, graph_to_decorate):
         u"""
