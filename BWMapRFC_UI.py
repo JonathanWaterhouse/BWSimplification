@@ -133,8 +133,15 @@ class BWMappingUI(Ui_BWMapping):
         the selected start nodeOnce having got these
         nodes the method calls the generate map method.
         """
+        # Check start node exists
+        node = str(self.map_startpoint_combo.currentText())
+        if not self._flow_table.get_node(node):
+            self.statusbar.showMessage(node + " does not exist in BW Map.", 0)
+            return
+        else:
+            self.statusbar.showMessage("", 0)
         self._start_nodes = []
-        self._start_nodes.append(str(self.map_startpoint_combo.currentText()))
+        self._start_nodes.append(node)
         self.generateMap(self._start_nodes)
         return
 
@@ -170,15 +177,6 @@ class BWMappingUI(Ui_BWMapping):
                 svg_file = self._mini_graph_file
                 #start_node = str(self.map_startpoint_combo.currentText())
                 direction = str(self.map_connectivity_combo.currentText())
-
-                # Check start node exists
-                for node in nodes:
-                    if not self._flow_table.get_node(node):
-                        self.statusbar.showMessage(node + " does not exist in BW Map.", 0)
-                        return
-                    else:
-                        self.statusbar.showMessage("", 0)
-
                 self.statusbar.showMessage("Creating graph in " + svg_file, 10000)
                 # Get correct graph connection modes
                 gv_it_list = []

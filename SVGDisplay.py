@@ -10,18 +10,18 @@ __author__ = 'jonathan.waterhouse@gmail.com'
 class SVGDisplay(QDialog,Ui_Dialog):
     """
     Create a small webkit based box to display schedule diagrams
-    A test comment to test git branching
+    A test comment to test git branching. Need to inherit from QDialog to make
+    this a subclass of QObject and so gain access to Qt signals and slots functionality
     """
     def __init__(self,parent,svgFile, database):
         """
         Create the display box based on input parent widget and populated with
         """
         self._db = database
-        #dlg = PyQt4.QtGui.QDialog()
         QDialog.__init__(self)
-        #self.setupUi(dlg)
         self._parent = parent
         self.setupUi(self)
+        self.setAttribute(PyQt4.QtCore.Qt.WA_DeleteOnClose,True)
         self.imageUrl = PyQt4.QtCore.QUrl.fromLocalFile(svgFile) # Fully qualified filename
         self.webView.load(self.imageUrl)
         self.webView.setZoomFactor(0.5)
@@ -33,8 +33,6 @@ class SVGDisplay(QDialog,Ui_Dialog):
         self.webView.selectionChanged.connect(self.showDetails)
         self.search_lineEdit.returnPressed.connect(self.find)
         self.addNode_pushButton.clicked.connect(self.update_diagram)
-        #dlg.setVisible(True)
-        #dlg.exec_()
         self.setVisible(True)
         self.exec_()
 
@@ -75,4 +73,5 @@ class SVGDisplay(QDialog,Ui_Dialog):
         """
         PyQt4.QtCore.QObject.connect(self, PyQt4.QtCore.SIGNAL("update_node"), self._parent.add_node)
         self.emit(PyQt4.QtCore.SIGNAL('update_node'), self.addNodeName_label.text())
+        self.close() #Close this window
         return
