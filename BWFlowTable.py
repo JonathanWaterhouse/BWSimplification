@@ -44,7 +44,10 @@ class BWFlowTable(QObject):
         :return: nothing
         """
         self._database = database
-        self._max_rows = 75000 #Maximum rows we will attempt to pull from a table in one RFC call.
+        self._max_rows = 5000000 #Maximum rows we will attempt to pull from a table in one RFC call.
+        #Since RSSTATMANPART is massive and contains too much data for SAP RFC to handle, pull two years
+        low_dt = datetime.date.today() - datetime.timedelta(days=+730)
+        low_date = repr(low_dt.year) + repr(low_dt.month).zfill(2) + repr(low_dt.day).zfill(2)  # yyyymmdd
         #Next section defines the tables we want, the fields, any sql "WHERE" criteria and whether we want data or just
         #a table spec.
         super(BWFlowTable,self).__init__()
@@ -132,7 +135,7 @@ class BWFlowTable(QObject):
             RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
                                       'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
                            'MAXROWS': self._max_rows, # 0 brings all records back
-                           'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '20120101'"}], # eg. [{'TEXT' : "DTA = 'ZO00014'"}]
+                           'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '" + low_date + "'"}],
                            'RETRIEVEDATA' : ''}, #Blank means retrieve data
             USER_ADDRP= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,

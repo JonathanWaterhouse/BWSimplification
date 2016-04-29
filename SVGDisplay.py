@@ -34,7 +34,8 @@ class SVGDisplay(QDialog,Ui_Dialog):
         self.search_lineEdit.returnPressed.connect(self.find)
         self.addNode_pushButton.clicked.connect(self.update_diagram)
         self.setVisible(True)
-        self.exec_()
+        self.show() #new
+        #self.exec_()
 
     def magnification(self):
         self.webView.setZoomFactor(self.horizontalSlider.sliderPosition()/100.0)

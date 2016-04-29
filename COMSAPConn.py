@@ -114,18 +114,6 @@ class SAP_LISTCUBE_to_sqlite_table():
         self._FM = 'RSDRI_INFOPROV_READ_RFC'
         self._SAP_conn = SAP_conn
 
-    #def login_to_SAP(self):
-        """
-        Login to SAP. To do this a simple UI is presented to allow user input of credentials and target system. This
-        avoids any hard coding of credentials and flexibility as to target system eg dev, QA, Prod.
-        :return: None. Sets a class connection object used by other methods.
-        """
-        """
-        :return:
-        """
-    #    login = SAPLogonUI()
-    ##   self._SAP_conn = login.get_SAP_connection() #SAP Connection Object
-
     def read_infocube(self, infoprovider, chars_req, kfs_req, restrictions):
         """
         Call SAP function module RSDRI_INFOPROV_READ_RFC.
