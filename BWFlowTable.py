@@ -37,6 +37,7 @@ class BWFlowTable(QObject):
     RSDCUBET - Cube and Multiprovider texts
     RSMDATASTATE_EXT - Record Counts
     USER_ADDRP - User names and Id's
+    RSPLS_ALVL - Planning Level link to infoprovider and name.
     """
     def __init__(self, database):
         u"""
@@ -173,7 +174,15 @@ class BWFlowTable(QObject):
             RSTRANFIELD= {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
                         'SELECTION' : [{'TEXT': "OBJVERS = 'A'"}],
-                        'RETRIEVEDATA' : ''}
+                        'RETRIEVEDATA' : ''},
+            RSPLS_ALVL={'FIELDS': [],
+                       'MAXROWS': self._max_rows,
+                       'SELECTION': [{'TEXT': "OBJVERS = 'A' AND OBJSTAT = 'ACT'"}],
+                       'RETRIEVEDATA': ''},
+            RSPLS_ALVLT={'FIELDS': [],
+                        'MAXROWS': self._max_rows,
+                        'SELECTION': [{'TEXT': "OBJVERS = 'A'"}],
+                        'RETRIEVEDATA': ''}
         )
         self.tab_spec['/BIC/PZDESTCNTY'] = {'FIELDS' : [],
                         'MAXROWS' : self._max_rows,
@@ -384,6 +393,29 @@ class BWFlowTable(QObject):
         A.OHDEST , B.TXTLG
         FROM RSBOHDEST AS A LEFT OUTER JOIN RSBOHDESTT AS B ON A.OHDEST = B.OHDEST
         WHERE A.OBJVERS = "A" AND A.SOURCETLOGO != "" AND A.OBJSTAT = "ACT"
+        """)
+        conn.commit()
+
+    def update_flow_from_RSPLS_ALVL(self):
+        u"""
+        method create_flow_table must be called before this method to create table DATAFLOWS
+        This method updates that table with relevant information from table RSPLS_ALVL with information concerning
+        Agrregation planning levels
+        infospokes
+        :return: nothing
+        """
+        self.emit(SIGNAL('show_msg'), ".....from RSPLS_ALVL")
+        conn = sqlite3.connect(self._database)
+        c = conn.cursor()
+        # Assume target already exists and we are appending records
+        c.executescript(u"""
+        INSERT INTO DATAFLOWS
+        (SOURCE, TARGET, DERIVED_FROM, SOURCE_TYPE, SOURCE_SYSTEM, SOURCE_SUB_TYP, TARGET_TYPE, TARGET_SUB_TYPE, NAME)
+        SELECT A.INFOPROV , A.AGGRLEVEL , "RSPLS_ALVL" , A.ALVLTYPE , "P2WCLNT023" , "" , "PLANNING_LEVEL" ,
+        A.INFOAREA , B.TXTLG
+        FROM RSPLS_ALVL AS A LEFT OUTER JOIN RSPLS_ALVLT AS B ON A.AGGRLEVEL = B.AGGRLEVEL
+        WHERE A.OBJVERS = "A" AND A.OBJSTAT = "ACT"
+        AND B.OBJVERS = "A" AND B.LANGU = "E"
         """)
         conn.commit()
 
@@ -831,10 +863,13 @@ class BWFlowTable(QObject):
         #Infoset
         for row in c.execute("SELECT INFOSET, TXTLG FROM RSQISETT WHERE OBJVERS='A' AND LANGU='E'"):
             data.append((row[0],row[1],'RSQISETT'))
-
+        #Planning level
+        for row in c.execute("SELECT AGGRLEVEL, TXTLG FROM RSPLS_ALVLT WHERE OBJVERS='A' AND LANGU = 'E'"):
+            data.append((row[0], row[1], 'RSPLS_ALVL'))
         #Final update of texts table
         c.executemany("INSERT INTO TEXTS (OBJECT, TEXT, SOURCE) VALUES (?,?,?)",data)
         conn.commit()
+        conn.close()
 
     def get_node_text(self,node):
         conn = sqlite3.connect(self._database)
@@ -868,9 +903,11 @@ class BWFlowTable(QObject):
             self.emit(SIGNAL('show_msg'), msg)
             #QCoreApplication.processEvents()
             kfs_req = ['0TCTQUCOUNT', '0TCTTIMEALL']
-            restrictions = [{'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'XLWB'},
-                        {'CHANM' : '0TCTBIOTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'TMPL'},
-                        {'CHANM' : '0TCTBISOTYP', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'ELEM'},
+            restrictions = [{'CHANM' : '0TCTIFTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'ALVL'},
+                        {'CHANM' : '0TCTIFTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'ODSO'},
+                        {'CHANM' : '0TCTIFTYPE', 'SIGN' : 'I', 'COMPOP' : 'EQ', 'LOW' : 'CUBE'},
+                        {'CHANM' : '0TCTIFTYPE', 'SIGN': 'I', 'COMPOP': 'EQ', 'LOW': 'MPRO'},
+                        {'CHANM' : '0TCTIFTYPE', 'SIGN': 'I', 'COMPOP': 'EQ', 'LOW': 'ISET'},
                         {'CHANM' : '0CALDAY', 'SIGN' : 'I', 'COMPOP' : 'BT', 'LOW' : low, 'HIGH' : high}]
             result = LC.read_infocube(infoprovider, chars_req, kfs_req, restrictions)
             LC.write_sqlite(result, self._database, 'USER_ACTIVITY', chars_req+kfs_req, append)
@@ -893,6 +930,8 @@ class BWFlowTable(QObject):
         :param data_body_file_name: file to retrieve to get the body records
         :return:
         """
+        msg = "Reading for EKDIR entries - DO NOT create excel statistics yet!"
+        self.emit(SIGNAL('show_msg'), msg)
         ftp = ftplib.FTP(ftp_server)
         ftp.login()
         ftp.cwd(directory)
@@ -940,6 +979,9 @@ class BWFlowTable(QObject):
                                             entry['employeeType']))
         c.executemany("INSERT INTO EKDIR (EMPNO, GIVENNAME, SN, EXT_MAIL, OU, COUNTRY, EMP_TYPE) VALUES (?,?,?,?,?,?,?)",data)
         conn.commit()
+        conn.close()
+        msg = 'EKDIR entries copied - you may now create Excel statistics.'
+        self.emit(SIGNAL('show_msg'), msg)
 
 
     def create_BW_stats(self, workbook_name):
@@ -1039,8 +1081,8 @@ class BWFlowTable(QObject):
         worksheet.write(0,2,'QUERY_DAY_USAGES', header_fmt)
         i, j = 1, 0
         for row in c.execute("""
-            Select distinct u.[0TCTIFPROV],  t.txtlg, COUNT(U.[0TCTTIMEALL])
-            from user_activity as u left outer join RSDCUBET as t on u.[0TCTIFPROV] = t.INFOCUBE
+            Select distinct u.[0TCTIFPROV],  t.TEXT, COUNT(U.[0TCTTIMEALL])
+            from user_activity as u left outer join TEXTS as t on u.[0TCTIFPROV] = t.OBJECT
             group by [0TCTIFPROV]
             order by COUNT(u.[0TCTTIMEALL]) desc"""):
             for el in row:
@@ -1232,6 +1274,49 @@ class BWFlowTable(QObject):
             worksheet.autofilter(0,0,i,5)
         except sqlite3.Error as e:
             self.emit(self.emit(SIGNAL('show_msg'), "ERROR creating 'Application areas and their users with emails' statistics."))
+            workbook.close()
+            conn.close()
+
+        # Application areas and their users.
+        worksheet_count += 1
+        self.emit(SIGNAL('update_progress_bar'), worksheet_count)
+        self.emit(SIGNAL('show_msg'), "Creating 'Application areas and their users' statistics.")
+        worksheet = workbook.add_worksheet('App_Area_Users')
+        worksheet.set_zoom(70)
+        worksheet.set_column(0, 0, 30)
+        worksheet.set_column(3, 1, 20)
+        worksheet.set_column(4, 2, 10)
+        worksheet.set_column(5, 3, 40)
+        worksheet.write(0, 0, 'APP', header_fmt)
+        worksheet.write(0, 1, 'USERID', header_fmt)
+        worksheet.write(0, 2, 'Intensity', header_fmt)
+        worksheet.write(0, 3, 'Email', header_fmt)
+        i, j = 1, 0
+        # We do a try/except here because a manual created table is read and it may not be in place
+        try:
+            for row in c.execute("""
+                select A.app, userid, count(day), EKDIR.EXT_MAIL
+                from
+                (select distinct u.[0TCTIFPROV] as infoprov, u.[0TCTUSERNM] as userid, u.[0CALDAY] as day
+                From USER_ACTIVITY as U
+                order by u.[0calday])
+                left outer join EKDIR on EKDIR.EMPNO = userid
+                left outer join [Manual_application] as A on A.infoprovider = infoprov
+                group by A.app, userid
+                order by A.app, count(day) desc
+                """):
+                for el in row:
+                    if j in [0, 1, 2, 3, 5]:
+                        worksheet.write(i, j, el)
+                    else:
+                        worksheet.write_number(i, j, el)
+                    j += 1
+                i += 1
+                j = 0
+            worksheet.autofilter(0, 0, i, 5)
+        except sqlite3.Error as e:
+            self.emit(self.emit(SIGNAL('show_msg'),
+                                "ERROR creating 'Application areas and their users' statistics."))
             workbook.close()
             conn.close()
 

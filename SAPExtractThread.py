@@ -41,4 +41,5 @@ class SAPExtractThread(QThread):
         self._flow_table.update_flow_from_RSDCUBEMULTI()
         self._flow_table.update_flow_from_RSRREPDIR()
         self._flow_table.update_flow_from_RSQTOBJ()
+        self._flow_table.update_flow_from_RSPLS_ALVL()
         self.emit(SIGNAL('finished_db_update'))

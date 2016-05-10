@@ -186,3 +186,4 @@ class SAP_LISTCUBE_to_sqlite_table():
             t = tuple(record[1])
             c.execute(sql_stmt,t)
         sqlite_conn.commit()
+        sqlite_conn.close()
