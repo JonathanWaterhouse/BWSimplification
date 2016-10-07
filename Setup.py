@@ -13,8 +13,8 @@ if sys.platform == "win32":
     base = "Win32GUI"
     
 setup(name='BWMap',
-      version='3.3',
+      version='3.41',
       description='BW Mapping Tool',
-	  options = {"build_exe":  { 'packages' : packages, 'include_files': include_files}},
-      executables = [Executable("BWMapRFC_UI.py", base=base)]
+      options={"build_exe":  { 'packages' : packages, 'include_files': include_files}},
+      executables=[Executable("BWMapRFC_UI.py", base=base)]
       )

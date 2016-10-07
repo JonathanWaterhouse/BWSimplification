@@ -46,8 +46,8 @@ class BWFlowTable(QObject):
         """
         self._database = database
         self._max_rows = 5000000 #Maximum rows we will attempt to pull from a table in one RFC call.
-        #Since RSSTATMANPART is massive and contains too much data for SAP RFC to handle, pull two years
-        low_dt = datetime.date.today() - datetime.timedelta(days=+730)
+        #Since RSSTATMANPART is massive and contains too much data for SAP RFC to handle, pull 60 days
+        low_dt = datetime.date.today() - datetime.timedelta(days=+60)
         low_date = repr(low_dt.year) + repr(low_dt.month).zfill(2) + repr(low_dt.day).zfill(2)  # yyyymmdd
         #Next section defines the tables we want, the fields, any sql "WHERE" criteria and whether we want data or just
         #a table spec.
@@ -134,7 +134,7 @@ class BWFlowTable(QObject):
                         'SELECTION' : [{'TEXT' : "OBJVERS = 'A' AND LANGU = 'E'"}],
                         'RETRIEVEDATA' : ''},
             RSSTATMANPART={'FIELDS' :['DTA', 'DTA_TYPE', 'DATUM_ANF', 'OLTPSOURCE', 'UPDMODE',
-                                      'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE'],
+                                      'ANZ_RECS', 'INSERT_RECS', 'TIMESTAMP_ANF', 'SOURCE_DTA', 'SOURCE_DTA_TYPE','TIMESTAMP_VERB'],
                            'MAXROWS': self._max_rows, # 0 brings all records back
                            'SELECTION' : [{'TEXT' : "(DTA_TYPE = 'CUBE' OR DTA_TYPE = 'ODSO') AND DATUM_ANF >= '" + low_date + "'"}],
                            'RETRIEVEDATA' : ''}, #Blank means retrieve data
@@ -746,14 +746,18 @@ class BWFlowTable(QObject):
         c = conn.cursor()
         connections, out_graph, link = [], [], []
         #This sql statement looks up records with a transaction date as near as possible to today
-        rows = c.execute(u'''SELECT
-                        CASE WHEN SUBSTR (OLTPSOURCE, 1, 1) = "8" THEN SUBSTR (OLTPSOURCE, 2, LENGTH(OLTPSOURCE))
-                        ELSE OLTPSOURCE END,
-                        DTA, ANZ_RECS, INSERT_RECS,
-                        MAX(SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2))
-                        FROM RSSTATMANPART
-                        WHERE SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2) <= date('now')
-                        GROUP BY OLTPSOURCE, DTA
+        rows = c.execute(u'''SELECT DSRC, DTA, ANZ_RECS, INSERT_RECS, LAST_RUN, substr(datetime(S_RUNTIME,'unixepoch'),12,8) AS diff
+                                FROM (
+                                SELECT
+                                CASE WHEN SUBSTR (OLTPSOURCE, 1, 1) = "8" THEN SUBSTR (OLTPSOURCE, 2, LENGTH(OLTPSOURCE)) ELSE OLTPSOURCE END AS DSRC,
+                                DTA, ANZ_RECS, INSERT_RECS,
+                                MAX(SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2)) AS LAST_RUN,
+                                strftime('%s',DATETIME(SUBSTR(TIMESTAMP_VERB,1,4)||'-'||SUBSTR(TIMESTAMP_VERB,5,2)||'-'||SUBSTR(TIMESTAMP_VERB,7,2)||' '||SUBSTR(TIMESTAMP_VERB,9,2)||':'||SUBSTR(TIMESTAMP_VERB,11,2)||':'||SUBSTR(TIMESTAMP_VERB,13,2))) -
+                                strftime('%s',DATETIME(SUBSTR(TIMESTAMP_ANF,1,4)||'-'||SUBSTR(TIMESTAMP_ANF,5,2)||'-'||SUBSTR(TIMESTAMP_ANF,7,2)||' '||SUBSTR(TIMESTAMP_ANF,9,2)||':'||SUBSTR(TIMESTAMP_ANF,11,2)||':'||SUBSTR(TIMESTAMP_ANF,13,2))) AS S_RUNTIME
+                                FROM RSSTATMANPART
+                                WHERE SUBSTR(DATUM_ANF,1,4)||"-"||SUBSTR(DATUM_ANF,5,2)||"-"||SUBSTR(DATUM_ANF,7,2) <= date('now')
+                                GROUP BY OLTPSOURCE, DTA
+                                )
                          ''')
         #Store OLTPSOURCE, DTA, ANZRECS, INSERTRECS in internal keyed structure
         OLTPSOURCE, DTA = dict(), dict()
@@ -761,10 +765,10 @@ class BWFlowTable(QObject):
         for el in rows:
             try:
                 DTA = OLTPSOURCE[el[0]] #Get the dict element to update it. Will fail with KeyError if not created previously
-                DTA[el[1]] = el[2],el[3],el[4]
+                DTA[el[1]] = el[2],el[3],el[4],el[5]
                 OLTPSOURCE[el[0]] = DTA
             except (KeyError):
-                OLTPSOURCE[el[0]] = {el[1]:(el[2],el[3],el[4])}
+                OLTPSOURCE[el[0]] = {el[1]:(el[2],el[3],el[4],el[5])}
 
         for line in graph_to_decorate:
             try:
@@ -772,7 +776,7 @@ class BWFlowTable(QObject):
                 link.append (line.split(u'"')[3])
                 try:
                     result = OLTPSOURCE[link[0]][link[1]] #Lookup one of the records stored before and reconstruct line if necessary
-                    out_graph.append(line.strip(u"\n") + u"[label=" + u'"' + result[2] + u"\n" + result[0] + u"\n" + result[1] + u'"]' + u"\n")
+                    out_graph.append(line.strip(u"\n") + u"[label=" + u'"' + result[2] + u"\n" + result[0] + u"\n" + result[1] + u"\n" + result[3] + u'"]' + u"\n")
                 except (KeyError):
                     out_graph.append(line)
                 link = []
@@ -987,10 +991,12 @@ class BWFlowTable(QObject):
     def create_BW_stats(self, workbook_name):
         """
         Create a workbook containing multiple sheets with various BW statistics
+        Note that the workbook is defined with in_memory so no temp disk files are written
+        See http://xlsxwriter.readthedocs.io/workbook.html
         :param workbook_name: text name wor workbook to be stored in local diectory
         :return: None
         """
-        workbook = xlsxwriter.Workbook(workbook_name)
+        workbook = xlsxwriter.Workbook(workbook_name, {'in_memory': True})
         conn = sqlite3.connect(self._database)
         c = conn.cursor()
         #Active Users
@@ -1009,10 +1015,12 @@ class BWFlowTable(QObject):
         worksheet.write(0,2,'QUERY_DAY_USAGES', header_fmt)
         i, j = 1, 0
         for row in c.execute("""
-            select Distinct U.[0TCTUSERNM], N.NAME_TEXT, COUNT(U.[0TCTTIMEALL])
-            from user_activity as U left outer join USER_ADDRP as N on U.[0TCTUSERNM] = N.BNAME
-            group by U.[0TCTUSERNM]
-            order by COUNT(U.[0TCTQUCOUNT])DESC"""):
+                Select user, name, count(occurs)
+                from
+                (Select distinct u.[0TCTUSERNM]as user, N.NAME_TEXT AS Name, u.[0TCTBISBOBJ], u.[0CALDAY], 1 as occurs
+                from user_activity as U left outer join USER_ADDRP as N on N.BNAME = u.[0TCTUSERNM])
+                group by user
+                order by count(occurs) desc"""):
             for el in row:
                 if j in [0,1]: worksheet.write(i,j,el)
                 else: worksheet.write_number(i,j,el)
@@ -1043,13 +1051,14 @@ class BWFlowTable(QObject):
         worksheet.write(0,1,'QUERY_DAY_USAGES', header_fmt)
         i, j = 1, 0
         for row in c.execute("""
-            select Distinct s.TXTMD,  COUNT(U.[0TCTQUCOUNT])
-            from user_activity as U left outer join  EKDIR as E on U.[0TCTUSERNM] = E.empno
-            left outer join [/BIC/PZDESTCNTY] As D on D.[/BIC/ZDESTCNTY] = E.COUNTRY
-            left outer join [/BIC/TZDESTSREG] as S on D.[/BIC/ZDESTSREG] = S.[/BIC/ZDESTSREG]
-            left outer join TEXTS as T on T.OBJECT = U.[0TCTIFPROV]
-            group by s.txtmd
-            order by s.txtmd"""):
+                Select region_t, count(occurs)
+                from
+                (Select distinct u.[0TCTUSERNM] as user, u.[0TCTBISBOBJ], R.TXTMD as region_t, u.[0CALDAY], 1 as occurs
+                from user_activity as u left outer join EKDIR as E on u.[0TCTUSERNM] = E.EMPNO
+                left outer join [/bic/pzdestcnty] as D on D.[/BIC/ZDESTCNTY] = E.country
+                left outer join [/bic/tzdestsreg] as R on D.[/BIC/ZDESTSREG] = R.[/BIC/ZDESTSREG])
+                group by region_t
+                order by count(occurs) desc"""):
             for el in row:
                 if j in [0]: worksheet.write(i,j,el)
                 else: worksheet.write_number(i,j,el)
@@ -1081,10 +1090,12 @@ class BWFlowTable(QObject):
         worksheet.write(0,2,'QUERY_DAY_USAGES', header_fmt)
         i, j = 1, 0
         for row in c.execute("""
-            Select distinct u.[0TCTIFPROV],  t.TEXT, COUNT(U.[0TCTTIMEALL])
-            from user_activity as u left outer join TEXTS as t on u.[0TCTIFPROV] = t.OBJECT
-            group by [0TCTIFPROV]
-            order by COUNT(u.[0TCTTIMEALL]) desc"""):
+                Select ip, Name, count(occurs)
+                from
+                (Select distinct u.[0TCTUSERNM] as user, u.[0TCTBISBOBJ], u.[0TCTIFPROV] as IP, T.TEXT as Name, u.[0CALDAY], 1 as occurs
+                from user_activity as u left outer join TEXTS as T on u.[0TCTIFPROV] = T.OBJECT)
+                group by Name
+                order by count(occurs) desc"""):
             for el in row:
                 if j in [0,1]: worksheet.write(i,j,el)
                 else: worksheet.write_number(i,j,el)
@@ -1122,21 +1133,19 @@ class BWFlowTable(QObject):
         i, j = 1, 0
         for row in c.execute("""
                 select Infoprovider, Name,
-                sum(case when Region = "US&C" THEN Intensity END) as USC,
-                sum(case when Region = "EAMER" THEN Intensity END) as EAMER,
-                SUM(case when Region = "APR" THEN Intensity END) as APR,
-                Sum(case when Region = "LAR" THEN Intensity END) as LAR,
-                Sum(case when region is Null THEN Intensity end) as NoUserRec,
-                Sum(Intensity) as Total
+                sum(case when Region = "US&C" THEN occurs END) as USC,
+                sum(case when Region = "EAMER" THEN occurs END) as EAMER,
+                sum(case when Region = "APR" THEN occurs END) as APR,
+                sum(case when Region = "LAR" THEN occurs END) as LAR,
+                sum(case when region is Null THEN occurs end) as NoUserRec,
+                sum(occurs) as Total
                 From
-                (select Distinct  s.TXTMD as Region, U.[0TCTIFPROV] as Infoprovider, T.TEXT as Name, COUNT(U.[0TCTQUCOUNT]) as Intensity
-                            from user_activity as U left outer join USER_ADDRP as N on U.[0TCTUSERNM] = N.BNAME
-                            left outer join EKDIR as E on U.[0TCTUSERNM] = E.empno
-                            left outer join [/BIC/PZDESTCNTY] As D on D.[/BIC/ZDESTCNTY] = E.COUNTRY
-                            left outer join [/BIC/TZDESTSREG] as S on D.[/BIC/ZDESTSREG] = S.[/BIC/ZDESTSREG]
-                            left outer join TEXTS as T on T.OBJECT = U.[0TCTIFPROV]
-                            group by s.txtmd, U.[0TCTIFPROV]
-                            order by TXTMD, COUNT(U.[0TCTQUCOUNT]) DESC)
+                (select Distinct u.[0TCTUSERNM] as user, u.[0TCTBISBOBJ], u.[0CALDAY], 1 as occurs, s.TXTMD as Region, U.[0TCTIFPROV] as Infoprovider, T.TEXT as Name
+                                            from user_activity as U left outer join USER_ADDRP as N on U.[0TCTUSERNM] = N.BNAME
+                                            left outer join EKDIR as E on U.[0TCTUSERNM] = E.empno
+                                            left outer join [/BIC/PZDESTCNTY] As D on D.[/BIC/ZDESTCNTY] = E.COUNTRY
+                                            left outer join [/BIC/TZDESTSREG] as S on D.[/BIC/ZDESTSREG] = S.[/BIC/ZDESTSREG]
+                                            left outer join TEXTS as T on T.OBJECT = U.[0TCTIFPROV])
                 group By Infoprovider
                 Order by USC Desc
             """):
@@ -1181,14 +1190,12 @@ class BWFlowTable(QObject):
         #We do a try/except here because a manual created table is read and it may not be in place
         try:
             for row in c.execute("""
-                select appln, count(day)
-                from
-                (select distinct A.App as appln, u.[0CALDAY] as day
-                From USER_ACTIVITY as U
-                left outer join [Manual_application] as A on A.infoprovider = u.[0tctifprov]
-                order by u.[0calday])
-                group by appln
-                order by count(day) desc
+                    Select application, count(occurs)
+                    from
+                    (Select distinct u.[0TCTUSERNM] as user, u.[0TCTBISBOBJ], A.APP as application, u.[0CALDAY], 1 as occurs
+                    from user_activity as u left outer join MANUAL_APPLICATION as A on u.[0TCTIFPROV] = A.INFOPROVIDER)
+                    group by application
+                    order by count(occurs) desc
                 """):
                 for el in row:
                     if j in [0]: worksheet.write(i,j,el)
@@ -1219,11 +1226,13 @@ class BWFlowTable(QObject):
         worksheet.write(0,4,'QUERY_DAYS', header_fmt)
         i, j = 1, 0
         for row in c.execute("""
-            SELECT DISTINCT A.[0TCTBISBOBJ], T.text,  A.[0TCTUSERNM], U.NAME_TEXT, count(A.[0TCTQUCOUNT]) as usage
-            FROM USER_ACTIVITY As A left outer join user_Addrp as U ON A."0TCTUSERNM" = U.BNAME
-            left outer join texts as t ON A."0TCTBISBOBJ" = t.OBJECT
-            group by A.[0TCTBISBOBJ], A.[0TCTUSERNM]
-            order by usage desc
+                Select query, q_name, user, name, count(occurs)
+                from
+                (Select distinct u.[0TCTUSERNM]as user, N.NAME_TEXT AS Name, u.[0TCTBISBOBJ] as query, t.TEXT as q_name, u.[0CALDAY], 1 as occurs
+                from user_activity as u left outer join TEXTS as t on u.[0TCTBISBOBJ] = t.OBJECT
+                left outer join USER_ADDRP as N on N.BNAME = u.[0TCTUSERNM])
+                group by query, user
+                order by count(occurs) desc
             """):
             for el in row:
                 if j in [0,1,2,3]: worksheet.write(i,j,el)
@@ -1255,15 +1264,14 @@ class BWFlowTable(QObject):
         #We do a try/except here because a manual created table is read and it may not be in place
         try:
             for row in c.execute("""
-                select A.app, infoprov, T.text, userid, count(day), EKDIR.EXT_MAIL
-                from
-                (select distinct u.[0TCTIFPROV] as infoprov, u.[0TCTUSERNM] as userid, u.[0CALDAY] as day
-                From USER_ACTIVITY as U
-                order by u.[0calday])
-                left outer join EKDIR on EKDIR.EMPNO = userid
-                left outer join [Manual_application] as A on A.infoprovider = infoprov
-                left outer join texts as T on T.object = infoprov
-                group by infoprov, userid
+                    Select app, ip, ip_name, user, count(occurs),email
+                    from
+                    (Select distinct u.[0TCTUSERNM]as user, E.EXT_MAIL AS Email, u.[0TCTBISBOBJ], u.[0TCTIFPROV] as ip, M.APP as app, T.TEXT as ip_name, u.[0CALDAY], 1 as occurs
+                    from user_activity as u left outer join TEXTS as T on u.[0TCTIFPROV] = T.OBJECT
+                    left outer join EKDIR as E on E.EMPNO = u.[0TCTUSERNM]
+                    left outer join MANUAL_APPLICATION as M on M.INFOPROVIDER = u.[0TCTIFPROV])
+                    group by app ,ip, user
+                    order by count(occurs) desc
                 """):
                 for el in row:
                     if j in [0,1,2,3, 5]: worksheet.write(i,j,el)
@@ -1295,15 +1303,15 @@ class BWFlowTable(QObject):
         # We do a try/except here because a manual created table is read and it may not be in place
         try:
             for row in c.execute("""
-                select A.app, userid, count(day), EKDIR.EXT_MAIL
-                from
-                (select distinct u.[0TCTIFPROV] as infoprov, u.[0TCTUSERNM] as userid, u.[0CALDAY] as day
-                From USER_ACTIVITY as U
-                order by u.[0calday])
-                left outer join EKDIR on EKDIR.EMPNO = userid
-                left outer join [Manual_application] as A on A.infoprovider = infoprov
-                group by A.app, userid
-                order by A.app, count(day) desc
+                    Select app, user, count(occurs), email
+                    from
+                    (Select distinct u.[0TCTUSERNM]as user, E.EXT_MAIL AS Email, u.[0TCTBISBOBJ], M.APP as app,
+                     u.[0CALDAY], 1 as occurs
+                     from USER_ACTIVITY as u
+                    left outer join EKDIR as E on E.EMPNO = u.[0TCTUSERNM]
+                    left outer join MANUAL_APPLICATION as M on M.INFOPROVIDER = u.[0TCTIFPROV])
+                    group by app, user
+                    order by count(occurs) desc
                 """):
                 for el in row:
                     if j in [0, 1, 2, 3, 5]:

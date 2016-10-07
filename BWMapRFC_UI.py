@@ -324,7 +324,7 @@ class BWMappingUI(Ui_BWMapping):
         in a separate worksheet within an excel workbook
         """
         i = 0
-        self._max_status_bar_value = 7
+        self._max_status_bar_value = 8 #No. sheets in workbook
         self.progressBar.setMinimum(i)
         self.progressBar.setMaximum(self._max_status_bar_value)
         self.progressBar.setVisible(True)
